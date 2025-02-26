@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "signify"
+rootProject.name = "SignifyBasic"
 include(":app")
  

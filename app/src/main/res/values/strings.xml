@@ -1,4 +1,3 @@
 <resources>
-    <string name="app_name">signify</string>
-    <string name="take_picture_activity_label">Take Picture</string>
+    <string name="app_name">SignifyBasic</string>
 </resources>
