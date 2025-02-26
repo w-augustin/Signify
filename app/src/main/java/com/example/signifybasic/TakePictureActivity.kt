@@ -1,4 +1,4 @@
-package com.android.signify
+package com.example.signifybasic
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,7 +15,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.android.signify.database.DBHelper
+import com.example.signifybasic.database.DBHelper
 import android.Manifest
 import android.widget.Toast
 
@@ -82,7 +82,7 @@ class TakePictureActivity : AppCompatActivity() {
         }
 
         home.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MainActivity3::class.java)
             startActivity(intent)
         }
     }

@@ -1,4 +1,4 @@
-package com.android.signify.ui.theme
+package com.example.signifybasic.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

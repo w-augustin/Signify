@@ -16,6 +16,9 @@
             android:name=".ProfileScreen"
             android:exported="false" />
         <activity android:name=".MainActivity2" />
+        <activity android:name=".MainActivity3" />
+        <activity android:name=".TakePictureActivity" />
+        <activity android:name=".LoadImageActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

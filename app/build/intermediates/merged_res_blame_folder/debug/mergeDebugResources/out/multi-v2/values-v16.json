@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.signifybasic.app-mergeDebugResources-55:/values-v16/values-v16.xml",
+            "outputFile": "com.example.signifybasic.app-mergeDebugResources-59:/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Aidan\\.gradle\\caches\\8.10.2\\transforms\\c14d2ce640e84f2ffcc22981cd7929f2\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\Aidan\\.gradle\\caches\\8.10.2\\transforms\\bc64f23b9e87699178989daade2fed94\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

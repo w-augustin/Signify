@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var usernameInput : EditText
     lateinit var passwordInput : EditText
     lateinit var loginBtn : Button
+    lateinit var startBtn : Button
+    lateinit var guestBtn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,16 +32,40 @@ class MainActivity : AppCompatActivity() {
             usernameInput = findViewById(R.id.username_input)
             passwordInput = findViewById(R.id.password_input)
             loginBtn = findViewById(R.id.login_btn)
+            startBtn = findViewById(R.id.start_btn)
+            guestBtn = findViewById(R.id.guest_btn)
 
             loginBtn.setOnClickListener {
                 val username = usernameInput.text.toString()
                 val password = passwordInput.text.toString()
 
-                val intent = Intent(this, MainActivity2::class.java)
+                val intent = Intent(this, ProfileScreen::class.java)
                 intent.putExtra("Username", username)
                 intent.putExtra("Password", password)
                 startActivity(intent)
 //                Log.i("Test Credentials", "Username: $username and Password: $password")
             }
+
+            startBtn.setOnClickListener {
+//                val username = usernameInput.text.toString()
+//                val password = passwordInput.text.toString()
+
+                val intent = Intent(this, MainActivity2::class.java)
+//                intent.putExtra("Username", username)
+//                intent.putExtra("Password", password)
+                startActivity(intent)
+//                Log.i("Test Credentials", "Username: $username and Password: $password")
+            }
+
+        guestBtn.setOnClickListener {
+//                val username = usernameInput.text.toString()
+//                val password = passwordInput.text.toString()
+
+            val intent = Intent(this, MainActivity3::class.java)
+//                intent.putExtra("Username", username)
+//                intent.putExtra("Password", password)
+            startActivity(intent)
+//                Log.i("Test Credentials", "Username: $username and Password: $password")
+        }
     }
 }

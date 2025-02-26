@@ -1,4 +1,4 @@
-package com.android.signify
+package com.example.signifybasic
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.android.signify.database.DBHelper
+import com.example.signifybasic.database.DBHelper
 import android.widget.Toast
 
 class LoadImageActivity : AppCompatActivity() {
@@ -47,7 +47,7 @@ class LoadImageActivity : AppCompatActivity() {
         }
 
         home.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MainActivity3::class.java)
             startActivity(intent)
         }
     }

@@ -1,4 +1,4 @@
-package com.android.signify.ui.theme
+package com.example.signifybasic.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

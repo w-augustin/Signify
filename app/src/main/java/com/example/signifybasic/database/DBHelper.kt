@@ -1,4 +1,4 @@
-package com.android.signify.database
+package com.example.signifybasic.database
 
 import android.content.ContentValues
 import android.content.Context

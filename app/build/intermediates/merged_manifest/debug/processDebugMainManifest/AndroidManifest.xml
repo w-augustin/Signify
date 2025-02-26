@@ -31,6 +31,9 @@
             android:name="com.example.signifybasic.ProfileScreen"
             android:exported="false" />
         <activity android:name="com.example.signifybasic.MainActivity2" />
+        <activity android:name="com.example.signifybasic.MainActivity3" />
+        <activity android:name="com.example.signifybasic.TakePictureActivity" />
+        <activity android:name="com.example.signifybasic.LoadImageActivity" />
         <activity
             android:name="com.example.signifybasic.MainActivity"
             android:exported="true" >
