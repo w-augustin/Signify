@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var usernameInput : EditText
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 val username = usernameInput.text.toString()
                 val password = passwordInput.text.toString()
 
-                val intent = Intent(this, ProfileScreen::class.java)
+                val intent = Intent(this, MainActivity2::class.java)
                 intent.putExtra("Username", username)
                 intent.putExtra("Password", password)
                 startActivity(intent)

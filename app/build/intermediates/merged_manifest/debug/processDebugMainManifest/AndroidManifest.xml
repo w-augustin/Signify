@@ -30,6 +30,7 @@
         <activity
             android:name="com.example.signifybasic.ProfileScreen"
             android:exported="false" />
+        <activity android:name="com.example.signifybasic.MainActivity2" />
         <activity
             android:name="com.example.signifybasic.MainActivity"
             android:exported="true" >

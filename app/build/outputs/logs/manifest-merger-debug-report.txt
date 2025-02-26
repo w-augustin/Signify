@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:2:1-29:12
+ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:2:1-30:12
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\Aidan\.gradle\caches\8.10.2\transforms\8be041e7390b27ba5a6a1c0609125f03\transformed\material-1.12.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\Aidan\.gradle\caches\8.10.2\transforms\798970955fe5e0a685299cf079f9946e\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Aidan\.gradle\caches\8.10.2\transforms\1b5f4ec097602363c394da4f7d27dabd\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
@@ -84,8 +84,8 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Aidan\.gradle\cache
 	xmlns:android
 		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:2:11-69
 application
-ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:5:5-27:19
-INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:5:5-27:19
+ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:5:5-28:19
+INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:5:5-28:19
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\Aidan\.gradle\caches\8.10.2\transforms\8be041e7390b27ba5a6a1c0609125f03\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\Aidan\.gradle\caches\8.10.2\transforms\8be041e7390b27ba5a6a1c0609125f03\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\Aidan\.gradle\caches\8.10.2\transforms\798970955fe5e0a685299cf079f9946e\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
@@ -130,22 +130,26 @@ ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\Androi
 		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:17:13-37
 	android:name
 		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:16:13-42
+activity#com.example.signifybasic.MainActivity2
+ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:18:9-51
+	android:name
+		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:18:19-48
 activity#com.example.signifybasic.MainActivity
-ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:18:9-26:20
+ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:19:9-27:20
 	android:exported
-		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:20:13-36
+		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:21:13-36
 	android:name
-		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:19:13-41
+		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:20:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:21:13-25:29
+ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:22:13-26:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:22:17-69
+ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:23:17-69
 	android:name
-		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:22:25-66
+		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:23:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:24:17-77
+ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:25:17-77
 	android:name
-		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:24:27-74
+		ADDED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml:25:27-74
 uses-sdk
 INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\Aidan\AndroidStudioProjects\SignifyBasic\app\src\main\AndroidManifest.xml
