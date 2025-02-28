@@ -3276,6 +3276,7 @@ id container
 id content
 id contentPanel
 id contiguous
+id continue_button
 id continuousVelocity
 id coordinator
 id cos
@@ -3561,6 +3562,8 @@ id shortcut
 id showCustom
 id showHome
 id showTitle
+id signup
+id signup_button
 id sin
 id skipCollapsed
 id skipped
@@ -3609,6 +3612,7 @@ id tag_unhandled_key_event_manager
 id tag_unhandled_key_listeners
 id tag_window_insets_animation_callback
 id take_picture_button
+id test
 id text
 id text2
 id textEnd
@@ -3873,7 +3877,9 @@ layout notification_template_part_time
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
+layout signup_page
 layout support_simple_spinner_dropdown_item
+layout test_page
 menu bottom_nav_menu
 mipmap ic_launcher
 mipmap ic_launcher_round
