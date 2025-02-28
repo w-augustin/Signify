@@ -29,6 +29,7 @@ drawable trophy
 id back_btn
 id bottomNavigationView
 id bottom_navigation
+id continue_button
 id guest_btn
 id home
 id image_view
@@ -41,8 +42,11 @@ id password_input
 id profile
 id save_image_button
 id settings
+id signup
+id signup_button
 id start_btn
 id take_picture_button
+id test
 id textView
 id textView2
 id top_view
@@ -55,6 +59,8 @@ layout activity_main2
 layout activity_main3
 layout activity_profile_screen
 layout activity_take_picture
+layout signup_page
+layout test_page
 menu bottom_nav_menu
 mipmap ic_launcher
 mipmap ic_launcher_round

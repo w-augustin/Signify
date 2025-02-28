@@ -14,8 +14,11 @@
         tools:targetApi="31">
         <activity
             android:name=".ProfileScreen"
-            android:exported="false" />
-        <activity android:name=".MainActivity2" />
+            android:exported="true" />
+
+        <activity android:name=".SignupPage" />
+        <activity android:name=".WelcomeCenter" />
+        <activity android:name=".TestPage" />
         <activity android:name=".MainActivity3" />
         <activity android:name=".TakePictureActivity" />
         <activity android:name=".LoadImageActivity" />

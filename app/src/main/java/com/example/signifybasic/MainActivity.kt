@@ -2,7 +2,6 @@ package com.example.signifybasic
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
@@ -29,43 +28,33 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-            usernameInput = findViewById(R.id.username_input)
-            passwordInput = findViewById(R.id.password_input)
-            loginBtn = findViewById(R.id.login_btn)
-            startBtn = findViewById(R.id.start_btn)
-            guestBtn = findViewById(R.id.guest_btn)
+        usernameInput = findViewById(R.id.username_input)
+        passwordInput = findViewById(R.id.password_input)
+        loginBtn = findViewById(R.id.login_btn)
+        startBtn = findViewById(R.id.start_btn)
+        guestBtn = findViewById(R.id.guest_btn)
 
-            loginBtn.setOnClickListener {
-                val username = usernameInput.text.toString()
-                val password = passwordInput.text.toString()
+        // login should route to the WelcomeCenter
+        loginBtn.setOnClickListener {
+            val username = usernameInput.text.toString()
+            val password = passwordInput.text.toString()
 
-                val intent = Intent(this, ProfileScreen::class.java)
-                intent.putExtra("Username", username)
-                intent.putExtra("Password", password)
-                startActivity(intent)
-//                Log.i("Test Credentials", "Username: $username and Password: $password")
-            }
-
-            startBtn.setOnClickListener {
-//                val username = usernameInput.text.toString()
-//                val password = passwordInput.text.toString()
-
-                val intent = Intent(this, MainActivity2::class.java)
-//                intent.putExtra("Username", username)
-//                intent.putExtra("Password", password)
-                startActivity(intent)
-//                Log.i("Test Credentials", "Username: $username and Password: $password")
-            }
-
-        guestBtn.setOnClickListener {
-//                val username = usernameInput.text.toString()
-//                val password = passwordInput.text.toString()
-
-            val intent = Intent(this, MainActivity3::class.java)
-//                intent.putExtra("Username", username)
-//                intent.putExtra("Password", password)
+            val intent = Intent(this, WelcomeCenter::class.java)
+            intent.putExtra("Username", username)
+            intent.putExtra("Password", password)
             startActivity(intent)
-//                Log.i("Test Credentials", "Username: $username and Password: $password")
+        }
+
+        // get started should route to the signup page
+        startBtn.setOnClickListener {
+            val intent = Intent(this, SignupPage::class.java)
+            startActivity(intent)
+        }
+
+        // continue as guest should route to the WelcomeCenter - but for now, use to go to cameras
+        guestBtn.setOnClickListener {
+            val intent = Intent(this, MainActivity3::class.java)
+            startActivity(intent)
         }
     }
 }

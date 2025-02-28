@@ -3275,6 +3275,7 @@ int id container 0x7f080082
 int id content 0x7f080083
 int id contentPanel 0x7f080084
 int id contiguous 0x7f080085
+int id continue_button 0x7f080218
 int id continuousVelocity 0x7f080086
 int id coordinator 0x7f080087
 int id cos 0x7f080088
@@ -3560,6 +3561,8 @@ int id shortcut 0x7f08019f
 int id showCustom 0x7f0801a0
 int id showHome 0x7f0801a1
 int id showTitle 0x7f0801a2
+int id signup 0x7f080216
+int id signup_button 0x7f080217
 int id sin 0x7f0801a3
 int id skipCollapsed 0x7f0801a4
 int id skipped 0x7f0801a5
@@ -3608,6 +3611,7 @@ int id tag_unhandled_key_event_manager 0x7f0801cf
 int id tag_unhandled_key_listeners 0x7f0801d0
 int id tag_window_insets_animation_callback 0x7f0801d1
 int id take_picture_button 0x7f0801d2
+int id test 0x7f080219
 int id text 0x7f0801d3
 int id text2 0x7f0801d4
 int id textEnd 0x7f0801d5
@@ -3872,7 +3876,9 @@ int layout notification_template_part_time 0x7f0b006c
 int layout select_dialog_item_material 0x7f0b006d
 int layout select_dialog_multichoice_material 0x7f0b006e
 int layout select_dialog_singlechoice_material 0x7f0b006f
+int layout signup_page 0x7f0b0072
 int layout support_simple_spinner_dropdown_item 0x7f0b0070
+int layout test_page 0x7f0b0073
 int menu bottom_nav_menu 0x7f0d0000
 int mipmap ic_launcher 0x7f0e0000
 int mipmap ic_launcher_round 0x7f0e0001

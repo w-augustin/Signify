@@ -29,8 +29,10 @@
         android:theme="@style/Theme.SignifyBasic" >
         <activity
             android:name="com.example.signifybasic.ProfileScreen"
-            android:exported="false" />
-        <activity android:name="com.example.signifybasic.MainActivity2" />
+            android:exported="true" />
+        <activity android:name="com.example.signifybasic.SignupPage" />
+        <activity android:name="com.example.signifybasic.WelcomeCenter" />
+        <activity android:name="com.example.signifybasic.TestPage" />
         <activity android:name="com.example.signifybasic.MainActivity3" />
         <activity android:name="com.example.signifybasic.TakePictureActivity" />
         <activity android:name="com.example.signifybasic.LoadImageActivity" />
