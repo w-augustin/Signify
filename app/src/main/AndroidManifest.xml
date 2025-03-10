@@ -22,6 +22,14 @@
         <activity android:name=".MainActivity3" />
         <activity android:name=".TakePictureActivity" />
         <activity android:name=".LoadImageActivity" />
+        <activity android:name=".HomeActivity"/>
+        <activity android:name=".AchievementsActivity"/>
+        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".NotificationsActivity"/>
+        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".DiscussionActivity"/>
+        <activity android:name=".ActivityCenterActivity"/>
+        <activity android:name=".ResourcesActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

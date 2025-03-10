@@ -9,14 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-
 class MainActivity : AppCompatActivity() {
 
-    lateinit var usernameInput : EditText
-    lateinit var passwordInput : EditText
-    lateinit var loginBtn : Button
-    lateinit var startBtn : Button
-    lateinit var guestBtn : Button
+    private lateinit var usernameInput : EditText
+    private lateinit var passwordInput : EditText
+    private lateinit var loginBtn : Button
+    private lateinit var startBtn : Button
+    private lateinit var guestBtn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         startBtn = findViewById(R.id.start_btn)
         guestBtn = findViewById(R.id.guest_btn)
 
-        // login should route to the WelcomeCenter
+        // login button should route to the WelcomeCenter
         loginBtn.setOnClickListener {
             val username = usernameInput.text.toString()
             val password = passwordInput.text.toString()
@@ -45,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // get started should route to the signup page
+        // get started button should route to the signup page
         startBtn.setOnClickListener {
             val intent = Intent(this, SignupPage::class.java)
             startActivity(intent)
