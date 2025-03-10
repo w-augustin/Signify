@@ -16,8 +16,6 @@ local.properties
 
 gradle/wrapper/
 gradle/wrapper/dists/
-gradlew
-gradlew.bat
 
 *.keystore
 *.jks
