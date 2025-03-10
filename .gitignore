@@ -1,4 +1,3 @@
-# Ignore build and dependency directories
 .gradle/
 build/
 **/build/
@@ -9,24 +8,19 @@ build/
 intermediates/
 outputs/
 
-# Ignore IDE and configuration files
 .idea/
 *.iml
 
-# Ignore local properties
 local.properties
 *.log
 
-# Ignore Gradle wrapper binaries
 gradle/wrapper/
 gradle/wrapper/dists/
 gradlew
 gradlew.bat
 
-# Ignore Keystore files (if applicable)
 *.keystore
 *.jks
 
-# Ignore OS-specific files
 .DS_Store
 Thumbs.db
