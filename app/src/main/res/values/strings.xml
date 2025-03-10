@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SignifyBasic</string>
+    <string name="achievements">Achievements</string>
+    <string name="home">Home</string>
+    <string name="notifications">Notifications</string>
+    <string name="profile">Profile</string>
+    <string name="achievements_page">Achievements Page</string>
+    <string name="notification_page">Notification Page</string>
 </resources>

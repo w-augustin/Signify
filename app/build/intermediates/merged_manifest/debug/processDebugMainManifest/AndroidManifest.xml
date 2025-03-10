@@ -36,6 +36,14 @@
         <activity android:name="com.example.signifybasic.MainActivity3" />
         <activity android:name="com.example.signifybasic.TakePictureActivity" />
         <activity android:name="com.example.signifybasic.LoadImageActivity" />
+        <activity android:name="com.example.signifybasic.HomeActivity" />
+        <activity android:name="com.example.signifybasic.AchievementsActivity" />
+        <activity android:name="com.example.signifybasic.ProfileActivity" />
+        <activity android:name="com.example.signifybasic.NotificationsActivity" />
+        <activity android:name="com.example.signifybasic.SettingsActivity" />
+        <activity android:name="com.example.signifybasic.DiscussionActivity" />
+        <activity android:name="com.example.signifybasic.ActivityCenterActivity" />
+        <activity android:name="com.example.signifybasic.ResourcesActivity" />
         <activity
             android:name="com.example.signifybasic.MainActivity"
             android:exported="true" >

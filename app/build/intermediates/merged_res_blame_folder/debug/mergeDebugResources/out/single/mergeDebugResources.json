@@ -1,198 +1,226 @@
 [
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_book.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\book.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_award.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\award.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_signify.png.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\signify.png"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_bg_view.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/bg_view.xml"
+    },
+    {
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_book.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/book.xml"
+    },
+    {
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_resources.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_resources.xml"
     },
     {
         "merged": "com.example.signifybasic.app-debug-61:/layout_test_page.xml.flat",
         "source": "com.example.signifybasic.app-main-63:/layout/test_page.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_baseline_handshake_24.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\baseline_handshake_24.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_person.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/person.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_login_background.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\login_background.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_profile.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_profile.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-hdpi\\ic_launcher.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_login_background.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/login_background.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-hdpi\\ic_launcher_round.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_baseline_notifications_24.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\baseline_notifications_24.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_discussion_card_background.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/discussion_card_background.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_home.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\home.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\layout_activity_main2.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\layout\\activity_main2.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_achievements.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_achievements.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\xml_backup_rules.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\xml\\backup_rules.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/color_blue.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/color/blue.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_baseline_person_24.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\baseline_person_24.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/menu_nav_menu.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/menu/nav_menu.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-anydpi-v26\\ic_launcher.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_discussion.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_discussion.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\ic_launcher_foreground.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_baseline_equalizer_24.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/baseline_equalizer_24.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_checkmark.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\checkmark.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_settings_24.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/settings_24.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\layout_activity_profile_screen.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\layout\\activity_profile_screen.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_settings.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_settings.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\layout_welcome_center.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\layout\\welcome_center.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\layout_activity_main.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\layout\\activity_main.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_main.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_settings_24.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\settings_24.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_signifty_logo_copy.png.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/signifty_logo_copy.png"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\layout_activity_main3.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\layout\\activity_main3.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_baseline_notifications_24.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/baseline_notifications_24.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\layout_activity_take_picture.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\layout\\activity_take_picture.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_baseline_person_24.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/baseline_person_24.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\layout_signup_page.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\layout\\signup_page.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/xml_backup_rules.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/xml/backup_rules.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-xxxhdpi\\ic_launcher.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_load_image.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_load_image.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_folder.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\folder.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_award.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/award.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\layout_test_page.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\layout\\test_page.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-mdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_bg_view.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\bg_view.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-mdpi\\ic_launcher_round.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_home.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_home.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_trophy.jpg.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\trophy.jpg"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_signify.png.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/signify.png"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_discussion.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\discussion.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_baseline_handshake_24.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/baseline_handshake_24.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\color_blue.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\color\\blue.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_take_picture.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_take_picture.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\menu_bottom_nav_menu.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\menu\\bottom_nav_menu.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_discussion.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/discussion.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_signifty_logo_copy.png.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\signifty_logo_copy.png"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_main3.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_main3.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\layout_activity_load_image.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\layout\\activity_load_image.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-xxxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_baseline_equalizer_24.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\baseline_equalizer_24.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_folder.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/folder.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_settings.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\settings.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_notifications_activity.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/notifications_activity.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-xhdpi\\ic_launcher.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_hourse.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/hourse.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-xhdpi\\ic_launcher_round.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_button_rounded.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/button_rounded.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_hourse.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\hourse.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_welcome_center.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/welcome_center.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-xxhdpi\\ic_launcher.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_rounded_corner.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/rounded_corner.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\xml\\data_extraction_rules.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_rounded_corner.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\rounded_corner.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_lock_svgrepo_com.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\lock_svgrepo_com.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_checkmark.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/checkmark.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_ic_launcher_background.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\ic_launcher_background.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/layout_signup_page.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/signup_page.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_trophy.jpg.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/trophy.jpg"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\drawable_person.xml.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\drawable\\person.xml"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-debug-61:\\mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Aidan\\.gradle\\daemon\\8.10.2\\com.example.signifybasic.app-main-63:\\mipmap-mdpi\\ic_launcher.webp"
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_settings.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/settings.xml"
+    },
+    {
+        "merged": "com.example.signifybasic.app-debug-61:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.example.signifybasic.app-debug-61:/layout_activity_activity_center.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/layout/activity_activity_center.xml"
+    },
+    {
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_lock_svgrepo_com.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/lock_svgrepo_com.xml"
+    },
+    {
+        "merged": "com.example.signifybasic.app-debug-61:/drawable_home.xml.flat",
+        "source": "com.example.signifybasic.app-main-63:/drawable/home.xml"
+    },
+    {
+        "merged": "com.example.signifybasic.app-debug-61:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.signifybasic.app-main-63:/mipmap-hdpi/ic_launcher.webp"
     }
 ]
