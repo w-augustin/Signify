@@ -24,7 +24,7 @@ android {
         // for python code
         ndk {
             // On Apple silicon, you can omit x86_64.
-            abiFilters += listOf("armeabi-v7a", "x86")
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
         }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -62,15 +62,15 @@ chaquopy {
             install("requests==2.24.0")
 
             // An sdist or wheel filename, relative to the project directory:
-            install("MyPackage-1.2.3-py2.py3-none-any.whl")
+//            install("MyPackage-1.2.3-py2.py3-none-any.whl")
 
             // A directory containing a setup.py, relative to the project
             // directory (must contain at least one slash):
-            install("./MyPackage")
+//            install("./MyPackage")
 
             // "-r"` followed by a requirements filename, relative to the
             // project directory:
-            install("-r", "requirements.txt")
+//            install("-r", "requirements.txt")
         }
     }
 }
