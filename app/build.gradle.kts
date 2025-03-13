@@ -55,7 +55,7 @@ chaquopy {
         getByName("py311") { version = "3.11" }
     }
     defaultConfig {
-        version = "3.11"
+        version = "3.10"
         pip {
             // A requirement specifier, with or without a version number:
             install("scipy")
