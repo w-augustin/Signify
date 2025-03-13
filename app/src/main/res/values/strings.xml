@@ -6,4 +6,5 @@
     <string name="profile">Profile</string>
     <string name="achievements_page">Achievements Page</string>
     <string name="notification_page">Notification Page</string>
+    <string name="title_activity_test_knowledge">test_knowledge</string>
 </resources>
