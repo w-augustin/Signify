@@ -1,11 +1,19 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.chaquo.python")
 }
 
 android {
     namespace = "com.example.signifybasic"
     compileSdk = 35
+
+    // for python code
+    flavorDimensions += "pyVersion"
+    productFlavors {
+        create("py310") { dimension = "pyVersion" }
+        create("py311") { dimension = "pyVersion" }
+    }
 
     defaultConfig {
         applicationId = "com.example.signifybasic"
@@ -13,6 +21,11 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        // for python code
+        ndk {
+            // On Apple silicon, you can omit x86_64.
+            abiFilters += listOf("armeabi-v7a", "x86")
+        }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,6 +45,33 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+}
+
+// For Python code
+chaquopy {
+    productFlavors {
+        getByName("py310") { version = "3.10" }
+        getByName("py311") { version = "3.11" }
+    }
+    defaultConfig {
+        version = "3.11"
+        pip {
+            // A requirement specifier, with or without a version number:
+            install("scipy")
+            install("requests==2.24.0")
+
+            // An sdist or wheel filename, relative to the project directory:
+            install("MyPackage-1.2.3-py2.py3-none-any.whl")
+
+            // A directory containing a setup.py, relative to the project
+            // directory (must contain at least one slash):
+            install("./MyPackage")
+
+            // "-r"` followed by a requirements filename, relative to the
+            // project directory:
+            install("-r", "requirements.txt")
+        }
     }
 }
 
