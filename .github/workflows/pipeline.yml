@@ -31,8 +31,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Install Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
       - name: Grant execute permission to Gradle wrapper
-        run: chmod +x gradlew
+        run: pwd
+
+      - name: Step 2 of above
+        run: chmod +x ./gradlew
 
       - name: Build Android Project
         run: ./gradlew assembleDebug  # Adjust as needed for your project

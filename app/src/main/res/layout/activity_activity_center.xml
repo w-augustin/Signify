@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Test_knowledge">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/bg_view"
+        android:id="@+id/top_view"/>
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="Activity Center "
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:alpha="0.8"
+        android:text="Start your adventure into ASL"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/top_view"
+        android:id="@+id/button2"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod1"
+        android:background="@color/blue"/>
+
+    <Button
+        android:layout_below="@id/top_view"
+        android:id="@+id/button3"
+        android:layout_toRightOf="@id/button2"
+        android:layout_marginTop="50dp"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod2" />
+    <Button
+        android:layout_below="@id/top_view"
+        android:id="@+id/button4"
+        android:layout_toRightOf="@id/button3"
+        android:layout_marginTop="100dp"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod3" />
+
+    <Button
+        android:layout_below="@id/top_view"
+        android:id="@+id/button5"
+        android:layout_toRightOf="@id/button4"
+        android:layout_marginTop="150dp"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod3" />
+
+
+    <Button
+        android:layout_below="@id/top_view"
+        android:id="@+id/button6"
+        android:layout_toLeftOf="@id/button5"
+        android:layout_marginTop="200dp"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod3" />
+
+    <Button
+        android:layout_below="@id/top_view"
+        android:id="@+id/button7"
+        android:layout_toLeftOf="@id/button6"
+        android:layout_marginTop="250dp"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod3" />
+
+
+    <Button
+        android:layout_below="@id/top_view"
+        android:id="@+id/button8"
+        android:layout_toLeftOf="@id/button7"
+        android:layout_marginTop="300dp"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod3" />
+
+
+    <Button
+        android:layout_below="@id/top_view"
+        android:id="@+id/button10"
+        android:layout_toRightOf="@id/button7"
+        android:layout_marginTop="350dp"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod3" />
+
+    <Button
+        android:layout_below="@id/top_view"
+        android:id="@+id/button11"
+        android:layout_toRightOf="@id/button10"
+        android:layout_marginTop="400dp"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod3" />
+
+    <Button
+        android:layout_below="@id/top_view"
+        android:id="@+id/butto10"
+        android:layout_toLeftOf="@id/button10"
+        android:layout_marginTop="450dp"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:text="mod3" />
+
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:menu="@menu/nav_menu"
+        tools:ignore="VisualLintBottomNav" />
+</RelativeLayout>
