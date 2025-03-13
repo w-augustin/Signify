@@ -24,7 +24,7 @@ android {
         // for python code
         ndk {
             // On Apple silicon, you can omit x86_64.
-            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+            abiFilters += listOf("arm64-v8a", "x86_64")
         }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -58,7 +58,7 @@ chaquopy {
         version = "3.10"
         pip {
             // A requirement specifier, with or without a version number:
-            install("scipy")
+//            install("https://chaquo.com/pypi-13.1/scipy/scipy-1.8.1-1-cp310-cp310-android_21_arm64_v8a.whl")
             install("requests==2.24.0")
 
             // An sdist or wheel filename, relative to the project directory:
