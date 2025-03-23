@@ -1,4 +1,4 @@
-package com.example.signifybasic
+package com.example.signifybasic.features.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.signifybasic.MainActivity3
+import com.example.signifybasic.R
+import com.example.signifybasic.features.tabs.HomePage
 
 class MainActivity : AppCompatActivity() {
+    // landing page (where you start when you launch the app)
 
     private lateinit var usernameInput : EditText
     private lateinit var passwordInput : EditText
@@ -38,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             val username = usernameInput.text.toString()
             val password = passwordInput.text.toString()
 
-            val intent = Intent(this, WelcomeCenter::class.java)
+            val intent = Intent(this, HomePage::class.java)
             intent.putExtra("Username", username)
             intent.putExtra("Password", password)
             startActivity(intent)

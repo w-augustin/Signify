@@ -1,4 +1,4 @@
-package com.example.signifybasic;
+package com.example.signifybasic.features.tabs;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.signifybasic.features.activitycenter.ActivityCenter;
+import com.example.signifybasic.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class WelcomeCenter extends AppCompatActivity {
+public class HomePage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +24,11 @@ public class WelcomeCenter extends AppCompatActivity {
         CardView cardActivityCenter = findViewById(R.id.card_activity_center);
         CardView cardResources = findViewById(R.id.card_resources);
 
-        cardSettings.setOnClickListener(view -> startActivity(new Intent(WelcomeCenter.this, SettingsActivity.class)));
-        cardDiscussion.setOnClickListener(view -> startActivity(new Intent(WelcomeCenter.this, DiscussionActivity.class)));
+        cardSettings.setOnClickListener(view -> startActivity(new Intent(HomePage.this, SettingsPage.class)));
+        cardDiscussion.setOnClickListener(view -> startActivity(new Intent(HomePage.this, DiscussionPage.class)));
 //        cardModules.setOnClickListener(view -> startActivity(new Intent(WelcomeCenter.this, ModulesActivity.class)));
-        cardActivityCenter.setOnClickListener(view -> startActivity(new Intent(WelcomeCenter.this, ActivityCenterActivity.class)));
-        cardResources.setOnClickListener(view -> startActivity(new Intent(WelcomeCenter.this, ResourcesActivity.class)));
+        cardActivityCenter.setOnClickListener(view -> startActivity(new Intent(HomePage.this, ActivityCenter.class)));
+        cardResources.setOnClickListener(view -> startActivity(new Intent(HomePage.this, ResourcesPage.class)));
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -36,13 +38,13 @@ public class WelcomeCenter extends AppCompatActivity {
                 Intent intent = null;
 
                 if (item.getItemId() == R.id.nav_home) {
-                    intent = new Intent(WelcomeCenter.this, HomeActivity.class);
+                    intent = new Intent(HomePage.this, HomePage.class);
                 } else if (item.getItemId() == R.id.nav_achievements) {
-                    intent = new Intent(WelcomeCenter.this, AchievementsActivity.class);
+                    intent = new Intent(HomePage.this, AchievementsPage.class);
                 } else if (item.getItemId() == R.id.nav_notifications) {
-                    intent = new Intent(WelcomeCenter.this, NotificationsActivity.class);
+                    intent = new Intent(HomePage.this, NotificationsPage.class);
                 } else if (item.getItemId() == R.id.nav_profile) {
-                    intent = new Intent(WelcomeCenter.this, ProfileActivity.class);
+                    intent = new Intent(HomePage.this, ProfilePage.class);
                 }
 
                 if (intent != null) {

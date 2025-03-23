@@ -1,12 +1,13 @@
-package com.example.signifybasic
+package com.example.signifybasic.features.tabs
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.signifybasic.R
 
-class NotificationsActivity : AppCompatActivity() {
+class NotificationsPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.notifications_activity) // Ensure this matches your actual XML filename
