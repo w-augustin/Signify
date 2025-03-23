@@ -1,4 +1,4 @@
-package com.example.signifybasic
+package com.example.signifybasic.features.tabs
 
 import android.os.Bundle
 import android.view.View
@@ -8,8 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.signifybasic.R
 
-class ProfileScreen : AppCompatActivity() {
+class ProfilePage : AppCompatActivity() {
     lateinit var loginBtn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,12 +1,11 @@
-package com.example.signifybasic
+package com.example.signifybasic.features.tabs
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.example.signifybasic.R
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
