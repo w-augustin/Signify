@@ -100,7 +100,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_modules"
+            android:id="@+id/card_playground"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_row="2"
@@ -128,7 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Modules"
+                    android:text="Playground"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />

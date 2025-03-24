@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="help"
+        android:title="Help Center"
+        android:summary="Browse tutorials, tips, and FAQs"
+        android:icon="@drawable/book" />
+
+    <Preference
+        android:key="contact_support"
+        android:title="Contact Support"
+        android:summary="Reach out to our support team"
+        android:icon="@drawable/book" />
+
+    <Preference
+        android:key="about"
+        android:title="About This App"
+        android:summary="Version 1.0.0"
+        android:icon="@drawable/book" />
+
+</PreferenceScreen>

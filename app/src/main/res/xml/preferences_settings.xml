@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        android:key="dark_mode"
+        android:title="Enable Dark Mode"
+        android:summary="Switch between light and dark themes"
+        android:icon="@drawable/book" />
+
+    <SwitchPreferenceCompat
+        android:key="use_compact_ui"
+        android:title="Compact UI"
+        android:summary="Reduce spacing and font size"
+        android:icon="@drawable/book" />
+
+</PreferenceScreen>
