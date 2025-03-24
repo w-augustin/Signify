@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        android:key="push_notifications"
+        android:title="Push Notifications"
+        android:summary="Enable real-time alerts and updates"
+        android:icon="@drawable/book" />
+
+    <SwitchPreferenceCompat
+        android:key="vibrate"
+        android:title="Vibrate on Notification"
+        android:summary="Vibrate when receiving a notification"
+        android:icon="@drawable/book" />
+
+</PreferenceScreen>

@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        android:key="high_contrast"
+        android:title="High Contrast Text"
+        android:summary="Improve readability with bolder text"
+        android:icon="@drawable/book" />
+
+    <SwitchPreferenceCompat
+        android:key="text_scaling"
+        android:title="Large Text"
+        android:summary="Increase text size throughout the app"
+        android:icon="@drawable/book" />
+
+</PreferenceScreen>
