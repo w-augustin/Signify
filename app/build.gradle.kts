@@ -2,11 +2,16 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.chaquo.python")
+    id("kotlin-kapt")
 }
 
 android {
     namespace = "com.example.signifybasic"
     compileSdk = 35
+
+    buildFeatures {
+        viewBinding = true
+    }
 
     // for python code
     flavorDimensions += "pyVersion"
@@ -90,4 +95,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
 }
