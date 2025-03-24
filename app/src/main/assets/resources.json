@@ -1,0 +1,62 @@
+{
+  "videos": [
+    {
+      "title": "25 ASL Signs You Need to Know",
+      "url": "https://www.youtube.com/watch?v=0FcwzMq4iWg",
+      "thumbnail": "https://img.youtube.com/vi/0FcwzMq4iWg/hqdefault.jpg"
+    },
+    {
+      "title": "Learn Sign Language: Lesson 01 (ASL)",
+      "url": "https://www.youtube.com/watch?v=DaMjr4AfYA0",
+      "thumbnail": "https://img.youtube.com/vi/DaMjr4AfYA0/hqdefault.jpg"
+    },
+    {
+      "title": "Fingerspelling Exercise | Last Names | ASL Practice",
+      "url": "https://www.youtube.com/watch?v=WF_yDZwNKgY",
+      "thumbnail": "https://img.youtube.com/vi/WF_yDZwNKgY/hqdefault.jpg"
+    },
+    {
+      "title": "100 Essential ASL Signs in 5 Minutes",
+      "url": "https://www.youtube.com/watch?v=stCwx6SXgSA",
+      "thumbnail": "https://img.youtube.com/vi/stCwx6SXgSA/hqdefault.jpg"
+    },
+    {
+      "title": "\"100 Basic Signs\" (American Sign Language) (www.lifeprint.com)",
+      "url": "https://www.youtube.com/watch?v=ianCxd71xIo",
+      "thumbnail": "https://img.youtube.com/vi/ianCxd71xIo/hqdefault.jpg"
+    },
+    {
+      "title": "20+ Basic Sign Language Phrases for Beginners | ASL",
+      "url": "https://www.youtube.com/watch?v=v1desDduz5M",
+      "thumbnail": "https://img.youtube.com/vi/v1desDduz5M/hqdefault.jpg"
+    },
+    {
+      "title": "20+ Basic Sign Language Phrases for Beginners | ASL",
+      "url": "https://www.youtube.com/watch?v=v1desDduz5M",
+      "thumbnail": "https://img.youtube.com/vi/v1desDduz5M/hqdefault.jpg"
+    },
+    {
+      "title": "ASL Interpreting 101 for Hearing People",
+      "url": "https://www.youtube.com/watch?v=j1kqCE1J2MM",
+      "thumbnail": "https://img.youtube.com/vi/j1kqCE1J2MM/hqdefault.jpg"
+    }
+  ],
+  "links": [
+    {
+      "title": "ASL Dictionary",
+      "url": "https://www.signasl.org/"
+    },
+    {
+      "title": "National Association of the Deaf",
+      "url": "https://www.nad.org/"
+    },
+    {
+      "title": "Deaf Culture Central",
+      "url": "https://www.deafculturecentral.org/"
+    },
+    {
+      "title": "Lifeprint ASL University",
+      "url": "https://www.lifeprint.com/"
+    }
+  ]
+}
