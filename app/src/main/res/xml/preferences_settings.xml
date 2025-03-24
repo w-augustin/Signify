@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    <ListPreference-->
+<!--        android:key="theme"-->
+<!--        android:title="App Theme"-->
+<!--        android:summary="Choose light or dark mode"-->
+<!--        android:entries="@array/theme_options"-->
+<!--        android:entryValues="@array/theme_values"-->
+<!--        android:defaultValue="system" />-->
+
+    <SwitchPreferenceCompat
+        android:key="auto_play_videos"
+        android:title="Autoplay Videos"
+        android:summary="Play videos automatically when opened"
+        android:defaultValue="true" />
+
+    <SwitchPreferenceCompat
+        android:key="compact_layout"
+        android:title="Compact Layout"
+        android:summary="Use tighter spacing for small screens"
+        android:defaultValue="false" />
+
+</PreferenceScreen>

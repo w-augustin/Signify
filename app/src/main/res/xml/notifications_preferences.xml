@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        android:key="push_notifications"
+        android:title="Enable Push Notifications"
+        android:defaultValue="true" />
+
+    <SwitchPreferenceCompat
+        android:key="email_updates"
+        android:title="Email Updates"
+        android:defaultValue="false" />
+
+    <EditTextPreference
+        android:key="reminder_time"
+        android:title="Daily Reminder Time"
+        android:summary="Enter a time like 08:00 AM"
+        android:defaultValue="08:00" />
+
+</PreferenceScreen>
