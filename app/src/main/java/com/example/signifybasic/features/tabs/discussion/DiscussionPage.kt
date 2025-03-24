@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import android.widget.Button
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.example.signifybasic.database.DBHelper
 
 class DiscussionPage : AppCompatActivity() {
 
@@ -47,19 +48,40 @@ class DiscussionPage : AppCompatActivity() {
         val listType = object : TypeToken<List<DiscussionPost>>() {}.type
         val posts = Gson().fromJson<List<DiscussionPost>>(jsonString, listType).toMutableList()
 
+        val dbHelper = DBHelper(this)
+
+        val dbPosts = dbHelper.getAllDiscussionPosts()
         binding.discussionRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = DiscussionAdapter(posts)
+        val adapter = DiscussionAdapter(dbPosts.toMutableList())
         binding.discussionRecyclerView.adapter = adapter
 
         binding.fabNewPost.setOnClickListener {
             showNewPostDialog { newPostTitle ->
                 val newPost = DiscussionPost(
-                    title = newPostTitle,
-                    meta = "Just now | 0 replies"
+                    content = newPostTitle,
+                    timestamp = "Just now | 0 replies",
+                    userId = 1
                 )
                 posts.add(0, newPost)
                 adapter.notifyItemInserted(0)
                 binding.discussionRecyclerView.scrollToPosition(0)
+            }
+        }
+        binding.fabNewPost.setOnClickListener {
+            showNewPostDialog { newPostContent ->
+                val success = dbHelper.addDiscussionPost(
+                    userID = 1, // need to replace w/ real userId
+                    content = newPostContent
+                )
+
+                if (success) {
+                    val updatedPosts = dbHelper.getAllDiscussionPosts()
+
+                    (binding.discussionRecyclerView.adapter as? DiscussionAdapter)?.let { adapter ->
+                        adapter.updateData(updatedPosts.toMutableList())
+                        binding.discussionRecyclerView.scrollToPosition(0)
+                    }
+                }
             }
         }
     }

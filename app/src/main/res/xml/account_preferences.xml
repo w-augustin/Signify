@@ -3,14 +3,35 @@
     <PreferenceCategory android:title="Account Info">
 
         <EditTextPreference
-            android:key="username"
-            android:title="Username"
-            android:summary="Update your display name" />
+            android:key="update_username"
+            android:title="Update username"
+            android:summary="Enter a new username"
+            android:defaultValue="" />
 
         <EditTextPreference
-            android:key="email"
-            android:title="Email"
-            android:summary="Change your contact email" />
+            android:key="update_email"
+            android:title="Update email"
+            android:summary="Enter a new email"
+            android:inputType="textEmailAddress"
+            android:defaultValue="" />
+
+        <EditTextPreference
+            android:key="change_password"
+            android:title="Change password"
+            android:summary="Enter a new password"
+            android:defaultValue="" />
+
+        <EditTextPreference
+            android:key="log_out"
+            android:title="Log out"
+            android:summary="Log out of your account"
+            android:defaultValue="false" />
+
+        <EditTextPreference
+            android:key="delete_account"
+            android:title="Delete account"
+            android:summary="Delete your account"
+            android:defaultValue="false" />
 
     </PreferenceCategory>
 

@@ -1,11 +1,15 @@
 package com.example.signifybasic.features.tabs.settings
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import com.example.signifybasic.R
 
-class SettingsAccountFragment : PreferenceFragmentCompat() {
+class SettingsAccountFragment : PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.account_preferences, rootKey)
@@ -18,4 +22,46 @@ class SettingsAccountFragment : PreferenceFragmentCompat() {
         listView.clipToPadding = false
         listView.setBackgroundColor(resources.getColor(android.R.color.white, null))
     }
+
+    override fun onResume() {
+        super.onResume()
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onPause() {
+        preferenceScreen.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
+        super.onPause()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (sharedPreferences == null || key == null) return
+
+        when (key) {
+            "update_username" -> {
+                val enabled = sharedPreferences.getBoolean(key, true)
+                Log.d("Settings", "Push notifications enabled: $enabled")
+            }
+
+            "update_email" -> {
+                val enabled = sharedPreferences.getBoolean(key, false)
+                Log.d("Settings", "Email updates enabled: $enabled")
+            }
+
+            "update_password" -> {
+                val time = sharedPreferences.getString(key, "08:00")
+                Log.d("Settings", "Reminder time changed to: $time")
+            }
+
+            "log_out" -> {
+                val time = sharedPreferences.getString(key, "08:00")
+                Log.d("Settings", "Reminder time changed to: $time")
+            }
+
+            "delete_account" -> {
+                val time = sharedPreferences.getString(key, "08:00")
+                Log.d("Settings", "Reminder time changed to: $time")
+            }
+        }
+    }
+
 }
