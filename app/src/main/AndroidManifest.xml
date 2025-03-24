@@ -15,6 +15,9 @@
         android:theme="@style/Theme.SignifyBasic"
         tools:targetApi="31">
         <activity
+            android:name=".selecting_game"
+            android:exported="false" />
+        <activity
             android:name=".signing_game"
             android:exported="false" />
         <activity
@@ -26,10 +29,6 @@
         <activity
             android:name=".matching_game"
             android:exported="false" />
-        <activity
-            android:name=".selection_game"
-            android:exported="false"
-            android:label="@string/title_activity_selection_game" />
         <activity android:name=".features.auth.SignupPage" />
         <activity android:name=".features.tabs.HomePage" />
         <activity android:name=".features.auth.TestPage" />
