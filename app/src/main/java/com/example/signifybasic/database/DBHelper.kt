@@ -7,13 +7,14 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.example.signifybasic.features.tabs.discussion.DiscussionPost
 import java.io.ByteArrayOutputStream
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 3  // Incremented to account for new tables
+        private const val DATABASE_VERSION = 4  // Incremented to account for new tables
 
         // User Images Table
         private const val TABLE_USER_IMAGES = "userImages"
@@ -57,6 +58,18 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_PROGRESS INTEGER DEFAULT 0)"
         db.execSQL(createUsersTable)
 
+        val createDiscussionTable = """
+            CREATE TABLE discussions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            userID INTEGER,
+            content TEXT NOT NULL,
+            timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(userID) REFERENCES $TABLE_USERS(id)
+        )
+        """.trimIndent()
+        db.execSQL(createDiscussionTable)
+
+
         // Create Additional Tables
         db.execSQL("CREATE TABLE $TABLE_ACCOUNT (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, token INTEGER)")
         db.execSQL("CREATE TABLE $TABLE_MODULE (moduleID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, content TEXT NOT NULL, media TEXT)")
@@ -74,6 +87,17 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         }
         if (oldVersion < 3) {
             onCreate(db) // Recreate tables if upgrading
+        }
+        if (oldVersion < 4) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS discussions (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    content TEXT NOT NULL,
+                    timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY(userID) REFERENCES $TABLE_USERS(id)
+                )
+            """.trimIndent())
         }
     }
 
@@ -178,4 +202,36 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.insert(TABLE_USER_PROGRESS, null, values)
         db.close()
     }
+
+    // add a new discussion post
+    fun addDiscussionPost(userID: Int, content: String): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put("userID", userID)
+        values.put("content", content)
+        val result = db.insert("discussions", null, values)
+        db.close()
+        return result != -1L
+    }
+
+    // get all discussion posts
+    fun getAllDiscussionPosts(): List<DiscussionPost> {
+        val posts = mutableListOf<DiscussionPost>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM discussions ORDER BY timestamp DESC", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val content = cursor.getString(cursor.getColumnIndexOrThrow("content"))
+                val timestamp = cursor.getString(cursor.getColumnIndexOrThrow("timestamp"))
+                val userId = cursor.getInt(cursor.getColumnIndexOrThrow("userID"))
+                posts.add(DiscussionPost(content, timestamp, userId))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return posts
+    }
+
 }

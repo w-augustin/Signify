@@ -2,14 +2,13 @@
 
     <SwitchPreferenceCompat
         android:key="high_contrast"
-        android:title="High Contrast Text"
-        android:summary="Improve readability with bolder text"
-        android:icon="@drawable/book" />
+        android:title="Enable high contrast mode"
+        android:defaultValue="false" />
 
-    <SwitchPreferenceCompat
-        android:key="text_scaling"
-        android:title="Large Text"
-        android:summary="Increase text size throughout the app"
-        android:icon="@drawable/book" />
+    <EditTextPreference
+        android:key="font_size"
+        android:title="Set font size"
+        android:summary="Enter a font value, e.g. 12pt"
+        android:defaultValue="12pt" />
 
 </PreferenceScreen>

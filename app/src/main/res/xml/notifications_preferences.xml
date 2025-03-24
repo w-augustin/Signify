@@ -2,14 +2,18 @@
 
     <SwitchPreferenceCompat
         android:key="push_notifications"
-        android:title="Push Notifications"
-        android:summary="Enable real-time alerts and updates"
-        android:icon="@drawable/book" />
+        android:title="Enable Push Notifications"
+        android:defaultValue="true" />
 
     <SwitchPreferenceCompat
-        android:key="vibrate"
-        android:title="Vibrate on Notification"
-        android:summary="Vibrate when receiving a notification"
-        android:icon="@drawable/book" />
+        android:key="email_updates"
+        android:title="Email Updates"
+        android:defaultValue="false" />
+
+    <EditTextPreference
+        android:key="reminder_time"
+        android:title="Daily Reminder Time"
+        android:summary="Enter a time like 08:00 AM"
+        android:defaultValue="08:00" />
 
 </PreferenceScreen>
