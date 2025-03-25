@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    tools:context=".signing_game">
+
+    <TextView
+        android:id="@+id/record_instructions"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_edges"
+        android:backgroundTint="@color/primary_blue"
+        android:layout_marginTop="50dp"
+        android:text="Record your sign"
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
+
+    <SurfaceView
+        android:id="@+id/camera_preview"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/record_instructions"
+        android:layout_marginTop="20dp"/>
+
+
+    <Button
+        android:id="@+id/record_button"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/camera_preview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Start Recording"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_blue"/>
+
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/record_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible" />
+
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/progress_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Save"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_blue"
+        android:visibility="invisible" />
+
+    <VideoView
+        android:id="@+id/video_preview"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/save_button"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"/>
+
+</RelativeLayout>
