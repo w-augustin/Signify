@@ -21,7 +21,7 @@ class HomePage : AppCompatActivity() {
         val cardSettings = findViewById<CardView>(R.id.card_settings)
         val cardDiscussion = findViewById<CardView>(R.id.card_discussion)
         val cardActivityCenter = findViewById<CardView>(R.id.card_activity_center)
-        val cardResources = findViewById<CardView>(R.id.card_resources)
+//        val cardResources = findViewById<CardView>(R.id.card_resources)
         val cardPlayground = findViewById<CardView>(R.id.card_playground)
 
         cardSettings.setOnClickListener {
@@ -36,9 +36,9 @@ class HomePage : AppCompatActivity() {
             startActivity(Intent(this, ActivityCenter::class.java))
         }
 
-        cardResources.setOnClickListener {
-            startActivity(Intent(this, ResourcesPage::class.java))
-        }
+//        cardResources.setOnClickListener {
+//            startActivity(Intent(this, ResourcesPage::class.java))
+//        }
 
         cardPlayground.setOnClickListener {
             startActivity(Intent(this, MainActivity3::class.java))

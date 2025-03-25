@@ -10,12 +10,12 @@ class SettingsPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+//        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+//        setSupportActionBar(toolbar)
+//
+//        toolbar.setNavigationOnClickListener {
+//            onBackPressedDispatcher.onBackPressed()
+//        }
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
