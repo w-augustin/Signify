@@ -45,7 +45,7 @@
         android:layout_width="100dp"
         android:layout_height="75dp"
         android:text="mod1"
-        android:background="@color/blue"/>
+        android:backgroundTint= "@color/primary_blue"/>
 
     <Button
         android:layout_below="@id/top_view"
@@ -54,7 +54,8 @@
         android:layout_marginTop="50dp"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="mod2" />
+        android:text="mod2"
+        android:backgroundTint= "@color/button_disabled"/>
     <Button
         android:layout_below="@id/top_view"
         android:id="@+id/button4"
@@ -62,7 +63,8 @@
         android:layout_marginTop="100dp"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="mod3" />
+        android:text="mod3"
+        android:backgroundTint= "@color/primary_blue"/>
 
     <Button
         android:layout_below="@id/top_view"
@@ -71,7 +73,8 @@
         android:layout_marginTop="150dp"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="mod3" />
+        android:text="mod3"
+        android:backgroundTint= "@color/primary_blue"/>
 
 
     <Button
@@ -81,7 +84,8 @@
         android:layout_marginTop="200dp"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="mod3" />
+        android:text="mod3"
+        android:backgroundTint= "@color/primary_blue"/>
 
     <Button
         android:layout_below="@id/top_view"
@@ -90,7 +94,8 @@
         android:layout_marginTop="250dp"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="mod3" />
+        android:text="mod3"
+        android:backgroundTint= "@color/primary_blue"/>
 
 
     <Button
@@ -100,7 +105,8 @@
         android:layout_marginTop="300dp"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="mod3" />
+        android:text="mod3"
+        android:backgroundTint= "@color/primary_blue"/>
 
 
     <Button
@@ -110,7 +116,8 @@
         android:layout_marginTop="350dp"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="mod3" />
+        android:text="mod3"
+        android:backgroundTint= "@color/primary_blue"/>
 
     <Button
         android:layout_below="@id/top_view"
@@ -119,7 +126,8 @@
         android:layout_marginTop="400dp"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="mod3" />
+        android:text="mod3"
+        android:backgroundTint= "@color/primary_blue"/>
 
     <Button
         android:layout_below="@id/top_view"
@@ -128,7 +136,9 @@
         android:layout_marginTop="450dp"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="mod3" />
+        android:text="mod3"
+        android:backgroundTint= "@color/primary_blue"
+      />
 
 
 
