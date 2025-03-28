@@ -2,85 +2,121 @@ package com.example.signifybasic.database
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
+
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import com.example.signifybasic.features.tabs.discussion.DiscussionPost
-import java.io.ByteArrayOutputStream
+
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
-    companion object {
-        private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 4  // Incremented to account for new tables
-
-        // User Images Table
-        private const val TABLE_USER_IMAGES = "userImages"
-        private const val COLUMN_USER_ID = "user_id"
-        private const val COLUMN_ID = "id"
-        private const val COLUMN_IMAGE = "userImage"
-
-        // Users Table
-        private const val TABLE_USERS = "users"
-        private const val COLUMN_USERNAME = "username"
-        private const val COLUMN_PASSWORD = "password"
-        private const val COLUMN_EMAIL = "email"
-        private const val COLUMN_AGE = "age"
-        private const val COLUMN_PROGRESS = "progress"
-
-        // Additional Tables
-        private const val TABLE_ACCOUNT = "Account"
-        private const val TABLE_MODULE = "Module"
-        private const val TABLE_VOCAB_LIST = "VocabList"
-        private const val TABLE_USER_PROGRESS = "UserProgress"
-        private const val TABLE_ASSESSMENT = "Assessment"
-        private const val TABLE_QUESTION = "Question"
-        private const val TABLE_USER_ANSWER = "UserAnswer"
+    override fun onCreate(db: SQLiteDatabase) {
+        val createTableQuery = """
+            CREATE TABLE $TABLE_USERS (
+                $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_USERNAME TEXT NOT NULL,
+                $COLUMN_EMAIL TEXT UNIQUE NOT NULL,
+                $COLUMN_PASSWORD TEXT NOT NULL
+            )
+        """.trimIndent()
+        db.execSQL(createTableQuery)
     }
 
-    override fun onCreate(db: SQLiteDatabase) {
-        // Create User Images Table
-        val createUserImagesTable = "CREATE TABLE $TABLE_USER_IMAGES (" +
-                "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "$COLUMN_USER_ID TEXT, " +
-                "$COLUMN_IMAGE BLOB)"
-        db.execSQL(createUserImagesTable)
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
+        onCreate(db)  // Recreate the table
+    }
 
-        // Create Users Table
-        val createUsersTable = "CREATE TABLE $TABLE_USERS (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "$COLUMN_USERNAME TEXT UNIQUE, " +
-                "$COLUMN_PASSWORD TEXT, " +
-                "$COLUMN_EMAIL TEXT UNIQUE, " +
-                "$COLUMN_AGE INTEGER, " +
-                "$COLUMN_PROGRESS INTEGER DEFAULT 0)"
-        db.execSQL(createUsersTable)
+    fun addUser(name: String, email: String, password: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_USERNAME, name)
+            put(COLUMN_EMAIL, email)
+            put(COLUMN_PASSWORD, password)
+        }
+        val result = db.insert(TABLE_USERS, null, values)
+        db.close()
+        return result != -1L  // Returns true if insertion was successful
+    }
 
-        val createDiscussionTable = """
-            CREATE TABLE discussions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            userID INTEGER,
-            content TEXT NOT NULL,
-            timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(userID) REFERENCES $TABLE_USERS(id)
-        )
-        """.trimIndent()
-        db.execSQL(createDiscussionTable)
+    fun deleteUser(username: String): Boolean {
+        val db = writableDatabase
+        val rowsDeleted = db.delete(TABLE_USERS, "$COLUMN_USERNAME = ?", arrayOf(username))
+        db.close()
+        return rowsDeleted > 0 // Returns true if a row was deleted
+    }
+
+    fun getAllUsers(): List<String> {
+        val users = mutableListOf<String>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_USERS", null)
+
+        while (cursor.moveToNext()) {
+            val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME))
+            val email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL))
+            users.add("$name - $email")
+        }
+
+        cursor.close()
+        db.close()
+        return users
+    }
+
+    companion object {
+        private const val DATABASE_VERSION = 1
+        private const val DATABASE_NAME = "Signify.db"
+
+        const val TABLE_USERS = "users"
+        const val COLUMN_ID = "id"
+        const val COLUMN_USERNAME = "name"
+        const val COLUMN_EMAIL = "email"
+        const val COLUMN_PASSWORD = "password"
+    }
+
+    fun usernameExists(username: String):Boolean {
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?"
+        val cursor = db.rawQuery(query, arrayOf(username))
+
+        val exists = cursor.count > 0
+        cursor.close()
+        db.close()
+        return exists
+    }
+
+    fun userExists(username: String, email: String): Boolean {
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ? OR $COLUMN_EMAIL = ?"
+        val cursor = db.rawQuery(query, arrayOf(username, email))
+
+        val exists = cursor.count > 0
+        cursor.close()
+        db.close()
+        return exists
+    }
+
+    fun isValidUser(username: String, password: String): Boolean {
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ? AND $COLUMN_PASSWORD = ?"
+        val cursor = db.rawQuery(query, arrayOf(username, password))
+
+        val isValid = cursor.count > 0
+        cursor.close()
+        db.close()
+        return isValid
+    }
+}
 
 
         // Create Additional Tables
-        db.execSQL("CREATE TABLE $TABLE_ACCOUNT (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, token INTEGER)")
+/*        db.execSQL("CREATE TABLE $TABLE_ACCOUNT (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, token INTEGER)")
         db.execSQL("CREATE TABLE $TABLE_MODULE (moduleID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, content TEXT NOT NULL, media TEXT)")
         db.execSQL("CREATE TABLE $TABLE_VOCAB_LIST (word TEXT PRIMARY KEY, moduleID INTEGER, FOREIGN KEY (moduleID) REFERENCES $TABLE_MODULE(moduleID))")
         db.execSQL("CREATE TABLE $TABLE_USER_PROGRESS (progressID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER, moduleID INTEGER, completed BOOLEAN DEFAULT 0, score INTEGER, FOREIGN KEY (userID) REFERENCES $TABLE_ACCOUNT(userID), FOREIGN KEY (moduleID) REFERENCES $TABLE_MODULE(moduleID))")
         db.execSQL("CREATE TABLE $TABLE_ASSESSMENT (assessmentID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, moduleID INTEGER, FOREIGN KEY (moduleID) REFERENCES $TABLE_MODULE(moduleID))")
         db.execSQL("CREATE TABLE $TABLE_QUESTION (questionID INTEGER PRIMARY KEY AUTOINCREMENT, assessmentID INTEGER, question TEXT NOT NULL, correctAnswer TEXT NOT NULL, FOREIGN KEY (assessmentID) REFERENCES $TABLE_ASSESSMENT(assessmentID))")
-        db.execSQL("CREATE TABLE $TABLE_USER_ANSWER (userAnswerID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER, questionID INTEGER, userAnswer TEXT NOT NULL, isCorrect BOOLEAN DEFAULT 0, FOREIGN KEY (userID) REFERENCES $TABLE_ACCOUNT(userID), FOREIGN KEY (questionID) REFERENCES $TABLE_QUESTION(questionID))")
-    }
+        db.execSQL("CREATE TABLE $TABLE_USER_ANSWER (userAnswerID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER, questionID INTEGER, userAnswer TEXT NOT NULL, isCorrect BOOLEAN DEFAULT 0, FOREIGN KEY (userID) REFERENCES $TABLE_ACCOUNT(userID), FOREIGN KEY (questionID) REFERENCES $TABLE_QUESTION(questionID))")*/
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+    /* override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) {
             val addColumnQuery = "ALTER TABLE $TABLE_USER_IMAGES ADD COLUMN $COLUMN_USER_ID TEXT"
             db.execSQL(addColumnQuery)
@@ -146,13 +182,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     // Add a new user
-    fun addUser(username: String, password: String, email: String, age: Int, progress: Int): Boolean {
+    fun addUser(username: String, password: String, email: String, progress: Int): Boolean {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_USERNAME, username)
         values.put(COLUMN_PASSWORD, password)
         values.put(COLUMN_EMAIL, email)
-        values.put(COLUMN_AGE, age)
         values.put(COLUMN_PROGRESS, progress)
 
         val result = db.insert(TABLE_USERS, null, values)
@@ -235,3 +270,4 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
 }
+*/

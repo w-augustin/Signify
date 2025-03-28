@@ -50,12 +50,12 @@ class DiscussionPage : AppCompatActivity() {
 
         val dbHelper = DBHelper(this)
 
-        val dbPosts = dbHelper.getAllDiscussionPosts()
+        // val dbPosts = dbHelper.getAllDiscussionPosts()
         binding.discussionRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = DiscussionAdapter(dbPosts.toMutableList())
-        binding.discussionRecyclerView.adapter = adapter
+        //val adapter = DiscussionAdapter(dbPosts.toMutableList())
+        //binding.discussionRecyclerView.adapter = adapter
 
-        binding.fabNewPost.setOnClickListener {
+        /*binding.fabNewPost.setOnClickListener {
             showNewPostDialog { newPostTitle ->
                 val newPost = DiscussionPost(
                     content = newPostTitle,
@@ -66,8 +66,8 @@ class DiscussionPage : AppCompatActivity() {
                 adapter.notifyItemInserted(0)
                 binding.discussionRecyclerView.scrollToPosition(0)
             }
-        }
-        binding.fabNewPost.setOnClickListener {
+        }*/
+        /*binding.fabNewPost.setOnClickListener {
             showNewPostDialog { newPostContent ->
                 val success = dbHelper.addDiscussionPost(
                     userID = 1, // need to replace w/ real userId
@@ -83,6 +83,6 @@ class DiscussionPage : AppCompatActivity() {
                     }
                 }
             }
-        }
+        }*/
     }
 }

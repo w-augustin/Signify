@@ -259,7 +259,7 @@
         android:layout_height="wrap_content"
         android:text="Welcome User"
         android:textSize="32sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
@@ -291,6 +291,12 @@
         android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
         app:menu="@menu/nav_menu"/>
+
+    <TextView
+        android:id="@+id/username_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guest" />
 
 
 </RelativeLayout>

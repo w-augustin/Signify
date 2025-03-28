@@ -7,4 +7,6 @@
     <string name="achievements_page">Achievements Page</string>
     <string name="notification_page">Notification Page</string>
     <string name="title_activity_test_knowledge">test_knowledge</string>
+    <string name="loading_users">Loading users...</string>
+    <string name="textview">TextView</string>
 </resources>

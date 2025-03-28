@@ -69,7 +69,7 @@ class TakePictureActivity : AppCompatActivity() {
         }
 
         // Save image button action
-        saveImageButton.setOnClickListener {
+/*        saveImageButton.setOnClickListener {
             val userId = userIdInput.text.toString()
             val photo = (imageView.drawable as? BitmapDrawable)?.bitmap
             if (userId.isNotEmpty() && photo != null) {
@@ -79,7 +79,7 @@ class TakePictureActivity : AppCompatActivity() {
             else {
                 Toast.makeText(this, "Image of userId: $userId not saved", Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
 
         home.setOnClickListener {
             val intent = Intent(this, MainActivity3::class.java)

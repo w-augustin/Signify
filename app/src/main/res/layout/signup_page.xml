@@ -34,10 +34,11 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corner"
-            android:hint="Name"
+            android:hint="Username"
             android:layout_marginTop="20dp"
             android:inputType="text"
             android:padding="18dp"
@@ -46,18 +47,21 @@
             android:textSize="20sp" />
 
         <EditText
+            android:id="@+id/email"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner"
             android:hint="Email"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:padding="18dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
 
         <EditText
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -70,6 +74,7 @@
             android:textSize="20sp" />
 
         <EditText
+            android:id="@+id/confirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

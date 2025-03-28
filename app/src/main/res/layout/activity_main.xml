@@ -11,17 +11,29 @@
     tools:context=".features.auth.MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="389dp"
+        android:layout_height="692dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <!--        android:src="@drawable/baseline_handshake_24" />-->
 
+        <!--Debug -->
         <ImageView
             android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_height="189dp"
             android:src="@drawable/signify" />
+
+        <Button
+            android:id="@+id/debugButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Debug"
+            android:textColor="#3B84F1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/start_btn" />
 
         <TextView
             android:id="@+id/motto_text"
@@ -37,10 +49,10 @@
         <EditText
             android:id="@+id/username_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
             android:hint="Username"
-            android:layout_marginTop="20dp"
             android:inputType="text"
             android:padding="18dp"
             android:textColor="@color/white"
@@ -50,7 +62,7 @@
         <EditText
             android:id="@+id/password_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="61dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner"
             android:hint="Password"
@@ -69,8 +81,9 @@
             android:padding="14dp"
             android:text="Login"
             android:textColor="#3B84F1"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
+        <!--- Get Started -->
         <Button
             android:id="@+id/start_btn"
             android:layout_width="300dp"
@@ -79,8 +92,7 @@
             android:padding="14dp"
             android:text="Get Started"
             android:textColor="#3B84F1"
-            android:textSize="20sp">
-        </Button>
+            android:textSize="20sp"></Button>
 
         <Button
             android:id="@+id/guest_btn"
@@ -90,8 +102,7 @@
             android:padding="14dp"
             android:text="Continue as Guest"
             android:textColor="#3B84F1"
-            android:textSize="20sp">
-        </Button>
+            android:textSize="20sp"></Button>
 
 
     </LinearLayout>

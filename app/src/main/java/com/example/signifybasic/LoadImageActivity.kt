@@ -32,7 +32,7 @@ class LoadImageActivity : AppCompatActivity() {
         dbHelper = DBHelper(this)
 
         // Load image button action
-        loadImageButton.setOnClickListener {
+        /*loadImageButton.setOnClickListener {
             val userId = userIdInput.text.toString()
             if (userId.isNotEmpty()) {
                 val retrievedImage: Bitmap? = dbHelper.getImage(userId)
@@ -44,7 +44,7 @@ class LoadImageActivity : AppCompatActivity() {
                     Toast.makeText(this, "Image of userId: $userId not found", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+        }*/
 
         home.setOnClickListener {
             val intent = Intent(this, MainActivity3::class.java)
