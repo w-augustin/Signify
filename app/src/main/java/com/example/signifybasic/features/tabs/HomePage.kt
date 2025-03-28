@@ -4,13 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import com.example.signifybasic.MainActivity3
 import com.example.signifybasic.R
 import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.features.tabs.discussion.DiscussionPage
 import com.example.signifybasic.features.tabs.resources.ResourcesPage
 import com.example.signifybasic.features.tabs.settings.SettingsPage
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.signifybasic.signrecognition.MainActivity3
 
 class HomePage : AppCompatActivity() {
 

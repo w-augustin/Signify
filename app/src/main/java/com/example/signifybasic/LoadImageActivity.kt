@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signifybasic.database.DBHelper
 import android.widget.Toast
+import com.example.signifybasic.signrecognition.MainActivity3
 
 class LoadImageActivity : AppCompatActivity() {
 
