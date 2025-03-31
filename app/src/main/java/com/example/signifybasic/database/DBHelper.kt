@@ -184,6 +184,17 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return exists
     }
 
+    fun userExists(username: String, email: String): Boolean {
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ? OR $COLUMN_EMAIL = ?"
+        val cursor = db.rawQuery(query, arrayOf(username, email))
+
+        val exists = cursor.count > 0
+        cursor.close()
+        db.close()
+        return exists
+    }
+
     fun deleteUser(username: String): Boolean {
         val db = writableDatabase
         val rowsDeleted = db.delete(TABLE_USERS, "$COLUMN_USERNAME = ?", arrayOf(username))
