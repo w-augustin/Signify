@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="nav_profile" type="id" />
+    <item name="tv_font_size" type="id" />
+    <item name="btn_change_font_size" type="id" />
+    <item name="switch_high_contrast" type="id" />
+    <item name="seeMoreText" type="id" />
+    <item name="linkCard" type="id" />
 </resources>

@@ -1,43 +1,49 @@
 package com.example.signifybasic.features.tabs.settings
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.View
-import androidx.preference.Preference
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import com.example.signifybasic.R
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 
-class SettingsHelpFragment : PreferenceFragmentCompat() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.help_preferences, rootKey)
-    }
+class SettingsHelpFragment : Fragment(R.layout.help_preferences) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listView.setPadding(32, 32, 32, 32)
-        listView.clipToPadding = false
-        listView.setBackgroundColor(resources.getColor(android.R.color.white, null))
+        val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
 
-        findPreference<Preference>("faq")?.setOnPreferenceClickListener {
-            Log.d("SettingsHelp", "FAQ clicked")
-            true
+        // Make content draw behind system bars
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
+
+        // Apply padding to avoid overlap with status bar
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
+            val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            v.setPadding(0, topInset, 0, 0)
+            insets
         }
 
-        findPreference<Preference>("contact_support")?.setOnPreferenceClickListener {
-            Log.d("SettingsHelp", "Contact Support clicked")
-            true
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        findPreference<Preference>("terms")?.setOnPreferenceClickListener {
-            Log.d("SettingsHelp", "Terms & Conditions clicked")
-            true
-        }
-
-        findPreference<Preference>("privacy")?.setOnPreferenceClickListener {
-            Log.d("SettingsHelp", "Privacy Policy clicked")
-            true
-        }
+//        view.findViewById<MaterialButton>(R.id.btn_log_out).setOnClickListener {
+//            // TODO: Log out logic
+//        }
+//
+//        view.findViewById<MaterialButton>(R.id.btn_delete_account).setOnClickListener {
+//            // TODO: Delete account logic
+//        }
     }
+
 }

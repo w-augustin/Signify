@@ -42,7 +42,7 @@ class  DiscussionPage : AppCompatActivity() {
         binding = DiscussionActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.topAppBar)
 
         val jsonString = assets.open("discussions.json").bufferedReader().use { it.readText() }
         val listType = object : TypeToken<List<DiscussionPost>>() {}.type
