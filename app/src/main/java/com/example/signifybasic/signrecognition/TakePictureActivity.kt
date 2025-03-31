@@ -1,6 +1,8 @@
 package com.example.signifybasic.signrecognition
 
 import android.content.Intent
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -9,6 +11,7 @@ import android.widget.Toast
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.view.Surface
 import android.widget.TextView
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -37,6 +40,28 @@ class TakePictureActivity : AppCompatActivity() {
         recordVideoBtn = findViewById(R.id.idBtnRecordVideo)
         videoView = findViewById(R.id.videoView)
 
+        val cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
+        val cameraId = cameraManager.cameraIdList[0] // Use first camera (back camera)
+
+        val characteristics = cameraManager.getCameraCharacteristics(cameraId)
+        val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+
+        // Ensure resolution is available
+        val sizes = map?.getOutputSizes(Surface::class.java)
+        val targetResolution = sizes?.find { it.width == 1280 && it.height == 720 }
+            ?: sizes?.maxByOrNull { it.width * it.height } // Choose highest available
+
+        // Get available FPS ranges
+        val fpsRanges = characteristics.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES)
+        val targetFpsRange = fpsRanges?.find { it.lower == 30 && it.upper == 30 }
+            ?: fpsRanges?.maxByOrNull { it.upper } // Choose highest available if 30 is not supported
+
+        if (targetResolution != null && targetFpsRange != null) {
+            Log.d("CameraConfig", "Selected Resolution: ${targetResolution.width}x${targetResolution.height}")
+            Log.d("CameraConfig", "Selected FPS Range: ${targetFpsRange.lower}-${targetFpsRange.upper}")
+        } else {
+            Log.e("CameraConfig", "Resolution or FPS not available!")
+        }
         recordVideoBtn.setOnClickListener { //capture a video.
             val i = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             // an activity for result.

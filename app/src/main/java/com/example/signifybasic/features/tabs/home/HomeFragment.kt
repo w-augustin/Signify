@@ -14,6 +14,7 @@ import com.example.signifybasic.features.tabs.discussion.DiscussionFragment
 import com.example.signifybasic.features.tabs.discussion.DiscussionPage
 import com.example.signifybasic.features.tabs.resources.ResourcesFragment
 import com.example.signifybasic.features.tabs.settings.SettingsFragment
+import com.example.signifybasic.signrecognition.MainActivity3
 
 class HomeFragment : Fragment() {
 
@@ -56,7 +57,8 @@ class HomeFragment : Fragment() {
         }
 
         cardPlayground.setOnClickListener {
-            // Your playground action
+            //playground
+            startActivity(Intent(requireContext(), MainActivity3::class.java))
         }
 
         return view
