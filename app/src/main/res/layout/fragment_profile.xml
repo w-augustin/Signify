@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".features.tabs.profile.ProfileFragment">
+
     <RelativeLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
@@ -17,19 +18,25 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
-
-            <Button
+            <LinearLayout
+                android:id="@+id/header_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Go Back"
-                android:backgroundTint="@color/white"
-                android:textColor="#3B84F1"
-                android:padding="18dp"
-                android:layout_marginTop="32dp"
-                android:textSize="20sp"
-                android:id="@+id/back_btn">
+                android:layout_height="100dp"
+                android:layout_marginBottom="40dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="64dp">
 
-            </Button>
+                <TextView
+                    android:id="@+id/header_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textColor="@android:color/white"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,46 +99,65 @@
                 android:layout_marginLeft="20dp"
                 >
 
-                <TextView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="150dp"
                     android:layout_height="80dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="{5} day streak"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"/>
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/white">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="5 day streak"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </com.google.android.material.card.MaterialCardView>
 
-                <TextView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="150dp"
                     android:layout_height="80dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="397 exp points"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"/>
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/white">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="397 exp points"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </com.google.android.material.card.MaterialCardView>
 
-                <TextView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="150dp"
                     android:layout_height="80dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="# words known"
-                    android:textColor="@android:color/black"
-                    android:layout_marginTop="10dp"
-                    android:textSize="16sp"/>
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/white">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="# words known"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </com.google.android.material.card.MaterialCardView>
 
-                <TextView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="150dp"
                     android:layout_height="80dp"
-                    android:background="@android:color/white"
-                    android:gravity="center"
-                    android:text="current module"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"/>
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/white">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Current module"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </com.google.android.material.card.MaterialCardView>
             </GridLayout>
 
             <TextView

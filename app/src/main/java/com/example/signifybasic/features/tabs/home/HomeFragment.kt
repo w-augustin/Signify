@@ -10,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.cardview.widget.CardView
 import com.example.signifybasic.R
 import com.example.signifybasic.features.activitycenter.ActivityCenter
+import com.example.signifybasic.features.tabs.discussion.DiscussionFragment
 import com.example.signifybasic.features.tabs.discussion.DiscussionPage
-import com.example.signifybasic.features.tabs.settings.SettingsPage
+import com.example.signifybasic.features.tabs.resources.ResourcesFragment
+import com.example.signifybasic.features.tabs.settings.SettingsFragment
 
 class HomeFragment : Fragment() {
 
@@ -27,13 +29,26 @@ class HomeFragment : Fragment() {
         val cardDiscussion = view.findViewById<CardView>(R.id.card_discussion)
         val cardActivityCenter = view.findViewById<CardView>(R.id.card_activity_center)
         val cardPlayground = view.findViewById<CardView>(R.id.card_playground)
+        val cardResources = view.findViewById<CardView>(R.id.card_resources)
 
         cardSettings.setOnClickListener {
-            startActivity(Intent(requireContext(), SettingsPage::class.java))
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, SettingsFragment()) // Use your container ID here
+                .addToBackStack(null)
+                .commit()
         }
 
         cardDiscussion.setOnClickListener {
-            startActivity(Intent(requireContext(), DiscussionPage::class.java))
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, DiscussionFragment())
+                .addToBackStack(null)
+                .commit()        }
+
+        cardResources.setOnClickListener{
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ResourcesFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         cardActivityCenter.setOnClickListener {

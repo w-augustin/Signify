@@ -37,10 +37,6 @@ class ProfileFragment : Fragment() {
 
         binding.userDisplay.text = username
         binding.passDisplay.text = password
-
-        binding.backBtn.setOnClickListener {
-            requireActivity().finish()
-        }
     }
 
     override fun onDestroyView() {

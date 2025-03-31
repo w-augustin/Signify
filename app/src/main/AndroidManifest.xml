@@ -38,8 +38,6 @@
         <activity android:name=".features.tabs.AchievementsPage" />
         <activity android:name=".features.tabs.ProfilePage" />
         <activity android:name=".features.tabs.NotificationsPage" />
-        <activity android:name=".features.tabs.settings.SettingsPage"
-            android:theme="@style/AppTheme" />
         <activity android:name=".features.tabs.discussion.DiscussionPage" />
         <activity android:name=".features.activitycenter.ActivityCenter" />
         <activity android:name=".features.tabs.resources.ResourcesPage" />
