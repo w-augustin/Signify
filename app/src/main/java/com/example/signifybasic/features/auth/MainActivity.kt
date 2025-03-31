@@ -11,7 +11,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.database.DBHelper
+import com.example.signifybasic.debug.DebugActivity
 import com.example.signifybasic.features.tabs.HomePage
+
 
 class MainActivity : AppCompatActivity() {
     // landing page (where you start when you launch the app)
@@ -35,9 +37,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         val dbHelper = DBHelper(this)
+
         // Check if the admin user already exists before inserting
         val adminUsername = "admin"
-
         if (!dbHelper.usernameExists(adminUsername)) {
             dbHelper.addUser(adminUsername, "admin", "admin@admin.com")
         }
@@ -48,6 +50,10 @@ class MainActivity : AppCompatActivity() {
         startBtn = findViewById(R.id.start_btn)
         guestBtn = findViewById(R.id.guest_btn)
         debugBtn = findViewById(R.id.debug_button)
+
+        debugBtn.setOnClickListener{
+            startActivity(Intent(this, DebugActivity::class.java))
+        }
 
 
         // login button should route to the WelcomeCenter

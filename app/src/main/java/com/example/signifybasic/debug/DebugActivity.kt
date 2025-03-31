@@ -22,6 +22,7 @@ class DebugActivity : AppCompatActivity() {
         setContentView(R.layout.debug)
 
         dbHelper = DBHelper(this)
+
         printUsersButton = findViewById(R.id.print_users_button)
         deleteUserButton = findViewById(R.id.delete_user_button)
         usernameInput = findViewById(R.id.username_input)
