@@ -25,8 +25,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         // Users Table
         private const val TABLE_USERS = "users"
         private const val COLUMN_USERNAME = "username"
-        private const val COLUMN_PASSWORD = "password"
         private const val COLUMN_EMAIL = "email"
+        private const val COLUMN_PASSWORD = "password"
         private const val COLUMN_PROGRESS = "progress"
 
         // Additional Tables
@@ -144,8 +144,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         }
     }
 
+
+
     // Add a new user
-    fun addUser(username: String, password: String, email: String, progress: Int): Boolean {
+    fun addUser(username: String, password: String, email: String, progress: Int = 0): Boolean {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_USERNAME, username)
@@ -156,6 +158,48 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val result = db.insert(TABLE_USERS, null, values)
         db.close()
         return result != -1L
+    }
+
+    // validate username and password
+    fun isValidUser(username: String, password: String): Boolean {
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ? AND $COLUMN_PASSWORD = ?"
+        val cursor = db.rawQuery(query, arrayOf(username, password))
+
+        val isValid = cursor.count > 0
+        cursor.close()
+        db.close()
+        return isValid
+    }
+
+    // Check if username exists in db
+    fun usernameExists(username: String):Boolean {
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?"
+        val cursor = db.rawQuery(query, arrayOf(username))
+
+        val exists = cursor.count > 0
+        cursor.close()
+        db.close()
+        return exists
+    }
+
+    fun userExists(username: String, email: String): Boolean {
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ? OR $COLUMN_EMAIL = ?"
+        val cursor = db.rawQuery(query, arrayOf(username, email))
+
+        val exists = cursor.count > 0
+        cursor.close()
+        db.close()
+        return exists
+    }
+
+    fun deleteUser(username: String): Boolean {
+        val db = writableDatabase
+        val rowsDeleted = db.delete(TABLE_USERS, "$COLUMN_USERNAME = ?", arrayOf(username))
+        db.close()
+        return rowsDeleted > 0 // Returns true if a row was deleted
     }
 
     // Verify login credentials
