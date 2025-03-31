@@ -15,7 +15,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_USERNAME TEXT NOT NULL,
                 $COLUMN_EMAIL TEXT UNIQUE NOT NULL,
-                $COLUMN_PASSWORD TEXT NOT NULL
+                $COLUMN_PASSWORD TEXT NOT NULL,
+                $COLUMN_PROGRESS INT NOT NULL
             )
         """.trimIndent()
         db.execSQL(createTableQuery)
@@ -32,6 +33,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             put(COLUMN_USERNAME, name)
             put(COLUMN_EMAIL, email)
             put(COLUMN_PASSWORD, password)
+            put(COLUMN_PROGRESS, 0)
         }
         val result = db.insert(TABLE_USERS, null, values)
         db.close()
@@ -70,6 +72,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         const val COLUMN_USERNAME = "name"
         const val COLUMN_EMAIL = "email"
         const val COLUMN_PASSWORD = "password"
+        const val COLUMN_PROGRESS = "progress"
     }
 
     fun usernameExists(username: String):Boolean {
@@ -103,6 +106,34 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         cursor.close()
         db.close()
         return isValid
+    }
+
+    fun updateProgress(username: String, progress: Int) {
+        val db = readableDatabase
+
+        val values = ContentValues().apply {
+            put(COLUMN_PROGRESS, progress)
+        }
+
+        val whereClause = "$COLUMN_ID = ?"
+        val whereArgs = arrayOf(username)
+
+        db.update(TABLE_USERS, values, whereClause, whereArgs)
+    }
+
+    fun getProgress(username: String): Int {
+        val db = readableDatabase
+        val query = "SELECT $COLUMN_PROGRESS FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?"
+        val cursor = db.rawQuery(query, arrayOf(username))
+
+        var prog = -1
+
+        if(cursor.moveToFirst()) {
+            prog = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PROGRESS))
+        }
+        cursor.close()
+        db.close()
+        return prog
     }
 }
 
