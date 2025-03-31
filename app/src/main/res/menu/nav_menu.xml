@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/award"
+        android:enabled="true"
+        android:icon="@drawable/home"
         android:title="@string/home" />
 
     <item
         android:id="@+id/nav_achievements"
+        android:enabled="true"
         android:icon="@drawable/award"
         android:title="@string/achievements" />
 
     <item
         android:id="@+id/nav_notifications"
-        android:icon="@drawable/award"
+        android:enabled="true"
+        android:icon="@drawable/baseline_alarm_24"
         android:title="@string/notifications" />
 
     <item
         android:id="@+id/nav_profile"
-        android:icon="@drawable/award"
+        android:enabled="true"
+        android:icon="@drawable/baseline_android_24"
         android:title="@string/profile" />
 
 </menu>
