@@ -12,7 +12,7 @@ import android.widget.Button
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.example.signifybasic.database.DBHelper
 
-class DiscussionPage : AppCompatActivity() {
+class  DiscussionPage : AppCompatActivity() {
 
     private lateinit var binding: DiscussionActivityBinding
 
