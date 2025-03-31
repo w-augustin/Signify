@@ -3,64 +3,46 @@ package com.example.signifybasic.features.tabs.settings
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.signifybasic.R
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 
-class SettingsAccountFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.account_preferences, rootKey)
-    }
+class SettingsAccountFragment : Fragment(R.layout.account_preferences) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listView.setPadding(32, 32, 32, 32)
-        listView.clipToPadding = false
-        listView.setBackgroundColor(resources.getColor(android.R.color.white, null))
-    }
+        val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
 
-    override fun onResume() {
-        super.onResume()
-        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-    }
+        // Make content draw behind system bars
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
 
-    override fun onPause() {
-        preferenceScreen.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
-        super.onPause()
-    }
+        // Apply padding to avoid overlap with status bar
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
+            val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            v.setPadding(0, topInset, 0, 0)
+            insets
+        }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (sharedPreferences == null || key == null) return
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
 
-        when (key) {
-            "update_username" -> {
-                val enabled = sharedPreferences.getBoolean(key, true)
-                Log.d("Settings", "Push notifications enabled: $enabled")
-            }
+        view.findViewById<MaterialButton>(R.id.btn_log_out).setOnClickListener {
+            // TODO: Log out logic
+        }
 
-            "update_email" -> {
-                val enabled = sharedPreferences.getBoolean(key, false)
-                Log.d("Settings", "Email updates enabled: $enabled")
-            }
-
-            "update_password" -> {
-                val time = sharedPreferences.getString(key, "08:00")
-                Log.d("Settings", "Reminder time changed to: $time")
-            }
-
-            "log_out" -> {
-                val time = sharedPreferences.getString(key, "08:00")
-                Log.d("Settings", "Reminder time changed to: $time")
-            }
-
-            "delete_account" -> {
-                val time = sharedPreferences.getString(key, "08:00")
-                Log.d("Settings", "Reminder time changed to: $time")
-            }
+        view.findViewById<MaterialButton>(R.id.btn_delete_account).setOnClickListener {
+            // TODO: Delete account logic
         }
     }
 

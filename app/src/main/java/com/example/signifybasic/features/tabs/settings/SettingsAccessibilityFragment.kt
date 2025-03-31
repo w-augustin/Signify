@@ -3,50 +3,47 @@ package com.example.signifybasic.features.tabs.settings
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.signifybasic.R
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 
-class SettingsAccessibilityFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.accessibility_preferences, rootKey)
-    }
+class SettingsAccessibilityFragment : Fragment(R.layout.accessibility_preferences) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listView.setPadding(32, 32, 32, 32)
-        listView.clipToPadding = false
-        listView.setBackgroundColor(resources.getColor(android.R.color.white, null))
-    }
+        val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
 
-    override fun onResume() {
-        super.onResume()
-        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-    }
+        // Make content draw behind system bars
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
 
-    override fun onPause() {
-        preferenceScreen.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
-        super.onPause()
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (sharedPreferences == null || key == null) return
-
-        when (key) {
-            "high_contrast" -> {
-                val enabled = sharedPreferences.getBoolean(key, false)
-                Log.d("Settings", "High contrast enabled: $enabled")
-            }
-
-            "font_size" -> {
-                val fontsize = sharedPreferences.getString(key, "12pt")
-                Log.d("Settings", "Font size changed to changed to: $fontsize")
-            }
+        // Apply padding to avoid overlap with status bar
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
+            val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            v.setPadding(0, topInset, 0, 0)
+            insets
         }
+
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+//        view.findViewById<MaterialButton>(R.id.btn_log_out).setOnClickListener {
+//            // TODO: Log out logic
+//        }
+//
+//        view.findViewById<MaterialButton>(R.id.btn_delete_account).setOnClickListener {
+//            // TODO: Delete account logic
+//        }
     }
 
 }

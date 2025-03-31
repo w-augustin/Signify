@@ -5,23 +5,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_background">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/bg_view"
-        android:id="@+id/top_view" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textSize="32sp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        />
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="300dp"-->
+<!--        android:background="@drawable/login_background"-->
+<!--        android:id="@+id/top_view"/>-->
 
 <!--    <com.google.android.material.appbar.MaterialToolbar-->
 <!--        android:id="@+id/toolbar"-->
@@ -34,7 +22,8 @@
         android:id="@+id/settings_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="16dp"
+        android:layout_above="@id/bottom_navigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
