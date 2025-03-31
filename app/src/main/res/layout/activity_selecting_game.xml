@@ -78,5 +78,31 @@
             android:textColor="@color/white"/>
 
 
+        <Button
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/submit_button"
+            android:layout_below="@id/option4"
+            android:layout_marginTop="46dp"
+            android:text="submit"
+            android:backgroundTint="@color/black"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"
+
+
+            />
+        <Button
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/returnbtn"
+            android:layout_below="@id/submit_button"
+            android:layout_marginTop="16dp"
+            android:text="retutn to activity center"
+            android:backgroundTint="@color/black"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"
+            />
+
+
     </RelativeLayout>
 </RelativeLayout>

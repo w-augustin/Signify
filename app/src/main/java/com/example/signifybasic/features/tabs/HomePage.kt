@@ -3,12 +3,14 @@ package com.example.signifybasic.features.tabs
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.cardview.widget.CardView
 import com.example.signifybasic.R
 import com.example.signifybasic.features.tabs.achievements.AchievementsFragment
 import com.example.signifybasic.features.tabs.home.HomeFragment
 import com.example.signifybasic.features.tabs.profile.ProfileFragment
 import com.example.signifybasic.features.tabs.notifications.NotificationsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.signifybasic.signrecognition.MainActivity3
 
 class HomePage : AppCompatActivity() {
 

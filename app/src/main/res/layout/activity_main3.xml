@@ -7,15 +7,17 @@
     android:gravity="center">
 
     <Button
-        android:id="@+id/take_picture_button"
+        android:id="@+id/record_video_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Take Picture" />
+        android:text="Record Video"
+        android:textColor="@android:color/black" />
 
     <Button
-        android:id="@+id/load_image_button"
+        android:id="@+id/load_video_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="load Image by ID" />
+        android:text="load Image by ID"
+        android:textColor="@android:color/black" />
 
 </LinearLayout>

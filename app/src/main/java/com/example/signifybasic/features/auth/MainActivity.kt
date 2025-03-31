@@ -8,9 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.signifybasic.MainActivity3
 import com.example.signifybasic.R
 import com.example.signifybasic.features.tabs.HomePage
+import com.example.signifybasic.signrecognition.MainActivity3
 
 class MainActivity : AppCompatActivity() {
     // landing page (where you start when you launch the app)

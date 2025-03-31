@@ -14,7 +14,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 4  // Incremented to account for new tables
+        private const val DATABASE_VERSION = 1  // Incremented to account for new tables
 
         // User Images Table
         private const val TABLE_USER_IMAGES = "userImages"
@@ -27,7 +27,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_USERNAME = "username"
         private const val COLUMN_PASSWORD = "password"
         private const val COLUMN_EMAIL = "email"
-        private const val COLUMN_AGE = "age"
         private const val COLUMN_PROGRESS = "progress"
 
         // Additional Tables
@@ -54,7 +53,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_USERNAME TEXT UNIQUE, " +
                 "$COLUMN_PASSWORD TEXT, " +
                 "$COLUMN_EMAIL TEXT UNIQUE, " +
-                "$COLUMN_AGE INTEGER, " +
+
                 "$COLUMN_PROGRESS INTEGER DEFAULT 0)"
         db.execSQL(createUsersTable)
 
@@ -146,13 +145,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     // Add a new user
-    fun addUser(username: String, password: String, email: String, age: Int, progress: Int): Boolean {
+    fun addUser(username: String, password: String, email: String, progress: Int): Boolean {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_USERNAME, username)
         values.put(COLUMN_PASSWORD, password)
         values.put(COLUMN_EMAIL, email)
-        values.put(COLUMN_AGE, age)
         values.put(COLUMN_PROGRESS, progress)
 
         val result = db.insert(TABLE_USERS, null, values)
@@ -181,9 +179,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
                 val username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME))
                 val email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL))
-                val age = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_AGE))
+
                 val progress = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PROGRESS))
-                users.add("ID: $id | Username: $username | Email: $email | Age: $age | Progress: $progress")
+                users.add("ID: $id | Username: $username | Email: $email | Progress: $progress")
             } while (cursor.moveToNext())
         }
         cursor.close()
