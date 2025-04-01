@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signifybasic.database.DBHelper
 import android.widget.Toast
+import com.example.signifybasic.signrecognition.MainActivity3
 
 class LoadImageActivity : AppCompatActivity() {
 
@@ -31,20 +32,20 @@ class LoadImageActivity : AppCompatActivity() {
 
         dbHelper = DBHelper(this)
 
-        // Load image button action
-        loadImageButton.setOnClickListener {
-            val userId = userIdInput.text.toString()
-            if (userId.isNotEmpty()) {
-                val retrievedImage: Bitmap? = dbHelper.getImage(userId)
-                if (retrievedImage != null) {
-                    imageView.setImageBitmap(retrievedImage)
-                }
-                else {
-                    imageView.setImageBitmap(null)
-                    Toast.makeText(this, "Image of userId: $userId not found", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+//        // Load image button action
+//        loadImageButton.setOnClickListener {
+//            val userId = userIdInput.text.toString()
+//            if (userId.isNotEmpty()) {
+//                val retrievedImage: Bitmap? = dbHelper.getImage(userId)
+//                if (retrievedImage != null) {
+//                    imageView.setImageBitmap(retrievedImage)
+//                }
+//                else {
+//                    imageView.setImageBitmap(null)
+//                    Toast.makeText(this, "Image of userId: $userId not found", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
 
         home.setOnClickListener {
             val intent = Intent(this, MainActivity3::class.java)
