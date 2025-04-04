@@ -40,14 +40,14 @@
         <activity android:name=".features.tabs.HomePage" />
         <activity android:name=".features.auth.TestPage" />
         <activity android:name=".signrecognition.MainActivity3" />
-        <activity android:name=".signrecognition.TakePictureActivity" />
+        <activity android:name=".signrecognition.RecordVideoActivity" />
+        <activity android:name=".signrecognition.SignRecognitionResultActivity" />
         <activity android:name=".LoadImageActivity" />
         <activity android:name=".features.tabs.AchievementsPage" />
         <activity android:name=".features.tabs.ProfilePage" />
         <activity android:name=".features.tabs.NotificationsPage" />
         <activity android:name=".features.tabs.discussion.DiscussionPage" />
         <activity android:name=".features.activitycenter.ActivityCenter" />
-        <activity android:name=".features.tabs.resources.ResourcesPage" />
         <activity
             android:name=".features.auth.MainActivity"
             android:exported="true">

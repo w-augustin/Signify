@@ -14,7 +14,7 @@ import com.example.signifybasic.features.tabs.discussion.DiscussionFragment
 import com.example.signifybasic.features.tabs.discussion.DiscussionPage
 import com.example.signifybasic.features.tabs.resources.ResourcesFragment
 import com.example.signifybasic.features.tabs.settings.SettingsFragment
-import com.example.signifybasic.signrecognition.MainActivity3
+import com.example.signifybasic.signrecognition.RecordVideoActivity
 
 class HomeFragment : Fragment() {
 
@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
 
         cardPlayground.setOnClickListener {
             //playground
-            startActivity(Intent(requireContext(), MainActivity3::class.java))
+            startActivity(Intent(requireContext(), RecordVideoActivity::class.java))
         }
 
         return view
