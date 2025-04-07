@@ -12,12 +12,12 @@ import com.example.signifybasic.features.base.BaseGameActivity
 import java.io.Serializable
 
 data class FillBlankGameData(
-    val prompt: String,                         // e.g. "Fill in the blank: C A _"
-    val question: String,                       // e.g. "Select the missing letter"
-    val options: List<FillBlankOption>,         // e.g. list of images + letter labels
-    val correctAnswer: String,                  // e.g. "T"
-    val nextGameClass: String?,                 // optional: where to go next
-    val resultKey: String                       // e.g. "FILL_BLANK_BOOL"
+    val prompt: String,
+    val question: String,
+    val options: List<FillBlankOption>,
+    val correctAnswer: String,
+    val nextGameClass: String?,
+    val resultKey: String
 ) : Serializable
 
 data class FillBlankOption(
