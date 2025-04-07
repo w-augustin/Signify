@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.signifybasic.databinding.FragmentProfileBinding
+import com.example.signifybasic.features.utility.applyHighContrastToAllViews
+import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
+import com.example.signifybasic.features.utility.isHighContrastEnabled
 
 class ProfileFragment : Fragment() {
     lateinit var loginBtn : Button
@@ -26,6 +29,11 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        applyTextSizeToAllTextViews(view, requireContext())
+        if (isHighContrastEnabled(requireContext())) {
+            applyHighContrastToAllViews(view, requireContext())
+        }
 
         var username = requireActivity().intent.getStringExtra("Username") ?: "Guest"
         var password = requireActivity().intent.getStringExtra("Password") ?: "Unknown"

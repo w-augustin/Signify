@@ -15,6 +15,9 @@ import android.widget.Button
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.signifybasic.features.utility.applyHighContrastToAllViews
+import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
+import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -55,6 +58,11 @@ class DiscussionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val dbHelper = DBHelper(requireContext())
+
+        applyTextSizeToAllTextViews(view, requireContext())
+        if (isHighContrastEnabled(requireContext())) {
+            applyHighContrastToAllViews(view, requireContext())
+        }
 
         val dbPosts = dbHelper.getAllDiscussionPosts()
         val adapter = DiscussionAdapter(dbPosts.toMutableList())

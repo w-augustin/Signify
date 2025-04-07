@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.signifybasic.R
 import com.example.signifybasic.databinding.ResourcesActivityBinding
+import com.example.signifybasic.features.utility.applyHighContrastToAllViews
+import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
+import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -35,6 +38,11 @@ class ResourcesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        applyTextSizeToAllTextViews(view, requireContext())
+        if (isHighContrastEnabled(requireContext())) {
+            applyHighContrastToAllViews(view, requireContext())
+        }
+
         val jsonString = requireContext().assets.open("resources.json").bufferedReader().use { it.readText() }
         val wrapperType = object : TypeToken<ResourcesWrapper>() {}.type
         val resourcesWrapper: ResourcesWrapper = Gson().fromJson(jsonString, wrapperType)

@@ -10,11 +10,13 @@ import android.graphics.BitmapFactory
 import com.example.signifybasic.features.tabs.discussion.DiscussionPost
 import java.io.ByteArrayOutputStream
 
+data class NotificationItem(val message: String, val timestamp: Long)
+
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 4  // Incremented to account for new tables
+        private const val DATABASE_VERSION = 5  // Incremented to account for new tables
 
         // User Images Table
         private const val TABLE_USER_IMAGES = "userImages"
@@ -77,6 +79,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.execSQL("CREATE TABLE $TABLE_ASSESSMENT (assessmentID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, moduleID INTEGER, FOREIGN KEY (moduleID) REFERENCES $TABLE_MODULE(moduleID))")
         db.execSQL("CREATE TABLE $TABLE_QUESTION (questionID INTEGER PRIMARY KEY AUTOINCREMENT, assessmentID INTEGER, question TEXT NOT NULL, correctAnswer TEXT NOT NULL, FOREIGN KEY (assessmentID) REFERENCES $TABLE_ASSESSMENT(assessmentID))")
         db.execSQL("CREATE TABLE $TABLE_USER_ANSWER (userAnswerID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER, questionID INTEGER, userAnswer TEXT NOT NULL, isCorrect BOOLEAN DEFAULT 0, FOREIGN KEY (userID) REFERENCES $TABLE_ACCOUNT(userID), FOREIGN KEY (questionID) REFERENCES $TABLE_QUESTION(questionID))")
+        db.execSQL("""CREATE TABLE notifications (id INTEGER PRIMARY KEY AUTOINCREMENT, message TEXT NOT NULL, timestamp INTEGER )""".trimIndent())
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -98,7 +101,47 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 )
             """.trimIndent())
         }
+        if (oldVersion < 5) {
+            db.execSQL("""
+        CREATE TABLE IF NOT EXISTS notifications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            message TEXT NOT NULL,
+            timestamp INTEGER
+        )
+    """.trimIndent())
+        }
+
     }
+
+    fun insertNotification(message: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("message", message)
+            put("timestamp", System.currentTimeMillis())
+        }
+        val result = db.insert("notifications", null, values)
+        db.close()
+        return result != -1L
+    }
+
+    fun getAllNotifications(): List<NotificationItem> {
+        val list = mutableListOf<NotificationItem>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM notifications ORDER BY timestamp DESC", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val message = cursor.getString(cursor.getColumnIndexOrThrow("message"))
+                val timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("timestamp"))
+                list.add(NotificationItem(message, timestamp))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return list
+    }
+
 
     // Save Image (Bitmap) into SQLite
     fun saveImage(bitmap: Bitmap, id: String): Boolean {
@@ -211,6 +254,23 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return rows > 0
     }
 
+    fun updatePassword(oldPassword: String, newPassword: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("password", newPassword)
+        val rows = db.update("users", values, "password = ?", arrayOf(oldPassword))
+        db.close()
+        return rows > 0
+    }
+
+    fun updateEmail(oldEmail: String, newEmail: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("email", newEmail)
+        val rows = db.update("users", values, "email = ?", arrayOf(oldEmail))
+        db.close()
+        return rows > 0
+    }
 
     // Verify login credentials
     fun verifyUser(username: String, password: String): Boolean {

@@ -60,7 +60,9 @@
                         android:textColor="?android:textColorSecondary"
                         android:layout_marginBottom="4dp" />
 
+                    <!-- Display Row -->
                     <LinearLayout
+                        android:id="@+id/username_display_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -71,7 +73,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text=""
+                            android:text="default-user"
                             android:textSize="16sp"
                             android:textColor="?android:textColorPrimary" />
 
@@ -88,14 +90,44 @@
                             app:strokeColor="@color/black"
                             android:textColor="@color/black" />
                     </LinearLayout>
+
+                    <!-- Editable Row -->
+                    <LinearLayout
+                        android:id="@+id/username_edit_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginTop="8dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/input_layout_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="New username">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_username"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btn_submit_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Save"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
                 android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="?attr/colorOutline"
@@ -116,7 +148,9 @@
                         android:textColor="?android:textColorSecondary"
                         android:layout_marginBottom="4dp" />
 
+                    <!-- Display Row -->
                     <LinearLayout
+                        android:id="@+id/password_display_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -144,8 +178,39 @@
                             app:strokeColor="@color/black"
                             android:textColor="@color/black" />
                     </LinearLayout>
+
+                    <!-- Editable Row -->
+                    <LinearLayout
+                        android:id="@+id/password_edit_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginTop="8dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/input_layout_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="New password">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_password"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btn_submit_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Save"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
 
 
             <com.google.android.material.card.MaterialCardView
@@ -173,7 +238,9 @@
                         android:textColor="?android:textColorSecondary"
                         android:layout_marginBottom="4dp" />
 
+                    <!-- Display Row -->
                     <LinearLayout
+                        android:id="@+id/email_display_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -199,6 +266,37 @@
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
                             app:strokeColor="@color/black"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+
+                    <!-- Editable Row -->
+                    <LinearLayout
+                        android:id="@+id/email_edit_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginTop="8dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/input_layout_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="New email">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_email"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textEmailAddress" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btn_submit_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Save"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </LinearLayout>

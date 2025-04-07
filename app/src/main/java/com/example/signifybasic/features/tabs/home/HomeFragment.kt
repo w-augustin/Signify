@@ -16,6 +16,9 @@ import com.example.signifybasic.features.tabs.discussion.DiscussionFragment
 import com.example.signifybasic.features.tabs.discussion.DiscussionPage
 import com.example.signifybasic.features.tabs.resources.ResourcesFragment
 import com.example.signifybasic.features.tabs.settings.SettingsFragment
+import com.example.signifybasic.features.utility.applyHighContrastToAllViews
+import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
+import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.example.signifybasic.signrecognition.MainActivity3
 
 class HomeFragment : Fragment() {
@@ -41,6 +44,11 @@ class HomeFragment : Fragment() {
         val cardActivityCenter = view.findViewById<CardView>(R.id.card_activity_center)
         val cardPlayground = view.findViewById<CardView>(R.id.card_playground)
         val cardResources = view.findViewById<CardView>(R.id.card_resources)
+
+        applyTextSizeToAllTextViews(view, requireContext())
+        if (isHighContrastEnabled(requireContext())) {
+            applyHighContrastToAllViews(view, requireContext())
+        }
 
         cardSettings.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
