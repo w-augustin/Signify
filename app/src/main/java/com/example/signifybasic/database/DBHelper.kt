@@ -113,6 +113,82 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     }
 
+    fun getUserIdByUsername(username: String): Int? {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT id FROM users WHERE username = ?", arrayOf(username))
+        val userId = if (cursor.moveToFirst()) cursor.getInt(0) else null
+        cursor.close()
+        db.close()
+        return userId
+    }
+
+    fun getUserTotalExp(userID: Int): Int {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT SUM(score) FROM $TABLE_USER_PROGRESS WHERE userID = ?",
+            arrayOf(userID.toString())
+        )
+        val total = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        return total
+    }
+
+    fun getKnownWordCount(userID: Int): Int {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            """
+        SELECT COUNT(*) FROM VocabList WHERE moduleID IN (
+            SELECT moduleID FROM UserProgress WHERE userID = ? AND completed = 1
+        )
+        """, arrayOf(userID.toString())
+        )
+        val count = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        db.close()
+        return count
+    }
+
+    fun getCurrentModuleTitle(userID: Int): String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            """
+        SELECT M.title FROM Module M
+        JOIN UserProgress UP ON M.moduleID = UP.moduleID
+        WHERE UP.userID = ? AND UP.completed = 0
+        ORDER BY UP.moduleID ASC LIMIT 1
+        """, arrayOf(userID.toString())
+        )
+        val title = if (cursor.moveToFirst()) cursor.getString(0) else "No current module"
+        cursor.close()
+        db.close()
+        return title
+    }
+
+
+    fun getUserProgressSummary(userID: Int): String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("""
+        SELECT COUNT(*) AS totalModules,
+               SUM(completed) AS modulesCompleted,
+               SUM(score) AS totalScore
+        FROM $TABLE_USER_PROGRESS
+        WHERE userID = ?
+    """.trimIndent(), arrayOf(userID.toString()))
+
+        var summary = "Progress not available"
+        if (cursor.moveToFirst()) {
+            val totalModules = cursor.getInt(cursor.getColumnIndexOrThrow("totalModules"))
+            val completed = cursor.getInt(cursor.getColumnIndexOrThrow("modulesCompleted"))
+            val totalScore = cursor.getInt(cursor.getColumnIndexOrThrow("totalScore"))
+            summary = "Modules: $completed/$totalModules | Total Score: $totalScore"
+        }
+
+        cursor.close()
+        db.close()
+        return summary
+    }
+
+
     fun insertNotification(message: String): Boolean {
         val db = writableDatabase
         val values = ContentValues().apply {
