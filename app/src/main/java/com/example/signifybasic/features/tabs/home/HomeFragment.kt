@@ -20,6 +20,7 @@ import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.example.signifybasic.signrecognition.MainActivity3
+import com.example.signifybasic.signrecognition.RecordVideoActivity
 
 class HomeFragment : Fragment() {
 
@@ -76,7 +77,7 @@ class HomeFragment : Fragment() {
 
         cardPlayground.setOnClickListener {
             //playground
-            startActivity(Intent(requireContext(), MainActivity3::class.java))
+            startActivity(Intent(requireContext(), RecordVideoActivity::class.java))
         }
 
         return view

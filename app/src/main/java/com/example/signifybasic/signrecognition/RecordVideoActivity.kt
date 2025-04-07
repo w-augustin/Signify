@@ -8,11 +8,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
 import android.widget.Toast
-import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.Surface
-import android.widget.TextView
+import android.widget.EditText
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -23,22 +22,27 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import com.example.signifybasic.R
+import com.example.signifybasic.features.tabs.HomePage
 import kotlinx.coroutines.*
+import org.json.JSONObject
 import kotlin.coroutines.resume
 
 
-class TakePictureActivity : AppCompatActivity() {
+class RecordVideoActivity : AppCompatActivity() {
     // creating variables on below line.
     private lateinit var  recordVideoBtn: Button
-    private lateinit var  videoView: VideoView
+    private lateinit var  backBtn: Button
+    private lateinit var inputEditText: EditText
+    private lateinit var expectedSign: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_take_picture)
+        setContentView(R.layout.activity_record_video)
 
         // initializing variables
-        recordVideoBtn = findViewById(R.id.idBtnRecordVideo)
-        videoView = findViewById(R.id.videoView)
+        recordVideoBtn = findViewById(R.id.btnRecord)
+        backBtn = findViewById(R.id.btnBack)
+        inputEditText = findViewById(R.id.inputSign)
 
         val cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
         val cameraId = cameraManager.cameraIdList[0] // Use first camera (back camera)
@@ -60,13 +64,27 @@ class TakePictureActivity : AppCompatActivity() {
             Log.d("CameraConfig", "Selected Resolution: ${targetResolution.width}x${targetResolution.height}")
             Log.d("CameraConfig", "Selected FPS Range: ${targetFpsRange.lower}-${targetFpsRange.upper}")
         } else {
-            Log.e("CameraConfig", "Resolution or FPS not available!")
+            Log.w("CameraConfig", "Resolution or FPS not available!")
         }
-        recordVideoBtn.setOnClickListener { //capture a video.
-            val i = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-            // an activity for result.
-            startActivityForResult(i, 1)
+
+        recordVideoBtn.setOnClickListener {
+            expectedSign = inputEditText.text.toString().trim().lowercase()
+
+            if (expectedSign.isEmpty()) {
+                Toast.makeText(this, "Please enter a sign to match", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            startActivityForResult(intent, 1)
         }
+
+        backBtn.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -83,7 +101,7 @@ class TakePictureActivity : AppCompatActivity() {
 
             if (videoFile != null) {
                 // Launch background processing of the video
-                processVideoInBackground(videoFile)
+                processVideoInBackground(videoFile, expectedSign)
             }
         } else {
             Toast.makeText(this, "Failed to save video", Toast.LENGTH_SHORT).show()
@@ -115,15 +133,47 @@ class TakePictureActivity : AppCompatActivity() {
     }
 
     // Function to process video in a background thread
-    private fun processVideoInBackground(videoFile: File) {
+    private fun processVideoInBackground(videoFile: File, expectedSign : String) {
         // Start a coroutine to process the video in the background
         CoroutineScope(Dispatchers.IO).launch {
             val result = recognizeSign(videoFile)
 
+            // Extracting sign and probability separately
+            var sign = "Unknown"
+            var score = "0.0"
+
+            try {
+                // Check if the response is valid JSON
+                if (result.startsWith("{")) {
+                    val json = JSONObject(result)
+                    sign = json.optString("sign", "Unknown")
+                    score = json.optString("probability", "0.0")
+                } else {
+                    Log.e("API Error", "Unexpected response: $result")
+                }
+            } catch (e: Exception) {
+                Log.e("JSON Parsing", "Error parsing response", e)
+            }
+
             // Update UI after the background work is done
             withContext(Dispatchers.Main) {
-                val recognizedSignTextView = findViewById<TextView>(R.id.tvRecognizedSign)
-                recognizedSignTextView.text = "Recognized Sign: $result"
+                val isMatch = sign.lowercase() == expectedSign.lowercase()
+
+                val message = if (isMatch) {
+                    "Match! You signed: $sign"
+                } else {
+                    "No match.\nYou signed: $sign\nExpected: $expectedSign"
+                }
+
+                // Instead of updating a TextView in this activity, start the new activity and pass data
+                val intent = Intent(this@RecordVideoActivity, SignRecognitionResultActivity::class.java)
+                intent.putExtra("recognizedSign", sign) // Pass recognized sign as String
+                intent.putExtra("score", score) // Pass score as Double
+                intent.putExtra("matchResult", message)
+                startActivity(intent)
+                // finish() // Finish current activity to prevent user from going back
+                //val recognizedSignTextView = findViewById<TextView>(R.id.tvRecognizedSign)
+                //recognizedSignTextView.text = "Recognized Sign: $result"
             }
         }
     }
@@ -141,8 +191,11 @@ class TakePictureActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
                             val result = response.body()?.string()
-                            continuation.resume(result ?: "Failed to recognize sign") {
-                                // Handle cancellation if needed
+                            if (result != null) {
+                                Log.d("API Response", result)
+                                continuation.resume("$result") // Return sign and probability as percentage
+                            } else {
+                                continuation.resume("Failed to recognize sign")
                             }
                         } else {
                             continuation.resume("Server error: ${response.code()}")

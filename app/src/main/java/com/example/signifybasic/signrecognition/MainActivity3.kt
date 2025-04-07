@@ -21,7 +21,7 @@ class MainActivity3 : AppCompatActivity() {
 
         // Handle recording video
         recordVideoButton.setOnClickListener {
-            val intent = Intent(this, TakePictureActivity::class.java)
+            val intent = Intent(this, RecordVideoActivity::class.java)
             startActivity(intent)
         }
 

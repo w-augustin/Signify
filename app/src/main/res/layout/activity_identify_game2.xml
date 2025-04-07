@@ -1,85 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    tools:context=".identify_game">
-
+    tools:context=".identify_game2">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_marginBottom="50dp">
-
+        android:gravity="center">
 
         <TextView
             android:id="@+id/question"
             android:layout_width="350dp"
             android:layout_height="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_edges"
             android:gravity="center"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:text="Identify the Correct Sign: A"
+            android:text="Identify the Correct Sign: H"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp"
-            />
+            android:textSize="18sp" />
 
         <ImageButton
-            android:id="@+id/p_sign"
-            android:layout_width="150dp"
-            android:layout_height="120dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_below="@id/question"
-            android:src="@drawable/p_sign"
+            android:id="@+id/k_sign"
+            android:src="@drawable/k_sign"
             android:backgroundTint="@color/white"
             android:scaleType="fitXY"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="26dp"/>
-
+            android:layout_marginLeft="26dp"
+            />
         <ImageButton
-            android:id="@+id/a_sign"
+            android:id="@+id/m_sign"
             android:layout_width="150dp"
-            android:layout_height="140dp"
+            android:layout_height="160dp"
             android:backgroundTint="@color/white"
             android:scaleType="fitXY"
-            android:layout_toRightOf="@id/p_sign"
-            android:src="@drawable/a_sign"
+            android:layout_toRightOf="@id/k_sign"
+            android:src="@drawable/m_sign"
             android:layout_marginTop="100dp"/>
         <ImageButton
-            android:id="@+id/c_sign"
+            android:id="@+id/h_sign"
             android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:layout_below="@id/a_sign"
+            android:layout_height="150dp"
+            android:layout_below="@id/m_sign"
             android:backgroundTint="@color/white"
             android:scaleType="fitXY"
-            android:src="@drawable/c_sign"
+            android:src="@drawable/h_sign"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:layout_marginLeft="26dp"/>
-
-
         <ImageButton
-            android:id="@+id/b_sign"
+            android:id="@+id/e_sign"
             android:layout_width="150dp"
-            android:layout_height="140dp"
+            android:layout_height="150dp"
             android:backgroundTint="@color/white"
             android:scaleType="fitXY"
-            android:layout_toRightOf="@id/c_sign"
-            android:src="@drawable/b_sign"
-
-            android:layout_marginTop="350dp"/>
-
-
+            android:layout_toRightOf="@id/h_sign"
+            android:src="@drawable/e_sign"
+            android:layout_marginTop="300dp"/>
         <Button
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:id="@+id/submit_button"
-            android:layout_below="@id/c_sign"
+            android:layout_below="@id/h_sign"
             android:layout_marginTop="46dp"
             android:text="submit"
             android:backgroundTint="@color/black"
@@ -100,6 +90,5 @@
             android:visibility="visible"
             />
 
-
     </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

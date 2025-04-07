@@ -23,7 +23,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SignifyBasic"
         tools:targetApi="31">
-        <activity android:name=".debug.DebugActivity"/>
         <activity
             android:name=".selecting_game"
             android:exported="false" />
@@ -43,11 +42,14 @@
         <activity android:name=".features.tabs.HomePage" />
         <activity android:name=".features.auth.TestPage" />
         <activity android:name=".signrecognition.MainActivity3" />
-        <activity android:name=".signrecognition.TakePictureActivity" />
+        <activity android:name=".signrecognition.RecordVideoActivity" />
+        <activity android:name=".signrecognition.SignRecognitionResultActivity" />
         <activity android:name=".LoadImageActivity" />
         <activity android:name=".features.tabs.AchievementsPage" />
         <activity android:name=".features.tabs.ProfilePage" />
         <activity android:name=".features.tabs.NotificationsPage" />
+        <activity android:name=".features.tabs.settings.SettingsPage"
+            android:theme="@style/Base.Theme.SignifyBasic" />
         <activity android:name=".features.tabs.discussion.DiscussionPage" />
         <activity android:name=".features.activitycenter.ActivityCenter" />
 <!--        <activity android:name=".features.tabs.resources.ResourcesPage" />-->
@@ -55,14 +57,12 @@
         <activity
             android:name=".features.auth.MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

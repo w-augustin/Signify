@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    tools:context=".selecting_game2">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="350dp"
+            android:layout_height="30dp"
+            android:background="@drawable/rounded_edges"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="What sign is this"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+          <ImageView
+              android:id="@+id/w_sign"
+              android:layout_width="match_parent"
+              android:layout_height="200dp"
+              android:src="@drawable/w_sign"
+              android:layout_below="@id/question"
+              android:layout_marginTop="16dp"
+
+              />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/f_option"
+            android:layout_below="@id/w_sign"
+            android:backgroundTint="@color/primary_blue"
+            android:text="F"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"
+            />
+        <Button
+            android:id="@+id/m_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/f_option"
+            android:backgroundTint="@color/primary_blue"
+            android:text="M"
+            android:layout_marginTop="16dp"/>
+        <Button
+            android:id="@+id/w_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/m_option"
+            android:backgroundTint="@color/primary_blue"
+            android:text="W"
+            android:layout_marginTop="16dp"
+            />
+        <Button
+            android:id="@+id/z_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/w_option"
+            android:backgroundTint="@color/primary_blue"
+            android:text="Z"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/z_option"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            android:text="Submit"
+            android:layout_marginTop="20dp"/>
+        <Button
+            android:id="@+id/return_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/submit_button"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/black"
+            android:text="Return to Activity Center"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>

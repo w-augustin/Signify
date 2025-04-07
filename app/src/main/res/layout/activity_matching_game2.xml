@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    tools:context=".matching_game2">
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_edges"
+        android:gravity="center"
+        android:text="Match the Corresponding Signs to the Their Letter"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/u_sign"
+        android:layout_width="150dp"
+        android:layout_height="140dp"
+        android:layout_below="@id/question"
+        android:src="@drawable/u_sign"
+        android:layout_marginTop="16dp"
+        android:contentDescription="u"
+        android:scaleType="fitXY"
+        android:backgroundTint="@color/white"/>
+
+    <Button
+        android:id="@+id/w_option"
+        android:text="w"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_marginLeft="70dp"
+        android:layout_below="@id/question"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@id/u_sign"
+        android:backgroundTint="@color/primary_blue"
+        app:cornerRadius = "0dp"/>
+
+    <ImageButton
+        android:id="@+id/v_sign"
+        android:layout_width="150dp"
+        android:layout_height="140dp"
+        android:layout_below="@id/u_sign"
+        android:src="@drawable/v_sign"
+        android:layout_marginTop="16dp"
+        android:contentDescription="v"
+        android:scaleType="fitXY"
+        android:backgroundTint="@color/white"/>
+
+    <Button
+        android:id="@+id/u_option"
+        android:text="u"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/w_option"
+        android:layout_toRightOf="@id/v_sign"
+        android:backgroundTint="@color/primary_blue"
+        app:cornerRadius = "0dp"/>
+
+    <ImageButton
+
+        android:id="@+id/w_sign"
+        android:layout_width="150dp"
+        android:layout_height="140dp"
+        android:layout_below="@id/v_sign"
+        android:src="@drawable/w_sign"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitXY"
+        android:contentDescription="w"
+        android:backgroundTint="@color/white"/>
+
+    <Button
+        android:id="@+id/x_option"
+        android:text="x"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_marginLeft="70dp"
+        android:layout_below="@id/u_option"
+        android:layout_marginTop="40dp"
+        android:layout_toRightOf="@id/w_sign"
+        android:backgroundTint="@color/primary_blue"
+        app:cornerRadius = "0dp"/>
+
+    <ImageButton
+        android:id="@+id/x_sign"
+        android:layout_width="150dp"
+        android:layout_height="140dp"
+        android:layout_below="@id/w_sign"
+        android:src="@drawable/x_sign"
+        android:layout_marginTop="10dp"
+        android:contentDescription="x"
+        android:scaleType="fitXY"
+        android:backgroundTint="@color/white"/>
+
+    <Button
+        android:id="@+id/v_option"
+        android:text="v"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_marginLeft="70dp"
+        android:layout_below="@id/x_option"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@id/x_sign"
+        android:backgroundTint="@color/primary_blue"
+        app:cornerRadius = "0dp"/>
+
+
+
+    <Button
+        android:id="@+id/continue_button"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/x_sign"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+
+        android:text="Continue"
+        android:layout_marginTop="10dp"/>
+    <Button
+        android:id="@+id/return_button"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/continue_button"
+        android:layout_marginTop="1dp"
+        android:layout_centerHorizontal="true"
+
+        android:backgroundTint="@color/black"
+        android:text="Return to Activity Center"
+        />
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/reset_button"
+        android:layout_below="@id/return_button"
+        android:layout_marginTop="1dp"
+        android:text="Reset the game"
+        android:backgroundTint="@color/black"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        />
+
+
+
+
+</RelativeLayout>
