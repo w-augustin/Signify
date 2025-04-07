@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        val context = this
+        context.deleteDatabase("SignifyDB")
         val dbHelper = DBHelper(this)
 
         // Check if the admin user already exists before inserting

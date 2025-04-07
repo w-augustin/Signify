@@ -14,7 +14,7 @@ class SignLanguageCRUD(context: Context) {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         val values = ContentValues().apply {
             put("sign_name", signName)  // Store the name of the sign
-            put("sign_data", signData)  // Store the sign data (could be video, image, etc.)
+            put("sign_data", signData)  // Store the sign data
         }
 
         val result = db.insert("signs", null, values)
@@ -22,17 +22,17 @@ class SignLanguageCRUD(context: Context) {
         return result
     }
 
-    // Read Sign (Get sign by name)
+    // Read Sign
     fun getSign(signName: String): Cursor? {
         val db: SQLiteDatabase = dbHelper.readableDatabase
         return db.rawQuery("SELECT * FROM signs WHERE sign_name = ?", arrayOf(signName))
     }
 
     // Update Sign (If you want to modify a sign, like correcting its name or data)
-    fun updateSign(signName: String, newSignData: String): Int {
+    fun updateSign(signName: String): Int {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         val values = ContentValues().apply {
-            put("sign_data", newSignData)  // Update the sign's data
+            put("sign_data", signName)  // Update the sign's data
         }
 
         val result = db.update("signs", values, "sign_name = ?", arrayOf(signName))

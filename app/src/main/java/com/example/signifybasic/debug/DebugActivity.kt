@@ -16,6 +16,8 @@ class DebugActivity : AppCompatActivity() {
     private lateinit var usernameInput: EditText
     private lateinit var debugTextView: TextView
     private lateinit var dbHelper: DBHelper
+    private lateinit var setUserProgress : Button
+    private lateinit var textSetUserProg : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,8 @@ class DebugActivity : AppCompatActivity() {
         deleteUserButton = findViewById(R.id.delete_user_button)
         usernameInput = findViewById(R.id.username_input)
         debugTextView = findViewById(R.id.debugTextView)
+        setUserProgress = findViewById(R.id.setUserProgress)
+        textSetUserProg = findViewById(R.id.textSetUserProgress)
 
         // Print all users when the "Print Users" button is pressed
         printUsersButton.setOnClickListener {
@@ -52,6 +56,17 @@ class DebugActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        setUserProgress.setOnClickListener {
+            val username = usernameInput.text.toString().trim()
+            var userProg = textSetUserProg.text.toString().trim()
+            var userProgStr = userProg.toInt()
+            if (username.isEmpty()) {
+                Toast.makeText(this, "Please enter a username", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            dbHelper.changeUserProgress(username,userProgStr)
         }
     }
 }

@@ -10,11 +10,12 @@ import android.graphics.BitmapFactory
 import com.example.signifybasic.features.tabs.discussion.DiscussionPost
 import java.io.ByteArrayOutputStream
 
+
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 1  // Incremented to account for new tables
+        private const val DATABASE_VERSION = 4  // Incremented to account for new tables
 
         // User Images Table
         private const val TABLE_USER_IMAGES = "userImages"
@@ -57,6 +58,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_PROGRESS INTEGER DEFAULT 0)"
         db.execSQL(createUsersTable)
 
+
         val createDiscussionTable = """
             CREATE TABLE discussions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -67,6 +69,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         )
         """.trimIndent()
         db.execSQL(createDiscussionTable)
+        println("debug db created")
 
 
         // Create Additional Tables
@@ -80,6 +83,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        println("debug onupgrade called")
+
         if (oldVersion < 2) {
             val addColumnQuery = "ALTER TABLE $TABLE_USER_IMAGES ADD COLUMN $COLUMN_USER_ID TEXT"
             db.execSQL(addColumnQuery)
@@ -234,16 +239,51 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     // Add user progress
-    fun addUserProgress(userID: Int, moduleID: Int, completed: Boolean, score: Int) {
+    fun changeUserProgress(username: String,  score: Int) {
         val db = this.writableDatabase
-        val values = ContentValues()
-        values.put("userID", userID)
-        values.put("moduleID", moduleID)
-        values.put("completed", if (completed) 1 else 0)
-        values.put("score", score)
-        db.insert(TABLE_USER_PROGRESS, null, values)
+
+        // First, find the user's ID
+        val cursor = db.rawQuery(
+            "SELECT id FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?",
+            arrayOf(username)
+        )
+
+        if (cursor.moveToFirst()) {
+            val userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+
+            // Update the progress column for this user
+            val values = ContentValues()
+            values.put(COLUMN_PROGRESS, score)
+
+            db.update(
+                TABLE_USERS,
+                values,
+                "id = ?",
+                arrayOf(userId.toString())
+            )
+        }
+
+        cursor.close()
         db.close()
     }
+
+
+    fun getUserProgress(username: String): Int {
+        val db = this.readableDatabase
+        val query = "SELECT $COLUMN_PROGRESS FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?"
+
+        val cursor = db.rawQuery(query, arrayOf(username))
+        var progress = -1
+
+        if (cursor.moveToFirst()) {
+            progress = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PROGRESS))
+        }
+
+        cursor.close()
+        db.close()
+        return progress
+    }
+
 
     // add a new discussion post
     fun addDiscussionPost(userID: Int, content: String): Boolean {
