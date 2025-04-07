@@ -151,7 +151,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginTop="12dp" />
+                        android:layout_marginTop="12dp"
+                        app:thumbTint="@color/switch_thumb"
+                        app:trackTint="@color/switch_track"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -190,7 +192,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginTop="12dp" />
+                        android:layout_marginTop="12dp"
+                        app:thumbTint="@color/switch_thumb"
+                        app:trackTint="@color/switch_track"
+                        />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
             <com.google.android.material.card.MaterialCardView
