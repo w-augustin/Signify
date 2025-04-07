@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.features.base.BaseGameActivity
+import java.io.Serializable
 
 class MatchingGameActivity : BaseGameActivity() {
     override fun getGameLayoutId(): Int = R.layout.activity_matching_game
@@ -21,9 +22,26 @@ class MatchingGameActivity : BaseGameActivity() {
         val signs = mutableListOf<ImageButton>()
         val options = mutableListOf<Button>()
 
-        val signData = intent.getSerializableExtra("SIGN_DATA") as? List<MatchingItem> ?: emptyList()
-        val nextGameClass = Class.forName(intent.getStringExtra("NEXT_GAME_CLASS")!!)
-        val resultKey = intent.getStringExtra("RESULT_KEY") ?: "MATCHING_BOOL"
+        val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
+        val step = GameSequenceManager.sequence.getOrNull(stepIndex)
+
+        if (step == null || step.type != "matching") {
+            Toast.makeText(this, "Error loading matching game", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        val resultKey = step.resultKey
+
+        val signData = step.items?.mapNotNull {
+            val letter = it["letter"]
+            val imageName = it["imageRes"]
+            if (letter != null && imageName != null) {
+                val resId = resources.getIdentifier(imageName, "drawable", packageName)
+                MatchingItem(letter, resId)
+            } else null
+        } ?: emptyList()
+
 
         signData.forEach { item ->
             val sign = ImageButton(this).apply {
@@ -94,8 +112,10 @@ class MatchingGameActivity : BaseGameActivity() {
 
         continueButton.setOnClickListener {
             if (matchedCount == totalMatches) {
-                val intent = Intent(this, nextGameClass)
+                val intent = Intent(this, com.example.signifybasic.features.activitycenter.ActivityCenter::class.java)
+                intent.putExtra("IS_CORRECT", true)
                 intent.putExtra(resultKey, true)
+                intent.putExtra("CONTINUE_SEQUENCE", true)
                 startActivity(intent)
                 finish()
             } else {

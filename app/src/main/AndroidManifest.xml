@@ -24,19 +24,7 @@
         android:theme="@style/Theme.SignifyBasic"
         tools:targetApi="31">
         <activity
-            android:name=".selecting_game"
-            android:exported="false" />
-        <activity
             android:name=".signing_game"
-            android:exported="false" />
-        <activity
-            android:name=".fill_blank_game"
-            android:exported="false" />
-        <activity
-            android:name=".identify_game"
-            android:exported="false" />
-        <activity
-            android:name=".matching_game"
             android:exported="false" />
         <activity android:name=".features.auth.SignupPage" />
         <activity android:name=".features.tabs.HomePage" />
@@ -47,6 +35,9 @@
         <activity android:name=".LoadImageActivity" />
         <activity android:name=".features.tabs.discussion.DiscussionPage" />
         <activity android:name=".features.games.MatchingGameActivity" />
+        <activity android:name=".features.games.SelectingGameActivity" />
+        <activity android:name=".features.games.FillBlankGameActivity" />
+        <activity android:name=".features.games.IdentifyGameActivity" />
         <activity android:name=".features.activitycenter.ActivityCenter" />
 <!--        <activity android:name=".features.tabs.resources.ResourcesPage" />-->
         <receiver android:name=".features.tabs.notifications.ReminderReceiver" android:exported="false"/>
