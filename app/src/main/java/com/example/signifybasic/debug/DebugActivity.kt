@@ -16,6 +16,9 @@ class DebugActivity : AppCompatActivity() {
     private lateinit var usernameInput: EditText
     private lateinit var debugTextView: TextView
     private lateinit var dbHelper: DBHelper
+    private lateinit var setUserProg : Button
+    private lateinit var textUserProg : EditText
+    private lateinit var achievementBtn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,9 @@ class DebugActivity : AppCompatActivity() {
         deleteUserButton = findViewById(R.id.delete_user_button)
         usernameInput = findViewById(R.id.username_input)
         debugTextView = findViewById(R.id.debugTextView)
+        textUserProg = findViewById(R.id.textSetUserProgress)
+        setUserProg = findViewById(R.id.setUserProgress)
+        achievementBtn = findViewById(R.id.getAchievements)
 
         // Print all users when the "Print Users" button is pressed
         printUsersButton.setOnClickListener {
@@ -52,6 +58,29 @@ class DebugActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
             }
+        }
+        achievementBtn.setOnClickListener {
+            val username = usernameInput.text.toString().trim()
+
+            if (username.isEmpty()) {
+                Toast.makeText(this, "Please enter a username", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val userID = dbHelper.getUserIdByUsername(username)
+            val safeUserID = userID ?: 0
+            val achievements = dbHelper.getAchievements(safeUserID)
+            debugTextView.text = achievements.joinToString(" ")
+        }
+
+        setUserProg.setOnClickListener{
+            val username = usernameInput.text.toString().trim()
+
+            if (username.isEmpty()) {
+                Toast.makeText(this, "Please enter a username", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val newprog = textUserProg.text.toString().trim().toInt()
+            dbHelper.changeUserProgress(username, newprog)
         }
     }
 }

@@ -32,13 +32,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        this.deleteDatabase("SignifyDB")
+
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         val dbHelper = DBHelper(this)
 
         // Check if the admin user already exists before inserting
@@ -47,6 +48,13 @@ class MainActivity : AppCompatActivity() {
             dbHelper.addUser(adminUsername, "admin", "admin@admin.com")
         }
 
+        dbHelper.changeUserProgress(adminUsername, 10)
+        val userId = adminUsername?.let { dbHelper.getUserIdByUsername(it) }
+        val safeuserid = userId ?: 0
+        dbHelper.setKnownWords(safeuserid, 7)
+        dbHelper.addAchievement(safeuserid,"A")
+        dbHelper.addAchievement(safeuserid,"B")
+        dbHelper.addAchievement(safeuserid,"C")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "reminder_channel",
@@ -99,6 +107,8 @@ class MainActivity : AppCompatActivity() {
                 // Failed login error message
                 Toast.makeText(this, "Incorrect username or password", Toast.LENGTH_SHORT).show()
             }
+
+
         }
 
         // get started button should route to the signup page
