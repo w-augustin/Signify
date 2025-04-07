@@ -2,12 +2,19 @@ package com.example.signifybasic.features.activitycenter
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.database.DBHelper
+import com.example.signifybasic.features.utility.applyHighContrastToAllViews
+import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
+import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.example.signifybasic.fill_blank_game
 import com.example.signifybasic.getStarted
 import com.example.signifybasic.identify_game
@@ -17,12 +24,29 @@ import com.example.signifybasic.matching_game2
 import com.example.signifybasic.selecting_game
 import com.example.signifybasic.selecting_game2
 import com.example.signifybasic.signing_game
+import com.google.android.material.appbar.MaterialToolbar
 
 
 class ActivityCenter : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_activity_center)
+
+        val rootView = findViewById<ViewGroup>(android.R.id.content)
+        applyTextSizeToAllTextViews(rootView, this)
+        if (isHighContrastEnabled(this)) {
+            applyHighContrastToAllViews(rootView, this)
+        }
+        val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
+            val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            v.setPadding(0, topInset, 0, 0)
+            insets
+        }
+        toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         val activitySelect= findViewById<Button>(R.id.button2)
         val activityIdentify = findViewById<Button>(R.id.button3)

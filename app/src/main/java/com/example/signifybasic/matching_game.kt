@@ -27,7 +27,6 @@ class matching_game : AppCompatActivity() {
         val c_sign = findViewById<ImageButton>(R.id.c_sign)
         val b_sign = findViewById<ImageButton>(R.id.b_sign)
 
-
         val p_option = findViewById<Button>(R.id.p_option)
         val a_option = findViewById<Button>(R.id.a_option)
         val c_option = findViewById<Button>(R.id.c_option)
@@ -77,23 +76,21 @@ class matching_game : AppCompatActivity() {
             }
         }
         continueButton.setOnClickListener {
-            if(matchedCount == totalMatches){
-                Toast.makeText(this, "Youve matched all them all correctly", Toast.LENGTH_SHORT).show()
-              matching_bool =true
-                //startActivity(Intent())
-            }else{
-                Toast.makeText(this,"Try again, you got $matchedCount out of $totalMatches right",Toast.LENGTH_SHORT
-                ).show()
-            }
-            p_sign.isEnabled = false
-            c_sign.isEnabled = false
-            a_sign.isEnabled = false
-            b_sign.isEnabled = false
+            if (matchedCount == totalMatches) {
+                Toast.makeText(this, "You've matched them all correctly", Toast.LENGTH_SHORT).show()
+                matching_bool = true
 
-            p_option.isEnabled = false
-            a_option.isEnabled = false
-            c_option.isEnabled = false
-            b_option.isEnabled = false
+                val intent = Intent(this, ActivityCenter::class.java)
+                intent.putExtra("MATCHING_BOOL", matching_bool)
+                startActivity(intent)
+                finish() // optional: so user can’t return to completed game
+            } else {
+                Toast.makeText(this, "Try again, you got $matchedCount out of $totalMatches right", Toast.LENGTH_SHORT).show()
+            }
+
+            // Disable all buttons
+            signs.forEach { it.isEnabled = false }
+            options.forEach { it.isEnabled = false }
         }
 
         val resetButton = findViewById<Button>(R.id.reset_btn)

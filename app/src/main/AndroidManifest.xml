@@ -45,11 +45,6 @@
         <activity android:name=".signrecognition.RecordVideoActivity" />
         <activity android:name=".signrecognition.SignRecognitionResultActivity" />
         <activity android:name=".LoadImageActivity" />
-        <activity android:name=".features.tabs.AchievementsPage" />
-        <activity android:name=".features.tabs.ProfilePage" />
-        <activity android:name=".features.tabs.NotificationsPage" />
-        <activity android:name=".features.tabs.settings.SettingsPage"
-            android:theme="@style/Base.Theme.SignifyBasic" />
         <activity android:name=".features.tabs.discussion.DiscussionPage" />
         <activity android:name=".features.activitycenter.ActivityCenter" />
 <!--        <activity android:name=".features.tabs.resources.ResourcesPage" />-->

@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
 
         cardSettings.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SettingsFragment()) // Use your container ID here
+                .replace(R.id.fragment_container, SettingsFragment())
                 .addToBackStack(null)
                 .commit()
         }
