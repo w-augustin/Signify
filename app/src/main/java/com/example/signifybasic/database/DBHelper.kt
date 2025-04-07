@@ -202,6 +202,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return rowsDeleted > 0 // Returns true if a row was deleted
     }
 
+    fun updateUsername(oldUsername: String, newUsername: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("username", newUsername)
+        val rows = db.update("users", values, "username = ?", arrayOf(oldUsername))
+        db.close()
+        return rows > 0
+    }
+
+
     // Verify login credentials
     fun verifyUser(username: String, password: String): Boolean {
         val db = this.readableDatabase
@@ -231,6 +241,17 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         cursor.close()
         db.close()
         return users
+    }
+
+    fun getEmailByUsername(username: String): String? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT email FROM users WHERE username = ?", arrayOf(username))
+        var email: String? = null
+        if (cursor.moveToFirst()) {
+            email = cursor.getString(0)
+        }
+        cursor.close()
+        return email
     }
 
     // Add user progress

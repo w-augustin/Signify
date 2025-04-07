@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, DebugActivity::class.java))
         }
 
-
         // login button should route to the WelcomeCenter
         loginBtn.setOnClickListener {
 
@@ -68,6 +67,12 @@ class MainActivity : AppCompatActivity() {
                 val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
                 val editor = sharedPref.edit()
                 editor.putString("loggedInUser", username) // Save username
+
+                // retrieve + save email
+                val email = dbHelper.getEmailByUsername(username)
+                editor.putString("userEmail", email)
+
+                editor.putString("userPassword", password) // save password
                 editor.apply()
 
                 // Go to Homepage
