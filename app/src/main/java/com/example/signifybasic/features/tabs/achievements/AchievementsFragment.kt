@@ -10,6 +10,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.signifybasic.R
 import com.example.signifybasic.databinding.FragmentAchievementsBinding
+import com.example.signifybasic.features.utility.applyHighContrastToAllViews
+import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
+import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.google.android.material.appbar.MaterialToolbar
 
 class AchievementsFragment : Fragment() {
@@ -28,7 +31,11 @@ class AchievementsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
+        val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
+        applyTextSizeToAllTextViews(view, requireContext())
+        if (isHighContrastEnabled(requireContext())) {
+            applyHighContrastToAllViews(view, requireContext())
+        }
 //
 //        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
 //        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->

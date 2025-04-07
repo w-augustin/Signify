@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -6,6 +7,7 @@
     android:background="@drawable/login_background"
     android:fitsSystemWindows="true">
 
+    <!-- Top App Bar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
@@ -16,12 +18,13 @@
         app:navigationIconTint="@android:color/white"
         android:elevation="4dp" />
 
+    <!-- Divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:backgroundTint="@color/white"
         android:background="?attr/colorOutline" />
 
+    <!-- Main Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,7 +64,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginTop="12dp" />
+                        android:layout_marginTop="12dp"
+                        app:thumbTint="@color/switch_thumb"
+                        app:trackTint="@color/switch_track" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -93,11 +98,59 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginTop="12dp" />
+                        android:layout_marginTop="12dp"
+                        app:thumbTint="@color/switch_thumb"
+                        app:trackTint="@color/switch_track" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Reminder Time -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@android:color/white">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Notification Sound"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="?android:textColorPrimary" />
+
+                    <TextView
+                        android:id="@+id/tv_notification_sound"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Chime"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="?android:textColorSecondary" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_change_sound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Change"
+                        android:textAllCaps="false"
+                        android:textSize="14sp"
+                        android:layout_marginTop="12dp"
+                        android:layout_gravity="end"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:textColor="@color/black"
+                        app:strokeColor="@color/black" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Daily Reminder Time -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -139,8 +192,8 @@
                         android:layout_gravity="end"
                         android:layout_marginTop="12dp"
                         style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:textColor="?attr/colorPrimary"
-                        app:strokeColor="?attr/colorPrimary"
+                        android:textColor="@color/black"
+                        app:strokeColor="@color/black"
                         android:strokeWidth="1"
                         android:insetTop="0dp"
                         android:insetBottom="0dp" />

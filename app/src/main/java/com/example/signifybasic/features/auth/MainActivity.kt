@@ -1,6 +1,10 @@
 package com.example.signifybasic.features.auth
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -25,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var guestBtn : Button
     private lateinit var debugBtn : Button
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,6 +47,20 @@ class MainActivity : AppCompatActivity() {
             dbHelper.addUser(adminUsername, "admin", "admin@admin.com")
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "reminder_channel",
+                "Daily Reminders",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Channel for daily reminders"
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+
         usernameInput = findViewById(R.id.username_input)
         passwordInput = findViewById(R.id.password_input)
         loginBtn = findViewById(R.id.login_btn)
@@ -54,7 +71,6 @@ class MainActivity : AppCompatActivity() {
         debugBtn.setOnClickListener{
             startActivity(Intent(this, DebugActivity::class.java))
         }
-
 
         // login button should route to the WelcomeCenter
         loginBtn.setOnClickListener {
@@ -68,6 +84,12 @@ class MainActivity : AppCompatActivity() {
                 val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
                 val editor = sharedPref.edit()
                 editor.putString("loggedInUser", username) // Save username
+
+                // retrieve + save email
+                val email = dbHelper.getEmailByUsername(username)
+                editor.putString("userEmail", email)
+
+                editor.putString("userPassword", password) // save password
                 editor.apply()
 
                 // Go to Homepage

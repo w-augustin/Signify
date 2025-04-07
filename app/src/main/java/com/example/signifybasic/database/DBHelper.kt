@@ -10,11 +10,13 @@ import android.graphics.BitmapFactory
 import com.example.signifybasic.features.tabs.discussion.DiscussionPost
 import java.io.ByteArrayOutputStream
 
+data class NotificationItem(val message: String, val timestamp: Long)
+
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 4  // Incremented to account for new tables
+        private const val DATABASE_VERSION = 5  // Incremented to account for new tables
 
         // User Images Table
         private const val TABLE_USER_IMAGES = "userImages"
@@ -77,6 +79,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.execSQL("CREATE TABLE $TABLE_ASSESSMENT (assessmentID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, moduleID INTEGER, FOREIGN KEY (moduleID) REFERENCES $TABLE_MODULE(moduleID))")
         db.execSQL("CREATE TABLE $TABLE_QUESTION (questionID INTEGER PRIMARY KEY AUTOINCREMENT, assessmentID INTEGER, question TEXT NOT NULL, correctAnswer TEXT NOT NULL, FOREIGN KEY (assessmentID) REFERENCES $TABLE_ASSESSMENT(assessmentID))")
         db.execSQL("CREATE TABLE $TABLE_USER_ANSWER (userAnswerID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER, questionID INTEGER, userAnswer TEXT NOT NULL, isCorrect BOOLEAN DEFAULT 0, FOREIGN KEY (userID) REFERENCES $TABLE_ACCOUNT(userID), FOREIGN KEY (questionID) REFERENCES $TABLE_QUESTION(questionID))")
+        db.execSQL("""CREATE TABLE notifications (id INTEGER PRIMARY KEY AUTOINCREMENT, message TEXT NOT NULL, timestamp INTEGER )""".trimIndent())
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -98,7 +101,123 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 )
             """.trimIndent())
         }
+        if (oldVersion < 5) {
+            db.execSQL("""
+        CREATE TABLE IF NOT EXISTS notifications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            message TEXT NOT NULL,
+            timestamp INTEGER
+        )
+    """.trimIndent())
+        }
+
     }
+
+    fun getUserIdByUsername(username: String): Int? {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT id FROM users WHERE username = ?", arrayOf(username))
+        val userId = if (cursor.moveToFirst()) cursor.getInt(0) else null
+        cursor.close()
+        db.close()
+        return userId
+    }
+
+    fun getUserTotalExp(userID: Int): Int {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT SUM(score) FROM $TABLE_USER_PROGRESS WHERE userID = ?",
+            arrayOf(userID.toString())
+        )
+        val total = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        return total
+    }
+
+    fun getKnownWordCount(userID: Int): Int {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            """
+        SELECT COUNT(*) FROM VocabList WHERE moduleID IN (
+            SELECT moduleID FROM UserProgress WHERE userID = ? AND completed = 1
+        )
+        """, arrayOf(userID.toString())
+        )
+        val count = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        db.close()
+        return count
+    }
+
+    fun getCurrentModuleTitle(userID: Int): String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            """
+        SELECT M.title FROM Module M
+        JOIN UserProgress UP ON M.moduleID = UP.moduleID
+        WHERE UP.userID = ? AND UP.completed = 0
+        ORDER BY UP.moduleID ASC LIMIT 1
+        """, arrayOf(userID.toString())
+        )
+        val title = if (cursor.moveToFirst()) cursor.getString(0) else "No current module"
+        cursor.close()
+        db.close()
+        return title
+    }
+
+
+    fun getUserProgressSummary(userID: Int): String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("""
+        SELECT COUNT(*) AS totalModules,
+               SUM(completed) AS modulesCompleted,
+               SUM(score) AS totalScore
+        FROM $TABLE_USER_PROGRESS
+        WHERE userID = ?
+    """.trimIndent(), arrayOf(userID.toString()))
+
+        var summary = "Progress not available"
+        if (cursor.moveToFirst()) {
+            val totalModules = cursor.getInt(cursor.getColumnIndexOrThrow("totalModules"))
+            val completed = cursor.getInt(cursor.getColumnIndexOrThrow("modulesCompleted"))
+            val totalScore = cursor.getInt(cursor.getColumnIndexOrThrow("totalScore"))
+            summary = "Modules: $completed/$totalModules | Total Score: $totalScore"
+        }
+
+        cursor.close()
+        db.close()
+        return summary
+    }
+
+
+    fun insertNotification(message: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("message", message)
+            put("timestamp", System.currentTimeMillis())
+        }
+        val result = db.insert("notifications", null, values)
+        db.close()
+        return result != -1L
+    }
+
+    fun getAllNotifications(): List<NotificationItem> {
+        val list = mutableListOf<NotificationItem>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM notifications ORDER BY timestamp DESC", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val message = cursor.getString(cursor.getColumnIndexOrThrow("message"))
+                val timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("timestamp"))
+                list.add(NotificationItem(message, timestamp))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return list
+    }
+
 
     // Save Image (Bitmap) into SQLite
     fun saveImage(bitmap: Bitmap, id: String): Boolean {
@@ -202,6 +321,33 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return rowsDeleted > 0 // Returns true if a row was deleted
     }
 
+    fun updateUsername(oldUsername: String, newUsername: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("username", newUsername)
+        val rows = db.update("users", values, "username = ?", arrayOf(oldUsername))
+        db.close()
+        return rows > 0
+    }
+
+    fun updatePassword(oldPassword: String, newPassword: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("password", newPassword)
+        val rows = db.update("users", values, "password = ?", arrayOf(oldPassword))
+        db.close()
+        return rows > 0
+    }
+
+    fun updateEmail(oldEmail: String, newEmail: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("email", newEmail)
+        val rows = db.update("users", values, "email = ?", arrayOf(oldEmail))
+        db.close()
+        return rows > 0
+    }
+
     // Verify login credentials
     fun verifyUser(username: String, password: String): Boolean {
         val db = this.readableDatabase
@@ -231,6 +377,17 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         cursor.close()
         db.close()
         return users
+    }
+
+    fun getEmailByUsername(username: String): String? {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT email FROM users WHERE username = ?", arrayOf(username))
+        var email: String? = null
+        if (cursor.moveToFirst()) {
+            email = cursor.getString(0)
+        }
+        cursor.close()
+        return email
     }
 
     // Add user progress
