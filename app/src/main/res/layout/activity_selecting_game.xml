@@ -1,108 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    tools:context=".selecting_game">
+    android:padding="16dp"
+    android:fillViewport="true">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/question"
-            android:layout_width="350dp"
-            android:layout_height="30dp"
-            android:background="@drawable/rounded_edges"
-            android:gravity="center"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:text="What sign is this"
-            android:textColor="@color/black"
-            android:textSize="18sp"/>
+        <!-- Question Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@android:color/white">
 
+            <TextView
+                android:id="@+id/question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:gravity="center"
+                android:text="What sign is this?"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+        </com.google.android.material.card.MaterialCardView>
 
+        <!-- Sign Image -->
         <ImageView
             android:id="@+id/p_sign"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/p_sign"
-            android:layout_below="@id/question"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginBottom="24dp" />
 
-        <Button
+        <!-- Option Buttons -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/option1"
-            android:layout_marginTop="16dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/p_sign"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/primary_blue"
             android:text="A"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary_blue"
+            android:insetTop="8dp"
+            android:insetBottom="8dp"
+            app:iconGravity="textStart"
+            style="@style/Widget.MaterialComponents.Button" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/option2"
-            android:layout_marginTop="16dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/option1"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/primary_blue"
             android:text="P"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary_blue"
+            android:insetTop="8dp"
+            android:insetBottom="8dp"
+            app:iconGravity="textStart"
+            style="@style/Widget.MaterialComponents.Button" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/option3"
-            android:layout_marginTop="16dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/option2"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/primary_blue"
             android:text="Z"
-            android:textColor="@color/white"/>
-        <Button
-            android:id="@+id/option4"
-            android:layout_marginTop="16dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/option3"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:backgroundTint="@color/primary_blue"
-            android:text="C"
-            android:textColor="@color/white"/>
+            android:insetTop="8dp"
+            android:insetBottom="8dp"
+            app:iconGravity="textStart"
+            style="@style/Widget.MaterialComponents.Button" />
 
+        <com.google.android.material.button.MaterialButton
+        android:id="@+id/option4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="C"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_blue"
+        android:insetTop="8dp"
+        android:insetBottom="8dp"
+        app:iconGravity="textStart"
+        style="@style/Widget.MaterialComponents.Button" />
 
-        <Button
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/submit_button"
-            android:layout_below="@id/option4"
-            android:layout_marginTop="46dp"
-            android:text="submit"
+        <com.google.android.material.button.MaterialButton
+        android:id="@+id/submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
             android:backgroundTint="@color/black"
-            android:layout_centerHorizontal="true"
-            android:visibility="visible"
+            android:textColor="@color/white"
+        android:insetTop="8dp"
+        android:insetBottom="8dp"
+        app:iconGravity="textStart"
+        style="@style/Widget.MaterialComponents.Button" />
 
-
-            />
-        <Button
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/returnbtn"
-            android:layout_below="@id/submit_button"
-            android:layout_marginTop="16dp"
-            android:text="return to activity center"
-            android:backgroundTint="@color/black"
-            android:layout_centerHorizontal="true"
-            android:visibility="visible"
-            />
-
-
-    </RelativeLayout>
-</RelativeLayout>
+    </LinearLayout>
+</ScrollView>

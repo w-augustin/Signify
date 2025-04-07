@@ -4,13 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.features.activitycenter.ActivityCenter
+import com.example.signifybasic.features.base.BaseGameActivity
 
-class selecting_game : AppCompatActivity() {
+class selecting_game : BaseGameActivity() {
+
+    override fun getGameLayoutId(): Int = R.layout.activity_selecting_game
 
     private lateinit var correctButton: Button
     private lateinit var submitButton: Button
@@ -19,16 +19,9 @@ class selecting_game : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_selecting_game)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        progressBar.progress = 14
 
-        // Initialize views
-        val returnBtn = findViewById<Button>(R.id.returnbtn)
         correctButton = findViewById(R.id.option2)
         val incorrectButtons = listOf(
             findViewById<Button>(R.id.option1),
@@ -46,7 +39,6 @@ class selecting_game : AppCompatActivity() {
             }
         }
 
-        // Selection logic
         allButtons.forEach { button ->
             button.setOnClickListener {
                 resetButtonStyles()
@@ -55,7 +47,6 @@ class selecting_game : AppCompatActivity() {
             }
         }
 
-        // Submit/Continue logic
         submitButton.setOnClickListener {
             if (selectedButton == null) {
                 Toast.makeText(this, "Please select an option", Toast.LENGTH_SHORT).show()
@@ -72,22 +63,15 @@ class selecting_game : AppCompatActivity() {
 
                 submitButton.setOnClickListener {
                     val intent = Intent(this, identify_game::class.java)
-                    intent.putExtra("SELECTING_BOOL", true) // optional if identify_game needs it
+                    intent.putExtra("SELECTING_BOOL", true)
                     startActivity(intent)
-                    finish() // optional: prevents coming back to this screen with back button
+                    finish()
                 }
             } else {
                 selectedButton?.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
                 Toast.makeText(this, "Incorrect. Try again.", Toast.LENGTH_SHORT).show()
                 selectedButton = null
             }
-        }
-
-        returnBtn.setOnClickListener {
-            val intent = Intent(this, ActivityCenter::class.java)
-            intent.putExtra("IS_CORRECT", isCorrect)
-            startActivity(intent)
-            finish()
         }
     }
 }

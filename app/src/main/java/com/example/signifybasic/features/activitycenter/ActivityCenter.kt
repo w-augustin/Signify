@@ -19,7 +19,7 @@ import com.example.signifybasic.fill_blank_game
 import com.example.signifybasic.getStarted
 import com.example.signifybasic.identify_game
 import com.example.signifybasic.identify_game2
-import com.example.signifybasic.matching_game
+//import com.example.signifybasic.matching_game
 import com.example.signifybasic.matching_game2
 import com.example.signifybasic.selecting_game
 import com.example.signifybasic.selecting_game2
@@ -113,9 +113,9 @@ class ActivityCenter : AppCompatActivity() {
         fun UiUpdateMatching(){
             activityMatching.isActivated =true
             activityMatching.setBackgroundColor(ContextCompat.getColor(this,R.color.primary_blue))
-            activityMatching.setOnClickListener {
-                startActivity(Intent(this,matching_game::class.java))
-            }
+//            activityMatching.setOnClickListener {
+//                startActivity(Intent(this,matching_game::class.java))
+//            }
         }
         fun UiUpdateMatching2(){
             activityMatching2.isActivated =true

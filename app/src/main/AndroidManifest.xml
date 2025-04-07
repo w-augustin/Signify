@@ -46,6 +46,7 @@
         <activity android:name=".signrecognition.SignRecognitionResultActivity" />
         <activity android:name=".LoadImageActivity" />
         <activity android:name=".features.tabs.discussion.DiscussionPage" />
+        <activity android:name=".features.games.MatchingGameActivity" />
         <activity android:name=".features.activitycenter.ActivityCenter" />
 <!--        <activity android:name=".features.tabs.resources.ResourcesPage" />-->
         <receiver android:name=".features.tabs.notifications.ReminderReceiver" android:exported="false"/>

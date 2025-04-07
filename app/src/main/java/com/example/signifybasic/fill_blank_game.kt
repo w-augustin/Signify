@@ -1,44 +1,43 @@
 package com.example.signifybasic
 
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.features.activitycenter.ActivityCenter
+import com.example.signifybasic.features.base.BaseGameActivity
+import com.example.signifybasic.features.games.MatchingGameActivity
+import com.example.signifybasic.features.games.MatchingItem
 
-class fill_blank_game : AppCompatActivity() {
+class fill_blank_game : BaseGameActivity() {
+
+    private lateinit var tSign: ImageButton
+    private lateinit var pSign: ImageButton
+    private lateinit var rSign: ImageButton
+    private lateinit var bSign: ImageButton
+    private lateinit var submitButton: Button
+    private var selectedButton: ImageButton? = null
+    private var isCorrect = false
+
+    override fun getGameLayoutId(): Int = R.layout.activity_fill_blank_game
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_fill_blank_game)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-         val t_sign =findViewById<ImageButton>(R.id.t_sign)
-         val p_sign =findViewById<ImageButton>(R.id.p_sign)
-         val r_sign= findViewById<ImageButton>(R.id.r_sign)
-         val b_sign= findViewById<ImageButton>(R.id.b_sign)
-         var selectedButton: ImageButton? = null
-         val submit_button = findViewById<Button>(R.id.submit_button)
-         val return_btn = findViewById<Button>(R.id.return_btn)
-         var fill_blank_bool = false
 
-        val buttons = listOf(t_sign,p_sign,r_sign, b_sign)
+        tSign = findViewById(R.id.t_sign)
+        pSign = findViewById(R.id.p_sign)
+        rSign = findViewById(R.id.r_sign)
+        bSign = findViewById(R.id.b_sign)
+        submitButton = findViewById(R.id.submit_button)
+
+        val buttons = listOf(tSign, pSign, rSign, bSign)
 
         fun resetButtons() {
-            buttons.forEach { button ->
-                button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.white)
+            buttons.forEach {
+                it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.white)
             }
-
         }
 
         buttons.forEach { button ->
@@ -49,35 +48,39 @@ class fill_blank_game : AppCompatActivity() {
             }
         }
 
-        submit_button.setOnClickListener {
-            if (selectedButton != null) {
-                resetButtons()
+        submitButton.setOnClickListener {
+            if (selectedButton == null) {
+                Toast.makeText(this, "Please select an answer.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-                if(selectedButton == t_sign) {
-                    t_sign.backgroundTintList = ContextCompat.getColorStateList(this, R.color.green)
-                 fill_blank_bool= true
-//                    val intent = Intent(this, identify_game::class.java)
-//
-//                    startActivity(intent)
-                }
-                if (selectedButton != null && selectedButton != t_sign) {
-                    selectedButton!!.backgroundTintList = ContextCompat.getColorStateList(this, R.color.red)
-                    fill_blank_bool = false
+            resetButtons()
 
+            if (selectedButton == tSign) {
+                tSign.backgroundTintList = ContextCompat.getColorStateList(this, R.color.green)
+                isCorrect = true
+                submitButton.text = "Continue"
+                submitButton.setOnClickListener {
+                    val signSet = arrayListOf(
+                        MatchingItem("p", R.drawable.p_sign),
+                        MatchingItem("a", R.drawable.a_sign),
+                        MatchingItem("c", R.drawable.c_sign),
+                        MatchingItem("b", R.drawable.b_sign)
+                    )
+
+                    val intent = Intent(this, MatchingGameActivity::class.java).apply {
+                        putExtra("SIGN_DATA", signSet)
+                        putExtra("NEXT_GAME_CLASS", "com.example.signifybasic.signing_game")
+                        putExtra("RESULT_KEY", "MATCHING_BOOL") // or "FILL_BLANK_BOOL" if that’s what you want to receive
+                    }
+
+                    startActivity(intent)
                 }
 
             } else {
-                Toast.makeText(this, "Please select an option", Toast.LENGTH_SHORT).show()
+                selectedButton!!.backgroundTintList = ContextCompat.getColorStateList(this, R.color.red)
+                Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show()
             }
         }
-        return_btn.setOnClickListener{
-            val intent = Intent(this, ActivityCenter::class.java)
-            intent.putExtra("FILL_BLANK_BOOL", fill_blank_bool)
-            startActivity(intent)
-
-        }
-
-
- //   }
     }
 }

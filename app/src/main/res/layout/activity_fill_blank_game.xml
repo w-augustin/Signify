@@ -1,143 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    tools:context=".fill_blank_game">
+    android:padding="16dp"
+    android:fillViewport="true">
 
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/prompt"
-            android:layout_width="350dp"
-            android:layout_height="30dp"
-            android:background="@drawable/rounded_edges"
+        <!-- Prompt -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <TextView
+                android:id="@+id/prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Fill in the blank: C A _"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="center" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Sign Sequence -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:text="Fill in the blank: CAT"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp" />
-        <ImageView
-            android:id="@+id/c_sign"
-            android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:src="@drawable/c_sign"
-            android:layout_below="@id/prompt"
-            android:layout_marginRight="1dp"
-            />
-        <ImageView
-            android:id="@+id/a_sign"
-            android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:src="@drawable/a_sign"
-            android:layout_toRightOf="@id/c_sign"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="100dp"
-            />
-        <ImageView
-            android:id="@+id/question_sign"
-            android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:src="@drawable/baseline_question_mark_24"
-            android:layout_toRightOf="@id/a_sign"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="100dp"
-            />
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
 
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:src="@drawable/c_sign"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:src="@drawable/a_sign"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:src="@drawable/baseline_question_mark_24" />
+        </LinearLayout>
+
+        <!-- Selection Prompt -->
         <TextView
             android:id="@+id/question"
-            android:layout_below="@id/c_sign"
-            android:layout_width="350dp"
-            android:layout_height="30dp"
-            android:background="@drawable/rounded_edges"
-            android:gravity="center"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Select the missing letter"
-            android:textColor="@color/black"
             android:textSize="18sp"
-            android:layout_marginBottom="16dp"/>
-        <ImageButton
-            android:id="@+id/t_sign"
-            android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:src="@drawable/t_sign"
-            android:layout_below="@id/a_sign"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="50dp"
-            android:scaleType="fitXY"
-            android:backgroundTint="@color/white"
-            />
-        <ImageButton
-            android:id="@+id/p_sign"
-            android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:src="@drawable/p_sign"
-            android:layout_toRightOf="@id/t_sign"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="300dp"
-            android:scaleType="fitXY"
-            android:backgroundTint="@color/white"
-            />
-        <ImageButton
-            android:id="@+id/r_sign"
-            android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:src="@drawable/r_sign"
-            android:layout_below="@id/t_sign"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:scaleType="fitXY"
-            android:backgroundTint="@color/white"
-            />
-        <ImageButton
-            android:id="@+id/b_sign"
-            android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:src="@drawable/b_sign"
-            android:layout_below="@id/p_sign"
-            android:layout_toRightOf="@id/r_sign"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:scaleType="fitXY"
-            android:backgroundTint="@color/white"
-            />
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
 
-        <Button
-            android:layout_width="350dp"
+        <!-- Option Buttons -->
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:alignmentMode="alignMargins"
+            android:columnOrderPreserved="false"
+            android:useDefaultMargins="true">
+
+            <ImageButton
+                android:id="@+id/t_sign"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:src="@drawable/t_sign"
+                android:scaleType="fitXY"
+                android:backgroundTint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/p_sign"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:src="@drawable/p_sign"
+                android:scaleType="fitXY"
+                android:backgroundTint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/r_sign"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:src="@drawable/r_sign"
+                android:scaleType="fitXY"
+                android:backgroundTint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/b_sign"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:src="@drawable/b_sign"
+                android:scaleType="fitXY"
+                android:backgroundTint="@color/white" />
+        </GridLayout>
+
+        <!-- Submit -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/submit_button"
-            android:layout_below="@id/b_sign"
-            android:layout_marginTop="16dp"
-            android:text="submit"
-            android:backgroundTint="@color/black"
-            android:layout_centerHorizontal="true"
-            android:visibility="visible"
-
-
-            />
-        <Button
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/return_btn"
-            android:layout_below="@id/submit_button"
-            android:layout_marginTop="1dp"
-            android:text="return to activity center"
+            android:text="Submit"
+            android:textColor="@color/white"
             android:backgroundTint="@color/black"
-            android:layout_centerHorizontal="true"
-            android:visibility="visible"
-            />
-
-
-    </RelativeLayout>
-
-</RelativeLayout>
+            android:layout_marginTop="24dp" />
+    </LinearLayout>
+</ScrollView>
