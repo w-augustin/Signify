@@ -77,7 +77,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="?attr/colorSecondary"
-        android:text="Go Back to App"
+        android:text="Go Back to Home"
         android:textColor="#273990"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
