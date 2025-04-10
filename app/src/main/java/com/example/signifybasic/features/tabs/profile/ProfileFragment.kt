@@ -32,6 +32,8 @@ class ProfileFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
         super.onViewCreated(view, savedInstanceState)
 
         applyTextSizeToAllTextViews(view, requireContext())
@@ -47,9 +49,11 @@ class ProfileFragment : Fragment() {
         val dbHelper = DBHelper(requireContext())
         val userId = username?.let { dbHelper.getUserIdByUsername(it) }
 
-        val expPoints = userId?.let { dbHelper.getUserTotalExp(it) } ?: 0
+        val safeUsername = username ?: "0"
+        val xpPoints = dbHelper.getUserProgress(safeUsername)
 
-        view.findViewById<TextView>(R.id.exptextview)?.text = "$expPoints EXP"
+
+        view.findViewById<TextView>(R.id.exptextview)?.text = "$xpPoints EXP"
 
         val knownWords = userId?.let { dbHelper.getKnownWordCount(it) } ?: 0
         view.findViewById<TextView>(R.id.wordsKnownTextView)?.text = "$knownWords words"

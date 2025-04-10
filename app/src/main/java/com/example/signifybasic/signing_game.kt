@@ -23,22 +23,14 @@ class signing_game : AppCompatActivity() {
 
         val continueBtn = findViewById<Button>(R.id.continue_button)
         continueBtn.setOnClickListener {
-            val signSet = arrayListOf(
-                MatchingItem("u", R.drawable.u_sign),
-                MatchingItem("v", R.drawable.v_sign),
-                MatchingItem("x", R.drawable.x_sign),
-                MatchingItem("w", R.drawable.w_sign)
-            )
-
-            val intent = Intent(this, MatchingGameActivity::class.java).apply {
-                putExtra("SIGN_DATA", signSet)
-                putExtra("NEXT_GAME_CLASS", "com.example.signifybasic.identify_game2")
-                putExtra("RESULT_KEY", "MATCHING2_BOOL")
-            }
-
+            val intent = Intent(this, com.example.signifybasic.features.activitycenter.ActivityCenter::class.java)
+            intent.putExtra("IS_CORRECT", true)
+            intent.putExtra("SIGNING_BOOL", true)
+            intent.putExtra("CONTINUE_SEQUENCE", true)
             startActivity(intent)
-
+            finish()
         }
+
 
     }
 }

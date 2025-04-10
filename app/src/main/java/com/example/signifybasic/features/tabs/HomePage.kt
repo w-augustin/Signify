@@ -11,11 +11,18 @@ import com.example.signifybasic.features.tabs.profile.ProfileFragment
 import com.example.signifybasic.features.tabs.notifications.NotificationsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.signifybasic.signrecognition.MainActivity3
+import android.util.Log
+
 
 class HomePage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val username = sharedPref.getString("loggedInUser", null)
+        val safeUser: String = username ?: "null"
+        Log.d("Debug", safeUser)
+
         setContentView(R.layout.welcome_center)
 
         supportFragmentManager.beginTransaction()

@@ -78,7 +78,7 @@ class ReminderReceiver : BroadcastReceiver() {
         }
 
         val dbHelper = DBHelper(context)
-        dbHelper.insertNotification("It's time for your daily check-in!")
+        // dbHelper.insertNotification("It's time for your daily check-in!")
 
     }
 
