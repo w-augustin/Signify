@@ -8,7 +8,19 @@
     android:background="@drawable/login_background"
     android:gravity="center"
     android:padding="16dp"
-    tools:context=".MainActivity">
+    tools:context=".features.auth.MainActivity">
+
+
+    <Button
+        android:id="@+id/debug_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Debug"
+        android:textColor="@android:color/black"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +34,8 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:src="@drawable/signify" />
+
+
 
         <TextView
             android:id="@+id/motto_text"
@@ -45,7 +59,9 @@
             android:padding="18dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:text="admin"
+            />
 
         <EditText
             android:id="@+id/password_input"
@@ -58,7 +74,9 @@
             android:padding="18dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:text="admin"
+            />
 
         <Button
             android:id="@+id/login_btn"

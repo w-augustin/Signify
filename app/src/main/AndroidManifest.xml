@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -11,32 +22,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SignifyBasic"
-        tools:targetApi="31" >
+        tools:targetApi="31">
         <activity
-            android:name=".test_knowledge"
-            android:exported="false"
-            android:label="@string/title_activity_test_knowledge"
-            android:theme="@style/Theme.SignifyBasic" />
-        <activity
-            android:name=".ProfileScreen"
-            android:exported="true" />
-        <activity android:name=".SignupPage" />
-        <activity android:name=".WelcomeCenter" />
-        <activity android:name=".TestPage" />
-        <activity android:name=".MainActivity3" />
-        <activity android:name=".TakePictureActivity" />
+            android:name=".signing_game"
+            android:exported="false" />
+        <activity android:name=".features.auth.SignupPage" />
+        <activity android:name=".features.tabs.HomePage" />
+        <activity android:name=".features.auth.TestPage" />
+        <activity android:name=".signrecognition.MainActivity3" />
+        <activity android:name=".signrecognition.RecordVideoActivity" />
+        <activity android:name=".signrecognition.SignRecognitionResultActivity" />
         <activity android:name=".LoadImageActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".AchievementsActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".NotificationsActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".DiscussionActivity" />
-        <activity android:name=".ActivityCenterActivity" />
-        <activity android:name=".ResourcesActivity" />
+        <activity android:name=".features.tabs.discussion.DiscussionPage" />
+        <activity android:name=".features.games.MatchingGameActivity" />
+        <activity android:name=".features.games.SelectingGameActivity" />
+        <activity android:name=".features.games.FillBlankGameActivity" />
+        <activity android:name=".features.games.IdentifyGameActivity" />
+        <activity android:name=".features.activitycenter.ActivityCenter" />
+<!--        <activity android:name=".features.tabs.resources.ResourcesPage" />-->
+        <receiver android:name=".features.tabs.notifications.ReminderReceiver" android:exported="false"/>
+        <activity android:name=".debug.DebugActivity"></activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true" >
+            android:name=".features.auth.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

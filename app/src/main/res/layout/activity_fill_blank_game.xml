@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    android:padding="16dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Prompt -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <TextView
+                android:id="@+id/prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Fill in the blank: C A _"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="center" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Sign Sequence -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:src="@drawable/c_sign"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:src="@drawable/a_sign"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:src="@drawable/baseline_question_mark_24" />
+        </LinearLayout>
+
+        <!-- Selection Prompt -->
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select the missing letter"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Option Buttons -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:alignmentMode="alignMargins"
+            android:columnOrderPreserved="false"
+            android:useDefaultMargins="true">
+
+            <ImageButton
+                android:id="@+id/t_sign"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:src="@drawable/t_sign"
+                android:scaleType="fitXY"
+                android:backgroundTint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/p_sign"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:src="@drawable/p_sign"
+                android:scaleType="fitXY"
+                android:backgroundTint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/r_sign"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:src="@drawable/r_sign"
+                android:scaleType="fitXY"
+                android:backgroundTint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/b_sign"
+                android:layout_width="150dp"
+                android:layout_height="140dp"
+                android:src="@drawable/b_sign"
+                android:scaleType="fitXY"
+                android:backgroundTint="@color/white" />
+        </GridLayout>
+
+        <!-- Submit -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/black"
+            android:layout_marginTop="24dp" />
+    </LinearLayout>
+</ScrollView>

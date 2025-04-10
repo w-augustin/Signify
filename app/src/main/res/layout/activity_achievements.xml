@@ -1,244 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Test_knowledge">
+    android:background="@drawable/login_background"
+    android:fitsSystemWindows="true">
 
+    <!-- Top View Background -->
     <View
+        android:id="@+id/top_view"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@drawable/bg_view"
-        android:id="@+id/top_view"/>
+        android:background="@drawable/bg_view" />
 
+    <!-- Scrollable content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="72dp"
+        android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/textView_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:text="Achievements  "
-        android:textColor="@color/white"
-        android:textSize="32sp"
-        android:textStyle="bold" />
-
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:alpha="0.8"
-        android:text="Look at all your rewards"
-        android:layout_centerHorizontal="true"
-
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <RelativeLayout
-        android:id="@+id/textView"
-        android:layout_width="348dp"
-        android:layout_height="167dp"
-        android:background="@color/blue"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/textView2"
-        android:layout_centerHorizontal="true"
-        android:gravity="">
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/baseline_person_24"
-            android:layout_marginEnd="10dp"
-            />
-
-        <TextView
-            android:id="@+id/view3"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon"
-            android:text="User"
-            android:textSize="15sp"
-            android:textColor="@color/white" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/view4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/view3"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="50dp"
-            android:alpha="0.5"
-            android:text="Day5"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Achievements"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp" />
 
-        <TextView
-            android:id="@+id/view5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/view4"
-            android:layout_marginTop="2dp"
-            android:paddingTop= "20dp"
-            android:layout_marginLeft="50dp"
-            android:text="Completed module 1"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            <!-- Subtitle -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Look at all your rewards"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:alpha="0.8"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp" />
 
-        <ProgressBar
-            android:id="@+id/progressBar4"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_below="@+id/view5"
-            android:padding="10dp"
-            android:layout_centerInParent="true"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:progressDrawable="@drawable/custom_progress_bar"/>
-    </RelativeLayout>
+            <!-- Achievement Card 1 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/blue"
+                android:clickable="true"
+                android:focusable="true">
 
-    <RelativeLayout
-        android:layout_width="348dp"
-        android:layout_height="167dp"
-        android:background="@color/blue"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/textView"
-        android:id="@+id/textRView2"
-        android:layout_centerHorizontal="true"
-        android:gravity="">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/icon1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/baseline_person_24"
-            android:layout_marginEnd="10dp"
-            />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/view_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon1"
-            android:text="User"
-            android:textSize="15sp"
-            android:textColor="@color/white" />
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/baseline_person_24"
+                            android:layout_marginEnd="12dp" />
 
-        <TextView
-            android:id="@+id/view_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/view_1"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="50dp"
-            android:alpha="0.5"
-            android:text="Day5"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/view_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/view_2"
-            android:layout_marginTop="2dp"
-            android:paddingTop= "20dp"
-            android:layout_marginLeft="50dp"
-            android:text="Completed module 2"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="User"
+                                android:textSize="16sp"
+                                android:textColor="@color/black" />
 
-        <ProgressBar
-            android:id="@+id/progressBar5"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_below="@+id/view_3"
-            android:padding="10dp"
-            android:layout_centerInParent="true"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:progressDrawable="@drawable/custom_progress_bar"/>
-    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Day 5"
+                                android:textSize="12sp"
+                                android:textColor="@color/black"
+                                android:alpha="0.5"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Completed module 1"
+                        android:layout_marginTop="12dp"
+                        android:textSize="15sp"
+                        android:textColor="@color/black" />
 
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="12dp"
+                        app:indicatorColor="@color/white"
+                        app:trackColor="#22000000"
+                        app:trackCornerRadius="16dp"
+                        android:progressTint="@color/white" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
+            <!-- Repeat above card block for additional achievements -->
+            <!-- You can extract into an include or RecyclerView if these are dynamic -->
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    <RelativeLayout
-        android:layout_width="348dp"
-        android:layout_height="167dp"
-        android:background="@color/blue"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/textRView2"
-        android:id="@+id/textRView3"
-        android:layout_centerHorizontal="true"
-        android:gravity="">
-
-        <ImageView
-            android:id="@+id/icon2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/baseline_person_24"
-            android:layout_marginEnd="10dp"
-            />
-
-        <TextView
-            android:id="@+id/view_r2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/icon2"
-            android:text="User"
-            android:textSize="15sp"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/view_r3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/view_r2"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="50dp"
-            android:alpha="0.5"
-            android:text="Day4"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
-
-        <TextView
-            android:id="@+id/view_r4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/view_r3"
-            android:layout_marginTop="2dp"
-            android:paddingTop= "20dp"
-            android:layout_marginLeft="50dp"
-            android:text="Completed daily goal!"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
-
-        <ProgressBar
-            android:id="@+id/progressBar6"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_below="@+id/view_r4"
-            android:padding="10dp"
-            android:layout_centerInParent="true"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:progressDrawable="@drawable/custom_progress_bar"/>
-    </RelativeLayout>
-
-
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         app:menu="@menu/nav_menu"
-        tools:ignore="VisualLintBottomNav" />
-
-</RelativeLayout>
+        android:background="?android:attr/windowBackground"
+        app:labelVisibilityMode="labeled" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
