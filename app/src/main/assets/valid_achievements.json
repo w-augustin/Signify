@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Getting Started",
+    "icon": "flag",
+    "description": "Complete Module 1."
+  },
+  {
+    "name": "Module Master",
+    "icon": "trophy",
+    "description": "Complete all available modules."
+  },
+  {
+    "name": "Signify Streak",
+    "icon": "fire",
+    "description": "Log in 3 days in a row."
+  },
+  {
+    "name": "Weekly Habit",
+    "icon": "calendar_heart",
+    "description": "Log in 7 days in a row."
+  },
+  {
+    "name": "ASL Learner",
+    "icon": "book_open_blank_variant",
+    "description": "Learn 10 new words and phrases."
+  },
+  {
+    "name": "ASL Master",
+    "icon": "ic_star_filled",
+    "description": "Learn 100 new words and phrases."
+  }
+]

@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        this.deleteDatabase("SignifyDB")
 
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val dbHelper = DBHelper(this)
+        val dbHelper = DBHelper(applicationContext)
 
         // Check if the admin user already exists before inserting
         val adminUsername = "admin"
@@ -52,9 +52,6 @@ class MainActivity : AppCompatActivity() {
         val userId = adminUsername?.let { dbHelper.getUserIdByUsername(it) }
         val safeuserid = userId ?: 0
         dbHelper.setKnownWords(safeuserid, 7)
-        dbHelper.addAchievement(safeuserid,"A")
-        dbHelper.addAchievement(safeuserid,"B")
-        dbHelper.addAchievement(safeuserid,"C")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "reminder_channel",

@@ -9,6 +9,28 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.example.signifybasic.R
 import com.google.android.material.appbar.MaterialToolbar
+import com.example.signifybasic.features.tabs.achievements.AchievementMeta
+import org.json.JSONArray
+
+fun loadAllAchievementsFromAssets(context: Context): List<AchievementMeta> {
+    val inputStream = context.assets.open("valid_achievements.json")
+    val jsonString = inputStream.bufferedReader().use { it.readText() }
+
+    val jsonArray = JSONArray(jsonString)
+    val list = mutableListOf<AchievementMeta>()
+
+    for (i in 0 until jsonArray.length()) {
+        val obj = jsonArray.getJSONObject(i)
+        val name = obj.getString("name")
+        val iconName = obj.getString("icon")
+        val description = obj.getString("description")
+        val resId = context.resources.getIdentifier(iconName, "drawable", context.packageName)
+        list.add(AchievementMeta(name, resId, description))
+    }
+
+    return list
+}
+
 
 fun getScaledTextSize(context: Context): Float {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
