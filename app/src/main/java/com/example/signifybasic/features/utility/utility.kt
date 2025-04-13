@@ -35,10 +35,10 @@ fun loadAllAchievementsFromAssets(context: Context): List<AchievementMeta> {
 fun getScaledTextSize(context: Context): Float {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     return when (prefs.getString("text_size", "medium")) {
-        "small" -> 12f
-        "medium" -> 14f
-        "large" -> 18f
-        else -> 14f
+        "small" -> 16f
+        "medium" -> 20f
+        "large" -> 22f
+        else -> 20f
     }
 }
 
