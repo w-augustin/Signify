@@ -97,6 +97,24 @@ class MainActivity : AppCompatActivity() {
                 editor.putString("userPassword", password) // save password
                 editor.apply()
 
+                val loginUserId = dbHelper.getUserIdByUsername(username)
+                if (loginUserId != null) {
+                    dbHelper.recordLoginDate(loginUserId)
+                }
+                val streak = loginUserId?.let { it1 -> dbHelper.getLoginStreak(it1) }
+                if (streak != null) {
+                    if (streak == 1) {
+                        dbHelper.addAchievement(loginUserId, "First Login", this)
+                    }
+                    if (streak >= 3) {
+                        dbHelper.addAchievement(loginUserId, "Signify Streak", this)
+                    }
+                    if (streak >= 7) {
+                        dbHelper.addAchievement(loginUserId, "Signify Streak", this)
+                    }
+                }
+
+
                 // Go to Homepage
                 val intent = Intent(this, HomePage::class.java)
                 startActivity(intent)

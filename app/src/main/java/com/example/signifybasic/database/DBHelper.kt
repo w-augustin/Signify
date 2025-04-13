@@ -22,7 +22,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 7  // Incremented to account for new tables
+        private const val DATABASE_VERSION = 8  // Incremented to account for new tables
 
         // User Images Table
         private const val TABLE_USER_IMAGES = "userImages"
@@ -148,6 +148,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     slot INTEGER, -- 0, 1, 2
                     achievementName TEXT,
                     FOREIGN KEY (userID) REFERENCES users(id)
+                )
+            """.trimIndent())
+        }
+        if (oldVersion < 8) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS LoginHistory (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    loginDate TEXT,
+                    UNIQUE(userID, loginDate)
                 )
             """.trimIndent())
         }
@@ -666,6 +676,51 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.delete("UserBadges", "userID=? AND slot=?", arrayOf(userID.toString(), slot.toString()))
         db.close()
     }
+
+    fun recordLoginDate(userID: Int) {
+        val db = this.writableDatabase
+        val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
+        val values = ContentValues().apply {
+            put("userID", userID)
+            put("loginDate", today)
+        }
+
+        db.insertWithOnConflict("LoginHistory", null, values, SQLiteDatabase.CONFLICT_IGNORE)
+        db.close()
+    }
+
+    fun getLoginStreak(userID: Int): Int {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("""
+        SELECT loginDate FROM LoginHistory
+        WHERE userID = ?
+        ORDER BY loginDate DESC
+    """.trimIndent(), arrayOf(userID.toString()))
+
+        val formatter = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        var streak = 0
+        var lastExpectedDate = java.util.Calendar.getInstance()
+
+        if (cursor.moveToFirst()) {
+            do {
+                val loginDateStr = cursor.getString(cursor.getColumnIndexOrThrow("loginDate"))
+                val loginDate = formatter.parse(loginDateStr)
+                val expectedDate = lastExpectedDate.time
+
+                if (formatter.format(loginDate) == formatter.format(expectedDate)) {
+                    streak++
+                    lastExpectedDate.add(java.util.Calendar.DATE, -1)
+                } else {
+                    break
+                }
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return streak
+    }
+
 
 //    fun getKnownWords(userID: Int): List<String> {
 //        val db = this.readableDatabase

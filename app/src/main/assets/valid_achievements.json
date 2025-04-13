@@ -10,6 +10,11 @@
     "description": "Complete all available modules."
   },
   {
+    "name": "First Login",
+    "icon": "fire",
+    "description": "Log in to your account for the first time."
+  },
+  {
     "name": "Signify Streak",
     "icon": "fire",
     "description": "Log in 3 days in a row."
