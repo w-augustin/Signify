@@ -35,14 +35,34 @@ import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import kotlin.coroutines.resume
-
+import android.content.pm.PackageManager
 
 class RecordVideoActivity : AppCompatActivity() {
+
+    private val CAMERA_PERMISSION_CODE = 101
+
     // creating variables on below line.
     private lateinit var recordVideoCard: MaterialCardView
 //    private lateinit var  backBtn: Button
     private lateinit var inputEditText: EditText
     private lateinit var expectedSign: String
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Optional: re-trigger the record logic here
+                Toast.makeText(this, "Camera permission granted. Try again.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Camera permission is required to record video.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +113,10 @@ class RecordVideoActivity : AppCompatActivity() {
         }
 
         recordVideoCard.setOnClickListener {
+            if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+                return@setOnClickListener // wait for permission result
+            }
             expectedSign = inputEditText.text.toString().trim().lowercase()
 
             if (expectedSign.isEmpty()) {
