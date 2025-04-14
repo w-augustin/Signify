@@ -25,12 +25,11 @@
         android:theme="@style/Theme.SignifyBasic"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
             android:name=".features.activitycenter.activity_center2"
             android:exported="false" />
-        <activity
-            android:name=".signing_game"
-            android:exported="false" />
+
         <activity android:name=".features.auth.SignupPage" />
         <activity android:name=".features.tabs.HomePage" />
         <activity android:name=".features.auth.TestPage" />
@@ -43,6 +42,7 @@
         <activity android:name=".features.games.SelectingGameActivity" />
         <activity android:name=".features.games.FillBlankGameActivity" />
         <activity android:name=".features.games.IdentifyGameActivity" />
+        <activity android:name=".features.games.SigningGameActivity" />
         <activity android:name=".features.activitycenter.ActivityCenter" />
         <activity android:name=".getStarted" /> <!-- <activity android:name=".features.tabs.resources.ResourcesPage" /> -->
         <receiver

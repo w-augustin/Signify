@@ -30,7 +30,6 @@ import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.example.signifybasic.getStarted
-import com.example.signifybasic.signing_game
 import com.google.android.material.appbar.MaterialToolbar
 import com.example.signifybasic.features.games.GameRouter
 import com.example.signifybasic.features.games.GameSequenceManager

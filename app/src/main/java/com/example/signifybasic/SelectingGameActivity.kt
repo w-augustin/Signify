@@ -81,7 +81,7 @@ class SelectingGameActivity : BaseGameActivity() {
             btn.setOnClickListener {
                 resetButtonStyles(optionButtons)
                 selectedButton = btn
-                btn.setBackgroundColor(ContextCompat.getColor(this, R.color.yellow))
+                btn.setBackgroundColor(ContextCompat.getColor(this, R.color.light_blue))
             }
         }
 
