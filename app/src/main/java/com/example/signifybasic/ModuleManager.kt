@@ -1,16 +1,16 @@
 package com.example.signifybasic.features.games
 
 import android.content.Context
+import com.example.signifybasic.database.DBHelper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-object ModuleManager {
+object   ModuleManager {
     private lateinit var modules: List<GameModule>
 
     var currentModuleIndex = 0
         private set
     var currentStepIndex = 0
-        private set
 
     fun loadModules(context: Context) {
         if (::modules.isInitialized) return
@@ -45,6 +45,9 @@ object ModuleManager {
 
     fun isAllModulesComplete(): Boolean {
         return currentModuleIndex >= modules.size
+    }
+    fun getModules(): List<GameModule> {
+        return modules
     }
 }
 

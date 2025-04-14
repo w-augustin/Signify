@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.signifybasic.R
+import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.features.base.BaseGameActivity
 import java.io.Serializable
 
@@ -121,6 +122,10 @@ class SelectingGameActivity : BaseGameActivity() {
         buttons.forEach {
             it.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_blue))
             it.isEnabled = true
+        }
+        val returnbtn = findViewById<Button>(R.id.return_button)
+        returnbtn.setOnClickListener {
+            startActivity(Intent(this, ActivityCenter::class.java))
         }
     }
 }
