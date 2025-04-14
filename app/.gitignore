@@ -1,5 +1,6 @@
 # Ignore build and dependency directories
 .gradle/
+model_training/
 build/
 **/build/
 **/out/
