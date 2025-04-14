@@ -108,13 +108,12 @@ class RecordVideoActivity : AppCompatActivity() {
             Log.w("CameraConfig", "Resolution or FPS not available!")
         }
 
-        // List of supported signs for autocomplete
-val support = listOf(
-    "hello", "hi", "thank you", "thanks", "name", "book", "bye", "goodbye"
-)
+        val support = listOf(
+            "hello", "hi", "thank you", "thanks", "name", "book", "bye", "goodbye", "i love you"
+        )
 
-val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, support)
-inputEditText.setAdapter(adapter)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, support)
+        inputEditText.setAdapter(adapter)
 
 recordVideoCard.setOnClickListener {
     if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -268,6 +267,7 @@ backBtn.setOnClickListener {
                 intent.putExtra("score", score) // Pass score as Double
                 intent.putExtra("matchResult", message)
                 startActivity(intent)
+
                 // finish() // Finish current activity to prevent user from going back
                 //val recognizedSignTextView = findViewById<TextView>(R.id.tvRecognizedSign)
                 //recognizedSignTextView.text = "Recognized Sign: $result"
@@ -283,7 +283,7 @@ backBtn.setOnClickListener {
 
         // Perform network request on the background thread
         return suspendCancellableCoroutine { continuation ->
-            ModelRetrofitClient.apiService.predict(videoPart)
+            ModelRetrofitClient.getInstance().predict(videoPart)
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
@@ -304,5 +304,10 @@ backBtn.setOnClickListener {
                     }
                 })
         }
+    }
+
+    // Only for testing
+    fun setExpectedSignForTest(value: String) {
+        expectedSign = value
     }
 }
