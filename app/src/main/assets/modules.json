@@ -79,13 +79,9 @@
       },
       {
         "type": "signing",
-        "prompt": "Match these signs to complete the final challenge!",
-        "items": [
-          { "letter": "u", "imageRes": "u_sign" },
-          { "letter": "v", "imageRes": "v_sign" },
-          { "letter": "x", "imageRes": "x_sign" },
-          { "letter": "w", "imageRes": "w_sign" }
-        ],
+        "prompt": "Sign the letter W to complete the final challenge!",
+        "expectedSign": "W",
+        "imageRes": "w_sign",
         "resultKey": "SIGNING_BOOL"
       }
     ]
@@ -170,13 +166,9 @@
       },
       {
         "type": "signing",
-        "prompt": "Match these signs to complete the final challenge!",
-        "items": [
-          { "letter": "u", "imageRes": "u_sign" },
-          { "letter": "v", "imageRes": "v_sign" },
-          { "letter": "x", "imageRes": "x_sign" },
-          { "letter": "w", "imageRes": "w_sign" }
-        ],
+        "prompt": "Sign the letter W to complete the final challenge!",
+        "expectedSign": "W",
+        "imageRes": "w_sign",
         "resultKey": "SIGNING_BOOL"
       }
     ]
