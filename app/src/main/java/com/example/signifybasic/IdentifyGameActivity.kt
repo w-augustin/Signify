@@ -89,7 +89,7 @@ class IdentifyGameActivity : BaseGameActivity() {
                     it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.white)
                 }
                 selectedButton = button
-                button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.yellow)
+                button.backgroundTintList = ContextCompat.getColorStateList(this, R.color.light_blue)
             }
         }
 
