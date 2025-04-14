@@ -1,17 +1,933 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".getStarted">
+    android:background="@drawable/login_background"
+    android:padding="16dp"
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="321dp"
-        android:layout_height="27dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="16dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+    <!-- Question Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@android:color/white">
+
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:gravity="center"
+            android:text="The Alphabet"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+    </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/a_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/a_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/a_letter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_edges"
+                android:backgroundTint="@color/white"
+                android:gravity="top|center_horizontal"
+                android:text="A"
+                android:textColor="@color/black"
+                android:textSize="80sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/b_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/b_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/b_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="B"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/c_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/c_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/c_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="C"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/d_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/d_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/d_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="D"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/e_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/e_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/e_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="E"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/f_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/f_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/f_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="F"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/g_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/g_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/g_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="G"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/h_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/h_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/h_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="H"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/i_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/i_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/i_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="I"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/j_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/j_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/j_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="J"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/k_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/k_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/k_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="K"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/l_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/l_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/l_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="L"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/m_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/m_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/m_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="M"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/n_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/n_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/n_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="N"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/o_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/o_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/o_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="O"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/p_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/p_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/p_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="P"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/q_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/q_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/q_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="Q"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/r_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/r_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/r_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="R"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/s_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/s_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/s_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="S"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/t_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/t_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/t_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="T"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/u_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/u_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/u_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="U"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/v_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/v_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/v_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="V"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/w_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/w_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/w_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="W"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/x_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/x_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/x_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="X"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/y_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/y_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/y_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="Y"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/z_sign"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/z_sign"
+                android:background="@drawable/rounded_edges" />
+
+            <TextView
+                android:id="@+id/z_letter"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:text="Z"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_edges"
+                android:textSize="80sp"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="begin activities"
+            android:textColor="@color/black"
+
+            />
+
+    </LinearLayout>
+</ScrollView>
