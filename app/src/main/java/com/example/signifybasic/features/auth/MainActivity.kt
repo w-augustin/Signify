@@ -11,11 +11,13 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.database.DBHelper
 import com.example.signifybasic.debug.DebugActivity
+import com.example.signifybasic.features.games.GameSequenceManager
 import com.example.signifybasic.features.tabs.HomePage
 
 
@@ -32,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        this.deleteDatabase("SignifyDB")
 
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val dbHelper = DBHelper(this)
+        val dbHelper = DBHelper(applicationContext)
 
         // Check if the admin user already exists before inserting
         val adminUsername = "admin"
@@ -52,9 +53,6 @@ class MainActivity : AppCompatActivity() {
         val userId = adminUsername?.let { dbHelper.getUserIdByUsername(it) }
         val safeuserid = userId ?: 0
         dbHelper.setKnownWords(safeuserid, 7)
-        dbHelper.addAchievement(safeuserid,"A")
-        dbHelper.addAchievement(safeuserid,"B")
-        dbHelper.addAchievement(safeuserid,"C")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "reminder_channel",
@@ -67,6 +65,10 @@ class MainActivity : AppCompatActivity() {
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
+        }
+
+        if (!GameSequenceManager.isLoaded()) {
+            GameSequenceManager.load(applicationContext)
         }
 
         usernameInput = findViewById(R.id.username_input)
@@ -99,6 +101,24 @@ class MainActivity : AppCompatActivity() {
 
                 editor.putString("userPassword", password) // save password
                 editor.apply()
+
+                val loginUserId = dbHelper.getUserIdByUsername(username)
+                if (loginUserId != null) {
+                    dbHelper.recordLoginDate(loginUserId)
+                }
+                val streak = loginUserId?.let { it1 -> dbHelper.getLoginStreak(it1) }
+                if (streak != null) {
+                    if (streak == 1) {
+                        dbHelper.addAchievement(loginUserId, "First Login", this)
+                    }
+                    if (streak >= 3) {
+                        dbHelper.addAchievement(loginUserId, "Signify Streak", this)
+                    }
+                    if (streak >= 7) {
+                        dbHelper.addAchievement(loginUserId, "Signify Streak", this)
+                    }
+                }
+
 
                 // Go to Homepage
                 val intent = Intent(this, HomePage::class.java)

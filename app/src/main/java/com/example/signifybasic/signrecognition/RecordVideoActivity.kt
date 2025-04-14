@@ -41,15 +41,39 @@ import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.google.android.material.appbar.MaterialToolbar
-
+import com.google.android.material.card.MaterialCardView
+import kotlinx.coroutines.*
+import org.json.JSONObject
+import kotlin.coroutines.resume
+import android.content.pm.PackageManager
 
 class RecordVideoActivity : AppCompatActivity() {
+
+    private val CAMERA_PERMISSION_CODE = 101
+
     // creating variables on below line.
     private lateinit var  recordVideoBtn: Button
     private lateinit var  backBtn: Button
     private lateinit var inputEditText: AutoCompleteTextView
     private lateinit var expectedSign: String
     private lateinit var progressBar: ProgressBar
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Optional: re-trigger the record logic here
+                Toast.makeText(this, "Camera permission granted. Try again.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Camera permission is required to record video.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,29 +115,33 @@ class RecordVideoActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, support)
         inputEditText.setAdapter(adapter)
 
-        recordVideoBtn.setOnClickListener {
-            expectedSign = inputEditText.text.toString().trim().lowercase()
-
-            if (expectedSign.isEmpty()) {
-                showTextBoxUnderInput("Please enter a sign")
-                return@setOnClickListener
-            }
-
-            if (!support.contains(expectedSign)) {
-                showTextBoxUnderInput("Please enter a sign we support.\nRefer to the Dictionary section for valid signs.")
-                return@setOnClickListener
-            }
-
-            val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-            startActivityForResult(intent, 1)
-        }
-
-        backBtn.setOnClickListener {
-            val intent = Intent(this, HomePage::class.java)
-            startActivity(intent)
-            finish()
-        }
+recordVideoCard.setOnClickListener {
+    if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+        return@setOnClickListener
     }
+
+    expectedSign = inputEditText.text.toString().trim().lowercase()
+
+    if (expectedSign.isEmpty()) {
+        showTextBoxUnderInput("Please enter a sign")
+        return@setOnClickListener
+    }
+
+    if (!support.contains(expectedSign)) {
+        showTextBoxUnderInput("Please enter a sign we support.\nRefer to the Dictionary section for valid signs.")
+        return@setOnClickListener
+    }
+
+    val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+    startActivityForResult(intent, 1)
+}
+
+backBtn.setOnClickListener {
+    val intent = Intent(this, HomePage::class.java)
+    startActivity(intent)
+    finish()
+}
 
     // Helper function to create and show a TextBox under the input field
     private fun showTextBoxUnderInput(message: String) {

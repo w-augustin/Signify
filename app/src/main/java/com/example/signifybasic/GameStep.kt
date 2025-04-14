@@ -9,6 +9,7 @@ data class GameStep(
     val options: List<Any>? = null,
     val items: List<Map<String, String>>? = null,
     val correctAnswer: String? = null,
-    val resultKey: String
+    val resultKey: String,
+    val expectedSign: String? = null // used for signing activity
 )
 
