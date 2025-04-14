@@ -148,7 +148,7 @@ class RecordVideoActivity : AppCompatActivity() {
 
         val textView = TextView(this).apply {
             text = message
-            setTextColor(getColor(R.color.red))
+            setTextColor(getColor(R.color.light_red))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER_HORIZONTAL
             layoutParams = ViewGroup.LayoutParams(
