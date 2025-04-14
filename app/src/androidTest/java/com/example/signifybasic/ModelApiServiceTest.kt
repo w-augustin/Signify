@@ -50,9 +50,14 @@ class ModelApiServiceTest {
         val requestBody = dummyFile.asRequestBody(mediaType)
         val videoPart = MultipartBody.Part.createFormData("video", dummyFile.name, requestBody)
 
-        val service = ModelRetrofitClient.getInstance(mockWebServer.url("/").toString())
+        // 4. Determine method type (alpha or holistic)
+        val expectedSign = "hello" // Example sign
+        val method = if (expectedSign.length == 1 && expectedSign.all { it.isLetter() }) "alpha" else "holistic"
 
-        val response = service.predict(videoPart).execute()
+        ModelRetrofitClient.BASE_URL = mockWebServer.url("/").toString()
+        val service = ModelRetrofitClient.getInstance()
+
+        val response = service.predict(videoPart, method).execute()
 
         Assert.assertTrue(response.isSuccessful)
         val body = response.body()?.string()

@@ -9,8 +9,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import com.example.signifybasic.signrecognition.SignRecognitionResultActivity
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 import androidx.test.espresso.intent.Intents
 import org.junit.After
 
