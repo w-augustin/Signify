@@ -10,12 +10,11 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.Surface
-import android.view.ViewGroup
+import android.view.View
 import android.widget.EditText
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -27,6 +26,17 @@ import java.io.File
 import java.io.FileOutputStream
 import com.example.signifybasic.R
 import com.example.signifybasic.features.tabs.HomePage
+import kotlinx.coroutines.*
+import org.json.JSONObject
+import kotlin.coroutines.resume
+import android.widget.AutoCompleteTextView
+import android.widget.ArrayAdapter
+import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
@@ -42,10 +52,11 @@ class RecordVideoActivity : AppCompatActivity() {
     private val CAMERA_PERMISSION_CODE = 101
 
     // creating variables on below line.
-    private lateinit var recordVideoCard: MaterialCardView
-//    private lateinit var  backBtn: Button
-    private lateinit var inputEditText: EditText
+    private lateinit var  recordVideoBtn: Button
+    private lateinit var  backBtn: Button
+    private lateinit var inputEditText: AutoCompleteTextView
     private lateinit var expectedSign: String
+    private lateinit var progressBar: ProgressBar
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -68,26 +79,11 @@ class RecordVideoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_video)
 
-        val rootView = findViewById<ViewGroup>(android.R.id.content)
-        applyTextSizeToAllTextViews(rootView, this)
-        if (isHighContrastEnabled(this)) {
-            applyHighContrastToAllViews(rootView, this)
-        }
-        val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
-            val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
-            v.setPadding(0, topInset, 0, 0)
-            insets
-        }
-        toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-
         // initializing variables
-        recordVideoCard = findViewById(R.id.btnRecord)
-//        backBtn = findViewById(R.id.btnBack)
+        recordVideoBtn = findViewById(R.id.btnRecord)
+        backBtn = findViewById(R.id.btnBack)
         inputEditText = findViewById(R.id.inputSign)
+        progressBar = findViewById(R.id.progressBar)
 
         val cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
         val cameraId = cameraManager.cameraIdList[0] // Use first camera (back camera)
@@ -112,28 +108,73 @@ class RecordVideoActivity : AppCompatActivity() {
             Log.w("CameraConfig", "Resolution or FPS not available!")
         }
 
-        recordVideoCard.setOnClickListener {
-            if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
-                return@setOnClickListener // wait for permission result
-            }
-            expectedSign = inputEditText.text.toString().trim().lowercase()
+        // List of supported signs for autocomplete
+val support = listOf(
+    "hello", "hi", "thank you", "thanks", "name", "book", "bye", "goodbye"
+)
 
-            if (expectedSign.isEmpty()) {
-                Toast.makeText(this, "Please enter a sign to match", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, support)
+inputEditText.setAdapter(adapter)
 
-            val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-            startActivityForResult(intent, 1)
+recordVideoCard.setOnClickListener {
+    if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        requestPermissions(arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+        return@setOnClickListener
+    }
+
+    expectedSign = inputEditText.text.toString().trim().lowercase()
+
+    if (expectedSign.isEmpty()) {
+        showTextBoxUnderInput("Please enter a sign")
+        return@setOnClickListener
+    }
+
+    if (!support.contains(expectedSign)) {
+        showTextBoxUnderInput("Please enter a sign we support.\nRefer to the Dictionary section for valid signs.")
+        return@setOnClickListener
+    }
+
+    val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+    startActivityForResult(intent, 1)
+}
+
+backBtn.setOnClickListener {
+    val intent = Intent(this, HomePage::class.java)
+    startActivity(intent)
+    finish()
+}
+
+    // Helper function to create and show a TextBox under the input field
+    private fun showTextBoxUnderInput(message: String) {
+        // Calculate the position of the inputEditText view
+        val location = IntArray(2)
+        inputEditText.getLocationOnScreen(location)
+
+        // Create the TextView (acting as a custom Toast)
+        val textView = TextView(this)
+        textView.text = message
+        textView.setTextColor(getColor(R.color.red)) // Set text color (can be changed)
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f) // Set text size
+        textView.gravity = Gravity.CENTER_HORIZONTAL // Center the text horizontally
+
+        // Layout parameters to place the TextView below the inputEditText
+        val layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        textView.layoutParams = layoutParams
+        val parentLayout = findViewById<ViewGroup>(R.id.recordVideoLayout) // Ensure you have a parent layout for this TextView
+        parentLayout.addView(textView)
+
+        // Position the TextView below the input field
+        textView.translationY = (location[1] + inputEditText.height - 50).toFloat()
+
+        // Hide the TextBox after 3 seconds (or as needed)
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(3000)
+            parentLayout.removeView(textView) // Remove the TextView after delay
         }
-
-//        backBtn.setOnClickListener {
-//            val intent = Intent(this, HomePage::class.java)
-//            startActivity(intent)
-//            finish()
-//        }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -183,6 +224,10 @@ class RecordVideoActivity : AppCompatActivity() {
 
     // Function to process video in a background thread
     private fun processVideoInBackground(videoFile: File, expectedSign : String) {
+
+        // Show the ProgressBar while the video is being processed
+        progressBar.visibility = View.VISIBLE
+
         // Start a coroutine to process the video in the background
         CoroutineScope(Dispatchers.IO).launch {
             val result = recognizeSign(videoFile)
@@ -213,6 +258,9 @@ class RecordVideoActivity : AppCompatActivity() {
                 } else {
                     "No match.\nYou signed: $sign\nExpected: $expectedSign"
                 }
+
+                // Hide the progress bar once the result is processed
+                progressBar.visibility = View.GONE
 
                 // Instead of updating a TextView in this activity, start the new activity and pass data
                 val intent = Intent(this@RecordVideoActivity, SignRecognitionResultActivity::class.java)
