@@ -85,7 +85,7 @@ class RecordVideoActivity : AppCompatActivity() {
         }
 
         val support = listOf(
-            "hello", "hi", "thank you", "thanks", "name", "book", "bye", "goodbye"
+            "hello", "hi", "thank you", "thanks", "name", "book", "bye", "goodbye", "i love you"
         )
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, support)
@@ -239,6 +239,7 @@ class RecordVideoActivity : AppCompatActivity() {
                 intent.putExtra("score", score) // Pass score as Double
                 intent.putExtra("matchResult", message)
                 startActivity(intent)
+
                 // finish() // Finish current activity to prevent user from going back
                 //val recognizedSignTextView = findViewById<TextView>(R.id.tvRecognizedSign)
                 //recognizedSignTextView.text = "Recognized Sign: $result"
@@ -254,7 +255,7 @@ class RecordVideoActivity : AppCompatActivity() {
 
         // Perform network request on the background thread
         return suspendCancellableCoroutine { continuation ->
-            ModelRetrofitClient.apiService.predict(videoPart)
+            ModelRetrofitClient.getInstance().predict(videoPart)
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         if (response.isSuccessful) {
@@ -275,5 +276,10 @@ class RecordVideoActivity : AppCompatActivity() {
                     }
                 })
         }
+    }
+
+    // Only for testing
+    fun setExpectedSignForTest(value: String) {
+        expectedSign = value
     }
 }

@@ -9,8 +9,18 @@ import okhttp3.Interceptor
 
 
 object ModelRetrofitClient {
-    // VM instance -> external IP
-    private const val BASE_URL = "http://34.70.203.161:5000"
+    private var retrofit: Retrofit? = null
+
+    fun getInstance(baseUrl: String = "http://34.70.203.161:5000"): ModelApiService {
+        if (retrofit == null || retrofit?.baseUrl().toString() != baseUrl) {
+            retrofit = Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+        return retrofit!!.create(ModelApiService::class.java)
+    }
 
     // Interceptor to add "Connection: close" header
     private val connectionCloseInterceptor = Interceptor { chain ->
@@ -28,12 +38,4 @@ object ModelRetrofitClient {
         .readTimeout(60, TimeUnit.SECONDS)
         .build()
 
-    val apiService: ModelApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ModelApiService::class.java)
-    }
 }
