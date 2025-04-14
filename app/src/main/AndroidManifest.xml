@@ -44,12 +44,18 @@
         <activity android:name=".features.games.IdentifyGameActivity" />
         <activity android:name=".features.games.SigningGameActivity" />
         <activity android:name=".features.activitycenter.ActivityCenter" />
+
+<!--        <activity android:name=".features.tabs.resources.ResourcesPage" />-->
+        <receiver android:name=".features.tabs.notifications.ReminderReceiver" android:exported="false"/>
+        <activity android:name=".debug.DebugActivity"/>
+
         <activity android:name=".getStarted" /> <!-- <activity android:name=".features.tabs.resources.ResourcesPage" /> -->
         <receiver
             android:name=".features.tabs.notifications.ReminderReceiver"
             android:exported="false" />
 
         <activity android:name=".debug.DebugActivity" />
+
         <activity
             android:name=".features.auth.MainActivity"
             android:exported="true">
