@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
+import com.example.signifybasic.features.tabs.achievements.AchievementMeta
 import com.example.signifybasic.features.tabs.discussion.DiscussionPost
 import java.io.ByteArrayOutputStream
 
@@ -14,9 +16,13 @@ data class NotificationItem(val message: String, val timestamp: Long)
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
+    init {
+        Log.d("DB_DEBUG", "DBHelper constructed using path: ${context.getDatabasePath(DATABASE_NAME).absolutePath}")
+    }
+
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 5  // Incremented to account for new tables
+        private const val DATABASE_VERSION = 10  // Incremented to account for new tables
 
         // User Images Table
         private const val TABLE_USER_IMAGES = "userImages"
@@ -44,6 +50,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
 
     override fun onCreate(db: SQLiteDatabase) {
+        Log.d("DB_DEBUG", "onCreate() was called!")
         // Create User Images Table
         val createUserImagesTable = "CREATE TABLE $TABLE_USER_IMAGES (" +
                 "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -76,14 +83,14 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
 
         val achievementTable = """
-            CREATE TABLE Achievements (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    userID INTEGER,
-    achievementName TEXT NOT NULL,
-    dateEarned TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (userID) REFERENCES users(id)
-    ) 
-    """.trimIndent()
+            CREATE TABLE IF NOT EXISTS Achievements (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                userID INTEGER,
+                achievementName TEXT NOT NULL,
+                dateEarned TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (userID) REFERENCES users(id)
+            )
+        """.trimIndent()
         db.execSQL(achievementTable)
 
         val settingsTable = "CREATE TABLE user_settings (" +
@@ -116,9 +123,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             val addColumnQuery = "ALTER TABLE $TABLE_USER_IMAGES ADD COLUMN $COLUMN_USER_ID TEXT"
             db.execSQL(addColumnQuery)
         }
-        if (oldVersion < 3) {
-            onCreate(db) // Recreate tables if upgrading
-        }
         if (oldVersion < 4) {
             db.execSQL("""
                 CREATE TABLE IF NOT EXISTS discussions (
@@ -139,19 +143,79 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         )
     """.trimIndent())
         }
+        if (oldVersion < 6) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS Achievements (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    achievementName TEXT NOT NULL,
+                    dateEarned TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (userID) REFERENCES users(id)
+                )
+            """.trimIndent())
+        }
+        if (oldVersion < 7) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS UserBadges (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    slot INTEGER, -- 0, 1, 2
+                    achievementName TEXT,
+                    FOREIGN KEY (userID) REFERENCES users(id)
+                )
+            """.trimIndent())
+        }
+        if (oldVersion < 10) {
+            db.execSQL("""
+                CREATE TABLE IF NOT EXISTS LoginHistory (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    loginDate TEXT,
+                    UNIQUE(userID, loginDate)
+                )
+            """.trimIndent())
+        }
 
     }
 
-    fun addAchievement(userID: Int, achievementName: String): Boolean {
+    fun addAchievement(userID: Int, achievementName: String, context: Context): Boolean {
+        val inputName = achievementName.trim().lowercase()
+        val validNames = loadValidAchievementNames(context).map { it.trim().lowercase() }
+
+        Log.d("ACHIEVEMENT", "Comparing: \"$inputName\" to $validNames")
+
+        if (!validNames.contains(inputName)) {
+            Log.d("ACHIEVEMENT", "INVALID: \"$achievementName\"")
+            return false
+        }
+
         val db = this.writableDatabase
+
+        val cursor = db.rawQuery(
+            "SELECT * FROM Achievements WHERE userID = ? AND LOWER(TRIM(achievementName)) = ?",
+            arrayOf(userID.toString(), inputName)
+        )
+
+        val exists = cursor.count > 0
+        cursor.close()
+
+        if (exists) {
+            Log.d("ACHIEVEMENT", "Already exists: \"$achievementName\"")
+            return false
+        }
+
         val values = ContentValues()
         values.put("userID", userID)
-        values.put("achievementName", achievementName)
+        values.put("achievementName", achievementName.trim()) // original formatting for UI
 
+        Log.d("ACHIEVEMENT", "Inserting achievement: \"$achievementName\"")
         val result = db.insert("Achievements", null, values)
+        Log.d("ACHIEVEMENT", "Insert result: $result")
         db.close()
+
         return result != -1L
     }
+
 
     fun getAchievements(userID: Int): List<String> {
         val achievements = mutableListOf<String>()
@@ -169,7 +233,28 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return achievements
     }
 
+    fun clearAchievementsForUser(userID: Int): Boolean {
+        val db = this.writableDatabase
+        val rowsDeleted = db.delete("Achievements", "userID = ?", arrayOf(userID.toString()))
+        db.close()
+        return rowsDeleted > 0
+    }
 
+    private fun loadValidAchievementNames(context: Context): List<String> {
+        val inputStream = context.assets.open("valid_achievements.json")
+        val jsonString = inputStream.bufferedReader().use { it.readText() }
+
+        val jsonArray = org.json.JSONArray(jsonString)
+        val list = mutableListOf<String>()
+
+        for (i in 0 until jsonArray.length()) {
+            val obj = jsonArray.getJSONObject(i)
+            val name = obj.getString("name").trim()
+            list.add(name)
+        }
+
+        return list
+    }
 
 
     fun getUserIdByUsername(username: String): Int? {
@@ -708,6 +793,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return result != -1L
     }
 
+
     fun setNotifSound(userId: Int, soundId: Int) {
         val db = writableDatabase
         db.execSQL("UPDATE user_settings SET notif_sound = ? WHERE user_id = ?", arrayOf(soundId, userId))
@@ -741,14 +827,98 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             do {
                 words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
             } while (cursor.moveToNext())
+
+    fun setUserBadge(userID: Int, slot: Int, achievementName: String) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("userID", userID)
+            put("slot", slot)
+            put("achievementName", achievementName)
+
+        }
+        db.delete("UserBadges", "userID=? AND slot=?", arrayOf(userID.toString(), slot.toString()))
+        db.insert("UserBadges", null, values)
+        db.close()
+    }
+
+    fun getUserBadges(userID: Int): Map<Int, String> {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT slot, achievementName FROM UserBadges WHERE userID=?", arrayOf(userID.toString()))
+        val map = mutableMapOf<Int, String>()
+        while (cursor.moveToNext()) {
+            val slot = cursor.getInt(cursor.getColumnIndexOrThrow("slot"))
+            val name = cursor.getString(cursor.getColumnIndexOrThrow("achievementName"))
+            map[slot] = name
+        }
+        cursor.close()
+        db.close()
+        return map
+    }
+
+    fun clearUserBadge(userID: Int, slot: Int) {
+        val db = writableDatabase
+        db.delete("UserBadges", "userID=? AND slot=?", arrayOf(userID.toString(), slot.toString()))
+        db.close()
+    }
+
+    fun recordLoginDate(userID: Int) {
+        val db = this.writableDatabase
+        val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault()).format(java.util.Date())
+        val values = ContentValues().apply {
+            put("userID", userID)
+            put("loginDate", today)
+        }
+
+        db.insertWithOnConflict("LoginHistory", null, values, SQLiteDatabase.CONFLICT_IGNORE)
+        db.close()
+    }
+
+    fun getLoginStreak(userID: Int): Int {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("""
+        SELECT loginDate FROM LoginHistory
+        WHERE userID = ?
+        ORDER BY loginDate DESC
+    """.trimIndent(), arrayOf(userID.toString()))
+
+        val formatter = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        var streak = 0
+        var lastExpectedDate = java.util.Calendar.getInstance()
+
+        if (cursor.moveToFirst()) {
+            do {
+                val loginDateStr = cursor.getString(cursor.getColumnIndexOrThrow("loginDate"))
+                val loginDate = formatter.parse(loginDateStr)
+                val expectedDate = lastExpectedDate.time
+
+                if (formatter.format(loginDate) == formatter.format(expectedDate)) {
+                    streak++
+                    lastExpectedDate.add(java.util.Calendar.DATE, -1)
+                } else {
+                    break
+                }
+            } while (cursor.moveToNext())
         }
 
         cursor.close()
         db.close()
-        return words
+        return streak
     }
 
 
-
-
+//    fun getKnownWords(userID: Int): List<String> {
+//        val db = this.readableDatabase
+//        val words = mutableListOf<String>()
+//        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
+//            } while (cursor.moveToNext())
+//        }
+//
+//        cursor.close()
+//        db.close()
+//        return words
+//    }
 }

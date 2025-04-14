@@ -81,7 +81,7 @@ class MatchingGameActivity : BaseGameActivity() {
             sign.setOnClickListener {
                 if (!btnSelected && sign.isEnabled) {
                     lastClickedSign = sign
-                    sign.backgroundTintList = ContextCompat.getColorStateList(this, R.color.yellow)
+                    sign.backgroundTintList = ContextCompat.getColorStateList(this, R.color.light_blue)
                     btnSelected = true
                 }
             }

@@ -91,7 +91,7 @@ class FillBlankGameActivity : BaseGameActivity() {
                 }
                 selectedButton = btn
                 selectedAnswer = option.letter
-                btn.backgroundTintList = ContextCompat.getColorStateList(this, R.color.yellow)
+                btn.backgroundTintList = ContextCompat.getColorStateList(this, R.color.light_blue)
             }
         }
 

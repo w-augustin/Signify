@@ -7,7 +7,7 @@ import com.example.signifybasic.features.games.FillBlankGameActivity
 import com.example.signifybasic.features.games.SelectingGameActivity
 import com.example.signifybasic.features.games.IdentifyGameActivity
 import com.example.signifybasic.features.games.MatchingGameActivity
-import com.example.signifybasic.signing_game
+import com.example.signifybasic.features.games.SigningGameActivity
 
 object GameRouter {
     fun routeToGame(context: Context, stepIndex: Int) {
@@ -25,7 +25,7 @@ object GameRouter {
             "identify" -> Intent(context, IdentifyGameActivity::class.java)
             "fill_blank" -> Intent(context, FillBlankGameActivity::class.java)
             "matching" -> Intent(context, MatchingGameActivity::class.java)
-            "signing" -> Intent(context, signing_game::class.java)
+            "signing" -> Intent(context, SigningGameActivity::class.java)
             else -> {
                 Toast.makeText(context, "Unknown game type: ${step.type}", Toast.LENGTH_SHORT).show()
                 return

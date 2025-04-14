@@ -5,6 +5,13 @@
     "description": "Learn the first letters and signs",
     "games": [
       {
+        "type": "signing",
+        "prompt": "Sign the letter W to complete the final challenge!",
+        "expectedSign": "W",
+        "imageRes": "w_sign",
+        "resultKey": "SIGNING_BOOL"
+      },
+      {
         "type": "selecting",
         "prompt": "What sign is this?",
         "imageRes": "p_sign",
@@ -76,17 +83,6 @@
           { "letter": "w", "imageRes": "w_sign" }
         ],
         "resultKey": "MATCHING2_BOOL"
-      },
-      {
-        "type": "signing",
-        "prompt": "Match these signs to complete the final challenge!",
-        "items": [
-          { "letter": "u", "imageRes": "u_sign" },
-          { "letter": "v", "imageRes": "v_sign" },
-          { "letter": "x", "imageRes": "x_sign" },
-          { "letter": "w", "imageRes": "w_sign" }
-        ],
-        "resultKey": "SIGNING_BOOL"
       }
     ]
   },
@@ -170,12 +166,69 @@
       },
       {
         "type": "signing",
-        "prompt": "Match these signs to complete the final challenge!",
+        "prompt": "Sign the letter W to complete the final challenge!",
+        "expectedSign": "W",
+        "imageRes": "w_sign",
+        "resultKey": "SIGNING_BOOL"
+      }
+    ]
+  },
+  {
+    "moduleId": "mod3",
+    "title": "ASL Everyday Words",
+    "description": "Learn common everyday words in ASL like thank you, good, and more",
+    "games": [
+      {
+        "type": "selecting",
+        "prompt": "What sign is this?",
+        "imageRes": "thank_you_sign",
+        "options": ["Good", "Laptop", "Thank You", "Morning"],
+        "correctAnswer": "Thank You",
+        "resultKey": "SELECTING_BOOL"
+      },
+      {
+        "type": "identify",
+        "questionText": "Identify the Correct Sign: Morning",
+        "options": [
+          { "imageRes": "morning_sign", "answerLabel": "Morning" },
+          { "imageRes": "hello_sign", "answerLabel": "Hello" },
+          { "imageRes": "laptop_sign", "answerLabel": "Laptop" },
+          { "imageRes": "good_sign", "answerLabel": "Good" }
+        ],
+        "correctAnswer": "Morning",
+        "resultKey": "IDENTIFY_BOOL"
+      },
+      {
+        "type": "fill_blank",
+        "prompt": "Fill in the blank: Good ___",
+        "question": "Select the missing word",
+        "options": [
+          { "letter": "Morning", "imageRes": "morning_sign" },
+          { "letter": "Laptop", "imageRes": "laptop_sign" },
+          { "letter": "Thank You", "imageRes": "thank_you_sign" },
+          { "letter": "Bye", "imageRes": "bye_sign" }
+        ],
+        "correctAnswer": "Morning",
+        "resultKey": "FILL_BLANK_BOOL"
+      },
+      {
+        "type": "matching",
         "items": [
-          { "letter": "u", "imageRes": "u_sign" },
-          { "letter": "v", "imageRes": "v_sign" },
-          { "letter": "x", "imageRes": "x_sign" },
-          { "letter": "w", "imageRes": "w_sign" }
+          { "letter": "Thank You", "imageRes": "thank_you_sign" },
+          { "letter": "Good", "imageRes": "good_sign" },
+          { "letter": "Morning", "imageRes": "morning_sign" },
+          { "letter": "Laptop", "imageRes": "laptop_sign" }
+        ],
+        "resultKey": "MATCHING_BOOL"
+      },
+      {
+        "type": "signing",
+        "prompt": "Sign these everyday words!",
+        "items": [
+          { "letter": "Thank You", "imageRes": "thank_you_sign" },
+          { "letter": "Hello", "imageRes": "hello_sign" },
+          { "letter": "Laptop", "imageRes": "laptop_sign" },
+          { "letter": "Morning", "imageRes": "morning_sign" }
         ],
         "resultKey": "SIGNING_BOOL"
       }
