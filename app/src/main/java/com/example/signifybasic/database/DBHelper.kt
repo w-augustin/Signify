@@ -22,7 +22,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 8  // Incremented to account for new tables
+        private const val DATABASE_VERSION = 10  // Incremented to account for new tables
 
         // User Images Table
         private const val TABLE_USER_IMAGES = "userImages"
@@ -151,7 +151,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 )
             """.trimIndent())
         }
-        if (oldVersion < 8) {
+        if (oldVersion < 10) {
             db.execSQL("""
                 CREATE TABLE IF NOT EXISTS LoginHistory (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,

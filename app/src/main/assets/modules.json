@@ -5,6 +5,13 @@
     "description": "Learn the first letters and signs",
     "games": [
       {
+        "type": "signing",
+        "prompt": "Sign the letter W to complete the final challenge!",
+        "expectedSign": "W",
+        "imageRes": "w_sign",
+        "resultKey": "SIGNING_BOOL"
+      },
+      {
         "type": "selecting",
         "prompt": "What sign is this?",
         "imageRes": "p_sign",
@@ -76,13 +83,6 @@
           { "letter": "w", "imageRes": "w_sign" }
         ],
         "resultKey": "MATCHING2_BOOL"
-      },
-      {
-        "type": "signing",
-        "prompt": "Sign the letter W to complete the final challenge!",
-        "expectedSign": "W",
-        "imageRes": "w_sign",
-        "resultKey": "SIGNING_BOOL"
       }
     ]
   },

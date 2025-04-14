@@ -36,8 +36,8 @@ class SigningGameActivity : BaseGameActivity() {
         expectedSign = step.expectedSign ?: ""
         resultKey = step.resultKey ?: "SIGNING_BOOL"
 
-        promptTextView = findViewById(R.id.prompt_text)
-        recordButton = findViewById(R.id.record_video_button)
+        promptTextView = findViewById(R.id.prompt)
+        recordButton = findViewById(R.id.record_button)
 
         promptTextView.text = step.prompt ?: "Sign the correct letter"
 

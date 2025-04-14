@@ -32,7 +32,7 @@
                 app:cardBackgroundColor="@color/primary_blue">
 
                 <TextView
-                    android:id="@+id/prompt_text"
+                    android:id="@+id/prompt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
