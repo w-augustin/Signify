@@ -41,6 +41,10 @@ import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.google.android.material.appbar.MaterialToolbar
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 
 class RecordVideoActivity : AppCompatActivity() {
@@ -50,6 +54,23 @@ class RecordVideoActivity : AppCompatActivity() {
     private lateinit var inputEditText: AutoCompleteTextView
     private lateinit var expectedSign: String
     private lateinit var progressBar: ProgressBar
+
+    private val PERMISSION_REQUEST_CODE = 1001
+    private val REQUIRED_PERMISSIONS = arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.RECORD_AUDIO
+    )
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermissionsIfNeeded() {
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSION_REQUEST_CODE)
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +111,8 @@ class RecordVideoActivity : AppCompatActivity() {
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, support)
         inputEditText.setAdapter(adapter)
+
+        requestPermissionsIfNeeded()
 
         recordVideoBtn.setOnClickListener {
             expectedSign = inputEditText.text.toString().trim().lowercase()

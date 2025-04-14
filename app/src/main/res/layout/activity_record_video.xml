@@ -30,7 +30,7 @@
         android:background="@drawable/instruction_box_border"
         android:gravity="center"
         android:padding="8dp"
-        android:text="Enter the sign you intend to perform, then record your video."
+        android:text="Enter the sign you intend to perform, then record your video in landscape mode. \n Make sure you face and arms are visible for more accurate sign prediction."
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
