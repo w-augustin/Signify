@@ -818,15 +818,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
 
 
-    fun getKnownWords(userID: Int): List<String> {
-        val db = this.readableDatabase
-        val words = mutableListOf<String>()
-        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
-
-        if (cursor.moveToFirst()) {
-            do {
-                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
-            } while (cursor.moveToNext())
+//    fun getKnownWords(userID: Int): List<String> {
+//        val db = this.readableDatabase
+//        val words = mutableListOf<String>()
+//        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
+//            } while (cursor.moveToNext())
 
     fun setUserBadge(userID: Int, slot: Int, achievementName: String) {
         val db = writableDatabase
@@ -906,19 +906,19 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
 
-//    fun getKnownWords(userID: Int): List<String> {
-//        val db = this.readableDatabase
-//        val words = mutableListOf<String>()
-//        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
-//            } while (cursor.moveToNext())
-//        }
-//
-//        cursor.close()
-//        db.close()
-//        return words
-//    }
+    fun getKnownWords(userID: Int): List<String> {
+        val db = this.readableDatabase
+        val words = mutableListOf<String>()
+        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
+
+        if (cursor.moveToFirst()) {
+            do {
+                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return words
+    }
 }
