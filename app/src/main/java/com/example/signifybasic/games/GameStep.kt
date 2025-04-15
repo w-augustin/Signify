@@ -1,4 +1,4 @@
-package com.example.signifybasic.features.games
+package com.example.signifybasic.games
 
 data class GameStep(
     val type: String,

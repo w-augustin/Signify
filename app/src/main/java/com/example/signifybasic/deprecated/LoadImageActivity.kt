@@ -1,15 +1,13 @@
-package com.example.signifybasic
+package com.example.signifybasic.deprecated
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signifybasic.database.DBHelper
-import android.widget.Toast
-import com.example.signifybasic.signrecognition.MainActivity3
+import com.example.signifybasic.R
 
 class LoadImageActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.example.signifybasic.features.games
+package com.example.signifybasic.games
 
 import java.io.Serializable
 

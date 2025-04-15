@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.cardview.widget.CardView
 import com.example.signifybasic.R
 import com.example.signifybasic.features.activitycenter.ActivityCenter
+import com.example.signifybasic.features.tabs.discussion.DiscussionFragment
+import com.example.signifybasic.features.tabs.playground.PlaygroundActivity
 import com.example.signifybasic.features.tabs.dictionary.DictionaryFragment
 import com.example.signifybasic.features.tabs.resources.ResourcesFragment
 import com.example.signifybasic.features.tabs.settings.SettingsFragment
@@ -55,11 +57,13 @@ class HomeFragment : Fragment() {
                 .commit()
         }
 
+//            startActivity(Intent(requireContext(), RecordVideoActivity::class.java))
         cardDictionary.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, DictionaryFragment())
                 .addToBackStack(null)
-                .commit()        }
+                .commit()
+        }
 
         cardResources.setOnClickListener{
             requireActivity().supportFragmentManager.beginTransaction()
@@ -74,7 +78,7 @@ class HomeFragment : Fragment() {
 
         cardPlayground.setOnClickListener {
             //playground
-            startActivity(Intent(requireContext(), RecordVideoActivity::class.java))
+            startActivity(Intent(requireContext(), PlaygroundActivity::class.java))
         }
 
         return view

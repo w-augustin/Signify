@@ -1,9 +1,7 @@
-package com.example.signifybasic.signrecognition
+package com.example.signifybasic.features.tabs.playground.liverecognition
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Matrix
-import android.util.Log
 import org.tensorflow.lite.Interpreter
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -14,8 +12,6 @@ import java.nio.channels.FileChannel
 import java.io.FileInputStream
 import android.content.res.AssetFileDescriptor
 import kotlin.math.exp
-import kotlin.math.max
-import kotlin.math.sqrt
 
 class HandTracker(context: Context) {
 

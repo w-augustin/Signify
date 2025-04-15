@@ -41,7 +41,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val TABLE_ACCOUNT = "Account"
         private const val TABLE_MODULE = "Module"
         private const val TABLE_VOCAB_LIST = "VocabList"
-        private const val TABLE_USER_PROGRESS = "UserProgress"
         private const val TABLE_ASSESSMENT = "Assessment"
         private const val TABLE_QUESTION = "Question"
         private const val TABLE_USER_ANSWER = "UserAnswer"
@@ -59,16 +58,21 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.execSQL(createUserImagesTable)
 
         // Create Users Table
-        val createUsersTable = "CREATE TABLE $TABLE_USERS (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "$COLUMN_USERNAME TEXT UNIQUE, " +
-                "$COLUMN_PASSWORD TEXT, " +
-                "$COLUMN_EMAIL TEXT UNIQUE, " +
-
-                "$COLUMN_PROGRESS INTEGER DEFAULT 0," +
-                "knownWords INTEGER DEFAULT 0," +
-                "currentModuleTitle TEXT DEFAULT 'Module 1')"
+        val createUsersTable = """
+        CREATE TABLE $TABLE_USERS (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            $COLUMN_USERNAME TEXT UNIQUE,
+            $COLUMN_PASSWORD TEXT,
+            $COLUMN_EMAIL TEXT UNIQUE,
+    
+            module_index INTEGER DEFAULT 0,
+            step_index INTEGER DEFAULT 0,
+            
+            knownWords INTEGER DEFAULT 0
+        )
+        """.trimIndent()
         db.execSQL(createUsersTable)
+
 
         val createDiscussionTable = """
             CREATE TABLE discussions (
@@ -95,6 +99,37 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         // Create LoginHistory table
         db.execSQL("""
+                CREATE TABLE IF NOT EXISTS LoginHistory (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    loginDate TEXT,
+                    UNIQUE(userID, loginDate)
+                )
+            """.trimIndent())
+
+        db.execSQL("""
+                CREATE TABLE IF NOT EXISTS UserBadges (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    slot INTEGER, -- 0, 1, 2
+                    achievementName TEXT,
+                    FOREIGN KEY (userID) REFERENCES users(id)
+                )
+            """.trimIndent())
+        
+        val settingsTable = "CREATE TABLE user_settings (" +
+                "user_id INTEGER PRIMARY KEY, " +
+                "sound_effects INTEGER NOT NULL, " +
+                "vibration_feedback INTEGER NOT NULL, " +
+                "push_notifs INTEGER NOT NULL, " +
+                "email_updates INTEGER NOT NULL, " +
+                "notif_sound INTEGER NOT NULL, " +
+                "daily_reminder_time TIME NOT NULL, " +
+                "text_size INTEGER NOT NULL, " +
+                "contrast INTEGER NOT NULL, " +
+                "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);"
+
+        db.execSQL(settingsTable)
             CREATE TABLE IF NOT EXISTS LoginHistory (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 userID INTEGER,
@@ -103,12 +138,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             )
         """.trimIndent())
 
-
         // Create Additional Tables
         db.execSQL("CREATE TABLE $TABLE_ACCOUNT (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, token INTEGER)")
         db.execSQL("CREATE TABLE $TABLE_MODULE (moduleID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, content TEXT NOT NULL, media TEXT)")
         db.execSQL("CREATE TABLE $TABLE_VOCAB_LIST (word TEXT PRIMARY KEY, moduleID INTEGER, FOREIGN KEY (moduleID) REFERENCES $TABLE_MODULE(moduleID))")
-        db.execSQL("CREATE TABLE $TABLE_USER_PROGRESS (progressID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER, moduleID INTEGER, completed BOOLEAN DEFAULT 0, score INTEGER, FOREIGN KEY (userID) REFERENCES $TABLE_ACCOUNT(userID), FOREIGN KEY (moduleID) REFERENCES $TABLE_MODULE(moduleID))")
         db.execSQL("CREATE TABLE $TABLE_ASSESSMENT (assessmentID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, moduleID INTEGER, FOREIGN KEY (moduleID) REFERENCES $TABLE_MODULE(moduleID))")
         db.execSQL("CREATE TABLE $TABLE_QUESTION (questionID INTEGER PRIMARY KEY AUTOINCREMENT, assessmentID INTEGER, question TEXT NOT NULL, correctAnswer TEXT NOT NULL, FOREIGN KEY (assessmentID) REFERENCES $TABLE_ASSESSMENT(assessmentID))")
         db.execSQL("CREATE TABLE $TABLE_USER_ANSWER (userAnswerID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER, questionID INTEGER, userAnswer TEXT NOT NULL, isCorrect BOOLEAN DEFAULT 0, FOREIGN KEY (userID) REFERENCES $TABLE_ACCOUNT(userID), FOREIGN KEY (questionID) REFERENCES $TABLE_QUESTION(questionID))")
@@ -213,6 +246,64 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return result != -1L
     }
 
+    fun getUserProgress(username: String): Pair<Int, Int> {
+        val db = this.readableDatabase
+        val query = "SELECT module_index, step_index FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?"
+        val cursor = db.rawQuery(query, arrayOf(username))
+        var result = 0 to 0
+        if (cursor.moveToFirst()) {
+            val mod = cursor.getInt(cursor.getColumnIndexOrThrow("module_index"))
+            val step = cursor.getInt(cursor.getColumnIndexOrThrow("step_index"))
+            result = mod to step
+        }
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun updateUserProgress(username: String, moduleIndex: Int, stepIndex: Int) {
+        val db = this.writableDatabase
+
+        val cursor = db.rawQuery(
+            "SELECT module_index, step_index FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?",
+            arrayOf(username)
+        )
+
+        if (cursor.moveToFirst()) {
+            val currentModule = cursor.getInt(cursor.getColumnIndexOrThrow("module_index"))
+            val currentStep = cursor.getInt(cursor.getColumnIndexOrThrow("step_index"))
+
+            // only update if this is a 'higher' module than user's 'highest'
+            val shouldUpdate = when {
+                moduleIndex > currentModule -> true
+                moduleIndex == currentModule && stepIndex > currentStep -> true
+                else -> false
+            }
+
+            if (shouldUpdate) {
+                val values = ContentValues().apply {
+                    put("module_index", moduleIndex)
+                    put("step_index", stepIndex)
+                }
+                db.update(
+                    TABLE_USERS,
+                    values,
+                    "$COLUMN_USERNAME = ?",
+                    arrayOf(username)
+                )
+                Log.d("PROGRESS", "Progress updated for $username → module=$moduleIndex, step=$stepIndex")
+            } else {
+                Log.d("PROGRESS", "Skipped update — attempted to regress progress for $username")
+            }
+        }
+
+        cursor.close()
+        db.close()
+    }
+
+
+
+
 
     fun getAchievements(userID: Int): List<String> {
         val achievements = mutableListOf<String>()
@@ -263,34 +354,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return userId
     }
 
-    fun getUserProgress(username: String): Int {
-        val db = this.readableDatabase
-        val query = "SELECT $COLUMN_PROGRESS FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?"
-
-        val cursor = db.rawQuery(query, arrayOf(username))
-        var progress = -1
-
-        if (cursor.moveToFirst()) {
-            progress = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PROGRESS))
-        }
-
-        cursor.close()
-        db.close()
-        return progress
-    }
-
-
-
-    fun getUserTotalExp(userID: Int): Int {
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT SUM(score) FROM $TABLE_USER_PROGRESS WHERE userID = ?",
-            arrayOf(userID.toString())
-        )
-        val total = if (cursor.moveToFirst()) cursor.getInt(0) else 0
-        cursor.close()
-        return total
-    }
+//    fun getUserTotalExp(userID: Int): Int {
+//        val db = this.readableDatabase
+//        val cursor = db.rawQuery(
+//            "SELECT SUM(score) FROM $TABLE_USER_PROGRESS WHERE userID = ?",
+//            arrayOf(userID.toString())
+//        )
+//        val total = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+//        cursor.close()
+//        return total
+//    }
 
     fun getKnownWordCount(userID: Int): Int {
         val db = this.readableDatabase
@@ -343,31 +416,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.update(TABLE_USERS, values, "id = ?", arrayOf(userID.toString()))
         db.close()
     }
-
-
-    fun getUserProgressSummary(userID: Int): String {
-        val db = this.readableDatabase
-        val cursor = db.rawQuery("""
-        SELECT COUNT(*) AS totalModules,
-               SUM(completed) AS modulesCompleted,
-               SUM(score) AS totalScore
-        FROM $TABLE_USER_PROGRESS
-        WHERE userID = ?
-    """.trimIndent(), arrayOf(userID.toString()))
-
-        var summary = "Progress not available"
-        if (cursor.moveToFirst()) {
-            val totalModules = cursor.getInt(cursor.getColumnIndexOrThrow("totalModules"))
-            val completed = cursor.getInt(cursor.getColumnIndexOrThrow("modulesCompleted"))
-            val totalScore = cursor.getInt(cursor.getColumnIndexOrThrow("totalScore"))
-            summary = "Modules: $completed/$totalModules | Total Score: $totalScore"
-        }
-
-        cursor.close()
-        db.close()
-        return summary
-    }
-
 
     fun insertNotification(message: String): Boolean {
         val db = writableDatabase
@@ -446,13 +494,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
 
     // Add a new user
-    fun addUser(username: String, password: String, email: String, progress: Int = 0): Boolean {
+    fun addUser(username: String, password: String, email: String): Boolean {
         val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(COLUMN_USERNAME, username)
-        values.put(COLUMN_PASSWORD, password)
-        values.put(COLUMN_EMAIL, email)
-        values.put(COLUMN_PROGRESS, progress)
+        val values = ContentValues().apply {
+            put(COLUMN_USERNAME, username)
+            put(COLUMN_PASSWORD, password)
+            put(COLUMN_EMAIL, email)
+            put("module_index", 0)
+            put("step_index", 0)
+            put("knownWords", 0)
+        }
 
         val result = db.insert(TABLE_USERS, null, values)
         db.close()
@@ -573,18 +624,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return email
     }
 
-    // Add user progress
-    fun addUserProgress(userID: Int, moduleID: Int, completed: Boolean, score: Int) {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put("userID", userID)
-        values.put("moduleID", moduleID)
-        values.put("completed", if (completed) 1 else 0)
-        values.put("score", score)
-        db.insert(TABLE_USER_PROGRESS, null, values)
-        db.close()
-    }
-
     // add a new discussion post
     fun addDiscussionPost(userID: Int, content: String): Boolean {
         val db = this.writableDatabase
@@ -616,6 +655,138 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return posts
     }*/
 
+    //        val settingsTable = "CREATE TABLE user_settings (" +
+    //                "user_id INTEGER PRIMARY KEY, " +
+    //                "sound_effects INTEGER NOT NULL, " +
+    //                "vibration_feedback INTEGER NOT NULL, " +
+    //                "push_notifs INTEGER NOT NULL, " +
+    //                "email_updates INTEGER NOT NULL, " +
+    //                "notif_sound INTEGER NOT NULL, " +
+    //                "daily_reminder_time TIME NOT NULL, " +
+    //                "text_size INTEGER NOT NULL, " +
+    //                "contrast INTEGER NOT NULL, " +
+    //                "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);"
+
+    fun insertUserSettings(userID: Int) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("user_id", userID)
+            put("sound_effects", 1)
+            put("vibration_feedback", 1)
+            put("push_notifs", 1)
+            put("email_updates", 1)
+            put("notif_sound", 1)
+            put("daily_reminder_time", "08:00:00")
+            put("text_size", 1)
+            put("contrast", 0)
+        }
+
+        db.insert("user_settings", null, values)
+        db.close()
+    }
+
+    fun getSoundEffects(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT sound_effects FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setSoundEffects(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET sound_effects = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getTextSize(userId: Int): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT text_size FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val size = if (cursor.moveToFirst()) cursor.getInt(0) else 1 // default fallback
+        cursor.close()
+        db.close()
+        return size
+    }
+
+    fun setTextSize(userId: Int, size: Int) {
+        val db = writableDatabase
+        db.execSQL("UPDATE user_settings SET text_size = ? WHERE user_id = ?", arrayOf(size, userId))
+        db.close()
+    }
+
+    fun getVibrationFeedback(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT vibration_feedback FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setVibrationFeedback(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET vibration_feedback = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getPushNotifs(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT push_notifs FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setPushNotifs(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET push_notifs = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getEmailUpdates(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT email_updates FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setEmailUpdates(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET email_updates = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getContrast(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT contrast FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setContrast(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET contrast = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getNotifSound(userId: Int): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT notif_sound FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) else 1
+        cursor.close()
+        db.close()
+        return result
 
     fun changeUserProgress(username: String,  score: Int) {
         val db = this.writableDatabase

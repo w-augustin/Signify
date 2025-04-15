@@ -11,13 +11,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.database.DBHelper
 import com.example.signifybasic.debug.DebugActivity
-import com.example.signifybasic.features.games.GameSequenceManager
+import com.example.signifybasic.games.GameSequenceManager
 import com.example.signifybasic.features.tabs.HomePage
 
 
@@ -50,7 +49,6 @@ class MainActivity : AppCompatActivity() {
             dbHelper.addUser(adminUsername, "admin", "admin@admin.com")
         }
 
-        dbHelper.changeUserProgress(adminUsername, 10)
         val userId = adminUsername?.let { dbHelper.getUserIdByUsername(it) }
         val safeuserid = userId ?: 0
         dbHelper.setKnownWords(safeuserid, 7)
