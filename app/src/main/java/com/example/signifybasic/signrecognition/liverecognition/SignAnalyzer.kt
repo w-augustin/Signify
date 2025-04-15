@@ -1,4 +1,4 @@
-package com.example.signifybasic.signrecognition
+package com.example.signifybasic.signrecognition.liverecognition
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -12,11 +12,8 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.FileInputStream
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
-import java.io.File
 import android.content.res.AssetFileDescriptor
 import java.io.ByteArrayOutputStream
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 
 class SignAnalyzer(
     context: Context,

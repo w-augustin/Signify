@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signifybasic.R
+import com.example.signifybasic.signrecognition.videorecognition.RecordVideoActivity
 
 class MainActivity3 : AppCompatActivity() {
 

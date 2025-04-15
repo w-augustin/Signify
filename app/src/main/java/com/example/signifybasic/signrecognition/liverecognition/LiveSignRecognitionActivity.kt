@@ -1,4 +1,4 @@
-package com.example.signifybasic.signrecognition
+package com.example.signifybasic.signrecognition.liverecognition
 
 import android.Manifest
 import android.content.pm.PackageManager

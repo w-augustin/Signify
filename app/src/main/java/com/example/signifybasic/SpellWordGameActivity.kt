@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.example.signifybasic.R
 import com.example.signifybasic.features.base.BaseGameActivity
-import com.example.signifybasic.signrecognition.SignAnalyzer
+import com.example.signifybasic.signrecognition.liverecognition.SignAnalyzer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

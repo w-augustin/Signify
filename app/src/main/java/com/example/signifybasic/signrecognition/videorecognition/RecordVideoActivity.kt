@@ -1,4 +1,4 @@
-package com.example.signifybasic.signrecognition
+package com.example.signifybasic.signrecognition.videorecognition
 
 import android.content.Intent
 import android.hardware.camera2.CameraCharacteristics
@@ -14,15 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.features.tabs.HomePage
 import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
-import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody

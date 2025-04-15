@@ -3,7 +3,6 @@ package com.example.signifybasic.features.tabs.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +12,13 @@ import androidx.cardview.widget.CardView
 import com.example.signifybasic.R
 import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.features.tabs.discussion.DiscussionFragment
-import com.example.signifybasic.features.tabs.discussion.DiscussionPage
 import com.example.signifybasic.features.tabs.resources.ResourcesFragment
 import com.example.signifybasic.features.tabs.settings.SettingsFragment
 import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
-import com.example.signifybasic.signrecognition.LiveSignRecognitionActivity
+import com.example.signifybasic.signrecognition.liverecognition.LiveSignRecognitionActivity
 import com.example.signifybasic.signrecognition.MainActivity3
-import com.example.signifybasic.signrecognition.RecordVideoActivity
 
 class HomeFragment : Fragment() {
 
@@ -60,10 +57,12 @@ class HomeFragment : Fragment() {
         }
 
         cardDiscussion.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, DiscussionFragment())
-                .addToBackStack(null)
-                .commit()        }
+            startActivity(Intent(requireContext(), MainActivity3::class.java))
+//            requireActivity().supportFragmentManager.beginTransaction()
+//                .replace(R.id.fragment_container, DiscussionFragment())
+//                .addToBackStack(null)
+//                .commit()
+        }
 
         cardResources.setOnClickListener{
             requireActivity().supportFragmentManager.beginTransaction()

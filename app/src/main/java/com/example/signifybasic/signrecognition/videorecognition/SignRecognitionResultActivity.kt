@@ -1,4 +1,4 @@
-package com.example.signifybasic.signrecognition
+package com.example.signifybasic.signrecognition.videorecognition
 
 import android.content.Intent
 import android.os.Bundle

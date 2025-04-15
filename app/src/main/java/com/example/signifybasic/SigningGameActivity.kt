@@ -9,10 +9,9 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.core.content.ContextCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.features.base.BaseGameActivity
-import com.example.signifybasic.signrecognition.ModelRetrofitClient
+import com.example.signifybasic.signrecognition.videorecognition.ModelRetrofitClient
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody

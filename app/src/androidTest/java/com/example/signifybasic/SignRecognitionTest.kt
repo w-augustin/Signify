@@ -7,7 +7,6 @@ import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import com.example.signifybasic.signrecognition.*
 import okhttp3.mockwebserver.MockWebServer
 import android.provider.MediaStore
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
@@ -15,6 +14,8 @@ import androidx.test.rule.GrantPermissionRule
 import org.junit.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.assertion.ViewAssertions.*
+import com.example.signifybasic.signrecognition.videorecognition.ModelRetrofitClient
+import com.example.signifybasic.signrecognition.videorecognition.RecordVideoActivity
 
 class RecordVideoActivityTest {
 

@@ -34,9 +34,9 @@
         <activity android:name=".features.tabs.HomePage" />
         <activity android:name=".features.auth.TestPage" />
         <activity android:name=".signrecognition.MainActivity3" />
-        <activity android:name=".signrecognition.RecordVideoActivity" />
-        <activity android:name=".signrecognition.LiveSignRecognitionActivity" />
-        <activity android:name=".signrecognition.SignRecognitionResultActivity" />
+        <activity android:name=".signrecognition.videorecognition.RecordVideoActivity" />
+        <activity android:name=".signrecognition.liverecognition.LiveSignRecognitionActivity" />
+        <activity android:name=".signrecognition.videorecognition.SignRecognitionResultActivity" />
         <activity android:name=".LoadImageActivity" />
         <activity android:name=".features.tabs.discussion.DiscussionPage" />
         <activity android:name=".features.games.MatchingGameActivity" />

@@ -6,7 +6,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import com.example.signifybasic.signrecognition.SignRecognitionResultActivity
+import com.example.signifybasic.signrecognition.videorecognition.SignRecognitionResultActivity
 import org.junit.Before
 import org.junit.Test
 import androidx.test.espresso.intent.Intents

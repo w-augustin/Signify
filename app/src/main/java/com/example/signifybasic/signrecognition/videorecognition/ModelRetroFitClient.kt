@@ -1,4 +1,4 @@
-package com.example.signifybasic.signrecognition
+package com.example.signifybasic.signrecognition.videorecognition
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
