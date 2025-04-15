@@ -3,6 +3,7 @@ build/
 **/build/
 **/out/
 **/captures/
+model_training/
 .externalNativeBuild/
 .cxx/
 intermediates/
