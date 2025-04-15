@@ -26,6 +26,7 @@ object GameRouter {
             "fill_blank" -> Intent(context, FillBlankGameActivity::class.java)
             "matching" -> Intent(context, MatchingGameActivity::class.java)
             "signing" -> Intent(context, SigningGameActivity::class.java)
+            "spell_word" -> Intent(context, SpellWordGameActivity::class.java)
             else -> {
                 Toast.makeText(context, "Unknown game type: ${step.type}", Toast.LENGTH_SHORT).show()
                 return

@@ -5,11 +5,10 @@
     "description": "Learn the first letters and signs",
     "games": [
       {
-        "type": "signing",
-        "prompt": "Sign the letter W to complete the final challenge!",
-        "expectedSign": "W",
-        "imageRes": "w_sign",
-        "resultKey": "SIGNING_BOOL"
+        "type": "spell_word",
+        "prompt": "Spell the word COT using signs!",
+        "correctAnswer": "COT",
+        "resultKey": "SPELLWORD_BOOL"
       },
       {
         "type": "selecting",

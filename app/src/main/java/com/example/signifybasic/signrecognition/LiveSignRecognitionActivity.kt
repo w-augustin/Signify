@@ -73,7 +73,17 @@ class LiveSignRecognitionActivity : AppCompatActivity() {
                 }
 
             // Choose a camera (using the front camera here)
-            val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
+            val cameraSelector: CameraSelector = CameraSelector.Builder()
+                .apply {
+                    if (cameraProvider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA)) {
+                        requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                    } else if (cameraProvider.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA)) {
+                        requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                    } else {
+                        throw IllegalArgumentException("No available cameras on the device")
+                    }
+                }
+                .build()
 
             try {
                 cameraProvider.unbindAll()

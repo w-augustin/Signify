@@ -93,6 +93,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         """.trimIndent()
         db.execSQL(achievementTable)
 
+        db.execSQL("""
+                CREATE TABLE IF NOT EXISTS LoginHistory (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    loginDate TEXT,
+                    UNIQUE(userID, loginDate)
+                )
+            """.trimIndent())
+
         // Create Additional Tables
         db.execSQL("CREATE TABLE $TABLE_ACCOUNT (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, token INTEGER)")
         db.execSQL("CREATE TABLE $TABLE_MODULE (moduleID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, content TEXT NOT NULL, media TEXT)")
