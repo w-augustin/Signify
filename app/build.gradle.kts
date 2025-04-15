@@ -52,6 +52,10 @@ android {
 }
 
 dependencies {
+    configurations.all {
+        exclude(group = "com.google.protobuf", module = "protobuf-java")
+    }
+
 
     implementation(libs.androidx.camera.core)
     implementation (libs.androidx.camera.camera2)
@@ -62,6 +66,15 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
+
+    implementation("com.google.mediapipe:tasks-vision:0.10.14")
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
+    implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.support)
 
     implementation(libs.material.v170)
     implementation(libs.androidx.material.icons.extended)
@@ -84,6 +97,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose.v273)
     implementation(libs.androidx.preference)
     implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     implementation(libs.core.ktx)
