@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.cardview.widget.CardView
 import com.example.signifybasic.R
 import com.example.signifybasic.features.activitycenter.ActivityCenter
-import com.example.signifybasic.features.tabs.discussion.DiscussionFragment
 import com.example.signifybasic.features.tabs.playground.PlaygroundActivity
 import com.example.signifybasic.features.tabs.dictionary.DictionaryFragment
 import com.example.signifybasic.features.tabs.resources.ResourcesFragment
@@ -19,7 +18,6 @@ import com.example.signifybasic.features.tabs.settings.SettingsFragment
 import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
-import com.example.signifybasic.signrecognition.RecordVideoActivity
 
 class HomeFragment : Fragment() {
 

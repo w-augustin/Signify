@@ -130,6 +130,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);"
 
         db.execSQL(settingsTable)
+
+        db.execSQL(
+        """
             CREATE TABLE IF NOT EXISTS LoginHistory (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 userID INTEGER,
@@ -782,11 +785,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     fun getNotifSound(userId: Int): Int {
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT notif_sound FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val cursor = db.rawQuery(
+            "SELECT notif_sound FROM user_settings WHERE user_id = ?",
+            arrayOf(userId.toString())
+        )
         val result = if (cursor.moveToFirst()) cursor.getInt(0) else 1
         cursor.close()
         db.close()
         return result
+    }
 
     fun changeUserProgress(username: String,  score: Int) {
         val db = this.writableDatabase
@@ -889,7 +896,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 val loginDate = formatter.parse(loginDateStr)
                 val expectedDate = lastExpectedDate.time
 
-                if (formatter.format(loginDate) == formatter.format(expectedDate)) {
+                if (loginDate?.let { formatter.format(it) } == formatter.format(expectedDate)) {
                     streak++
                     lastExpectedDate.add(java.util.Calendar.DATE, -1)
                 } else {

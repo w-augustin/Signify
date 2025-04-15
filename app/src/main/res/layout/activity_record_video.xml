@@ -55,7 +55,6 @@
         android:background="@drawable/instruction_box_border"
         android:gravity="center"
         android:padding="8dp"
-        android:padding="16dp"
         android:text="Enter the sign you want to perform, then record your video in landscape mode. \nEnsure your face and arms are visible for accurate sign prediction."
         android:textColor="@android:color/white"
         android:textSize="16sp"
