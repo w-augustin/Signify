@@ -101,6 +101,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     UNIQUE(userID, loginDate)
                 )
             """.trimIndent())
+
+        db.execSQL("""
+                CREATE TABLE IF NOT EXISTS UserBadges (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    slot INTEGER, -- 0, 1, 2
+                    achievementName TEXT,
+                    FOREIGN KEY (userID) REFERENCES users(id)
+                )
+            """.trimIndent())
         
         val settingsTable = "CREATE TABLE user_settings (" +
                 "user_id INTEGER PRIMARY KEY, " +
