@@ -1,7 +1,7 @@
 package com.example.signifybasic
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.signifybasic.signrecognition.videorecognition.ModelRetrofitClient
+import com.example.signifybasic.features.tabs.playground.videorecognition.ModelRetrofitClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

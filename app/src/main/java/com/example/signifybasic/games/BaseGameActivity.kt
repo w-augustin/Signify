@@ -1,11 +1,10 @@
-package com.example.signifybasic.features.base
+package com.example.signifybasic.games
 
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signifybasic.R
-import com.example.signifybasic.database.DBHelper
 import com.google.android.material.appbar.MaterialToolbar
 
 abstract class BaseGameActivity : AppCompatActivity() {

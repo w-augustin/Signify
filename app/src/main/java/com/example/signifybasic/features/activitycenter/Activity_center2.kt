@@ -1,26 +1,22 @@
 package com.example.signifybasic.features.activitycenter
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.google.android.material.appbar.MaterialToolbar
-import com.example.signifybasic.features.games.GameRouter
-import com.example.signifybasic.features.games.GameSequenceManager
-import com.example.signifybasic.features.games.GameStep
-import com.example.signifybasic.features.games.ModuleManager
+import com.example.signifybasic.games.GameRouter
+import com.example.signifybasic.games.GameSequenceManager
+import com.example.signifybasic.games.ModuleManager
 import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
-import com.example.signifybasic.getStarted
 
 
 class activity_center2 : AppCompatActivity() {

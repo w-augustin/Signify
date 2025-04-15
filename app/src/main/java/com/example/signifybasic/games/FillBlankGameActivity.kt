@@ -8,7 +8,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.signifybasic.R
-import com.example.signifybasic.features.base.BaseGameActivity
+import com.example.signifybasic.games.BaseGameActivity
+import com.example.signifybasic.games.GameSequenceManager
 import java.io.Serializable
 
 data class FillBlankGameData(

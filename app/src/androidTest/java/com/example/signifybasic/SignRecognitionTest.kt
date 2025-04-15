@@ -14,8 +14,8 @@ import androidx.test.rule.GrantPermissionRule
 import org.junit.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.assertion.ViewAssertions.*
-import com.example.signifybasic.signrecognition.videorecognition.ModelRetrofitClient
-import com.example.signifybasic.signrecognition.videorecognition.RecordVideoActivity
+import com.example.signifybasic.features.tabs.playground.videorecognition.ModelRetrofitClient
+import com.example.signifybasic.features.tabs.playground.videorecognition.RecordVideoActivity
 
 class RecordVideoActivityTest {
 

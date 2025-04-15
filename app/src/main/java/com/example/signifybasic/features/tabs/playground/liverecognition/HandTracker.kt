@@ -1,4 +1,4 @@
-package com.example.signifybasic.signrecognition.liverecognition
+package com.example.signifybasic.features.tabs.playground.liverecognition
 
 import android.content.Context
 import android.graphics.Bitmap

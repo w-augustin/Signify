@@ -1,7 +1,6 @@
-package com.example.signifybasic.features.games
+package com.example.signifybasic.games
 
 import android.content.Context
-import com.example.signifybasic.database.DBHelper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -13,7 +12,7 @@ object   ModuleManager {
     var currentStepIndex = 0
 
     fun loadModules(context: Context) {
-        if (::modules.isInitialized) return
+        if (ModuleManager::modules.isInitialized) return
 
         val jsonString = context.assets.open("modules.json").bufferedReader().use { it.readText() }
         val type = object : TypeToken<List<GameModule>>() {}.type

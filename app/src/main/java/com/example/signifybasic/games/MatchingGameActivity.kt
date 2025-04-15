@@ -1,12 +1,10 @@
-package com.example.signifybasic.features.games
+package com.example.signifybasic.games
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.signifybasic.R
-import com.example.signifybasic.features.base.BaseGameActivity
-import java.io.Serializable
 
 class MatchingGameActivity : BaseGameActivity() {
     override fun getGameLayoutId(): Int = R.layout.activity_matching_game

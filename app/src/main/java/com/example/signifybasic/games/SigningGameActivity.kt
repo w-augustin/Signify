@@ -1,4 +1,4 @@
-package com.example.signifybasic.features.games
+package com.example.signifybasic.games
 
 import android.app.Activity
 import android.content.Intent
@@ -10,8 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.example.signifybasic.R
-import com.example.signifybasic.features.base.BaseGameActivity
-import com.example.signifybasic.signrecognition.videorecognition.ModelRetrofitClient
+import com.example.signifybasic.features.tabs.playground.videorecognition.ModelRetrofitClient
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody

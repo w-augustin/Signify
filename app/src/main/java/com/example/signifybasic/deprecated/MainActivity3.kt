@@ -1,11 +1,11 @@
-package com.example.signifybasic.signrecognition
+package com.example.signifybasic.deprecated
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signifybasic.R
-import com.example.signifybasic.signrecognition.videorecognition.RecordVideoActivity
+import com.example.signifybasic.features.tabs.playground.videorecognition.RecordVideoActivity
 
 class MainActivity3 : AppCompatActivity() {
 

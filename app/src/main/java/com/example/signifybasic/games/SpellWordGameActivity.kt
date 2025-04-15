@@ -1,4 +1,4 @@
-package com.example.signifybasic.features.games
+package com.example.signifybasic.games
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,8 +12,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.example.signifybasic.R
-import com.example.signifybasic.features.base.BaseGameActivity
-import com.example.signifybasic.signrecognition.liverecognition.SignAnalyzer
+import com.example.signifybasic.features.tabs.playground.liverecognition.SignAnalyzer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

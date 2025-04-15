@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@drawable/login_background"
-    tools:context=".signrecognition.videorecognition.SignRecognitionResultActivity">
+    tools:context=".features.tabs.playground.videorecognition.SignRecognitionResultActivity">
 
     <!-- Recognized Sign Output -->
     <TextView

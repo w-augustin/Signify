@@ -1,4 +1,4 @@
-package com.example.signifybasic.signrecognition.videorecognition
+package com.example.signifybasic.features.tabs.playground.videorecognition
 
 import android.content.Intent
 import android.hardware.camera2.CameraCharacteristics
