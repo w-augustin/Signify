@@ -5,12 +5,18 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Surface
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.signifybasic.R
 import com.example.signifybasic.databinding.ActivityLiveSignRecognitionBinding
+import com.example.signifybasic.features.utility.applyHighContrastToAllViews
+import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
+import com.example.signifybasic.features.utility.isHighContrastEnabled
+import com.google.android.material.appbar.MaterialToolbar
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -27,6 +33,17 @@ class LiveSignRecognitionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLiveSignRecognitionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val rootView = findViewById<ViewGroup>(android.R.id.content)
+        applyTextSizeToAllTextViews(rootView, this)
+        if (isHighContrastEnabled(this)) {
+            applyHighContrastToAllViews(rootView, this)
+        }
+
+        val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
+        toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         if (allPermissionsGranted()) {
             startCamera()
