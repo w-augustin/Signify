@@ -19,6 +19,7 @@ import com.example.signifybasic.features.tabs.settings.SettingsFragment
 import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
+import com.example.signifybasic.signrecognition.LiveSignRecognitionActivity
 import com.example.signifybasic.signrecognition.MainActivity3
 import com.example.signifybasic.signrecognition.RecordVideoActivity
 
@@ -77,7 +78,7 @@ class HomeFragment : Fragment() {
 
         cardPlayground.setOnClickListener {
             //playground
-            startActivity(Intent(requireContext(), RecordVideoActivity::class.java))
+            startActivity(Intent(requireContext(), LiveSignRecognitionActivity::class.java))
         }
 
         return view

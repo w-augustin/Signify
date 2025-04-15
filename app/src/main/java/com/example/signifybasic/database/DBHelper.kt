@@ -93,6 +93,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         """.trimIndent()
         db.execSQL(achievementTable)
 
+        db.execSQL("""
+                CREATE TABLE IF NOT EXISTS LoginHistory (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    userID INTEGER,
+                    loginDate TEXT,
+                    UNIQUE(userID, loginDate)
+                )
+            """.trimIndent())
+        
         val settingsTable = "CREATE TABLE user_settings (" +
                 "user_id INTEGER PRIMARY KEY, " +
                 "sound_effects INTEGER NOT NULL, " +
