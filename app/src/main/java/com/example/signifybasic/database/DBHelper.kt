@@ -9,7 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.example.signifybasic.features.tabs.achievements.AchievementMeta
-import com.example.signifybasic.features.tabs.discussion.DiscussionPost
+import com.example.signifybasic.features.tabs.dictionary.*
 import java.io.ByteArrayOutputStream
 
 data class NotificationItem(val message: String, val timestamp: Long)
@@ -22,7 +22,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
-        private const val DATABASE_VERSION = 10  // Incremented to account for new tables
+        private const val DATABASE_VERSION = 11 // Incremented to account for new tables
 
         // User Images Table
         private const val TABLE_USER_IMAGES = "userImages"
@@ -97,6 +97,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         """.trimIndent()
         db.execSQL(achievementTable)
 
+        // Create LoginHistory table
         db.execSQL("""
                 CREATE TABLE IF NOT EXISTS LoginHistory (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -129,6 +130,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);"
 
         db.execSQL(settingsTable)
+            CREATE TABLE IF NOT EXISTS LoginHistory (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                userID INTEGER,
+                loginDate TEXT,
+                UNIQUE(userID, loginDate)
+            )
+        """.trimIndent())
 
         // Create Additional Tables
         db.execSQL("CREATE TABLE $TABLE_ACCOUNT (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, token INTEGER)")
@@ -627,7 +635,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return result != -1L
     }
 
-    // get all discussion posts
+    /* get all discussion posts
     fun getAllDiscussionPosts(): List<DiscussionPost> {
         val posts = mutableListOf<DiscussionPost>()
         val db = this.readableDatabase
@@ -645,7 +653,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         cursor.close()
         db.close()
         return posts
-    }
+    }*/
 
     //        val settingsTable = "CREATE TABLE user_settings (" +
     //                "user_id INTEGER PRIMARY KEY, " +
@@ -779,6 +787,33 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         cursor.close()
         db.close()
         return result
+
+    fun changeUserProgress(username: String,  score: Int) {
+        val db = this.writableDatabase
+
+        // First, find the user's ID
+        val cursor = db.rawQuery(
+            "SELECT id FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?",
+            arrayOf(username)
+        )
+
+        if (cursor.moveToFirst()) {
+            val userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+
+            // Update the progress column for this user
+            val values = ContentValues()
+            values.put(COLUMN_PROGRESS, score)
+
+            db.update(
+                TABLE_USERS,
+                values,
+                "id = ?",
+                arrayOf(userId.toString())
+            )
+        }
+
+        cursor.close()
+        db.close()
     }
 
 
@@ -792,48 +827,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return result != -1L
     }
 
-
-    fun setNotifSound(userId: Int, soundId: Int) {
-        val db = writableDatabase
-        db.execSQL("UPDATE user_settings SET notif_sound = ? WHERE user_id = ?", arrayOf(soundId, userId))
-        db.close()
-    }
-
-    fun getDailyReminderTime(userId: Int): String {
-        val db = readableDatabase
-        val cursor = db.rawQuery("SELECT daily_reminder_time FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
-        val result = if (cursor.moveToFirst()) cursor.getString(0) else "08:00:00"
-        cursor.close()
-        db.close()
-        return result
-    }
-
-    fun setDailyReminderTime(userId: Int, time: String) {
-        val db = writableDatabase
-        db.execSQL("UPDATE user_settings SET daily_reminder_time = ? WHERE user_id = ?", arrayOf(time, userId))
-        db.close()
-    }
-
-
-
-
-//    fun getKnownWords(userID: Int): List<String> {
-//        val db = this.readableDatabase
-//        val words = mutableListOf<String>()
-//        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
-//            } while (cursor.moveToNext())
-
     fun setUserBadge(userID: Int, slot: Int, achievementName: String) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put("userID", userID)
             put("slot", slot)
             put("achievementName", achievementName)
-
         }
         db.delete("UserBadges", "userID=? AND slot=?", arrayOf(userID.toString(), slot.toString()))
         db.insert("UserBadges", null, values)
@@ -905,19 +904,19 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
 
-    fun getKnownWords(userID: Int): List<String> {
-        val db = this.readableDatabase
-        val words = mutableListOf<String>()
-        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
-
-        if (cursor.moveToFirst()) {
-            do {
-                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
-            } while (cursor.moveToNext())
-        }
-
-        cursor.close()
-        db.close()
-        return words
-    }
+//    fun getKnownWords(userID: Int): List<String> {
+//        val db = this.readableDatabase
+//        val words = mutableListOf<String>()
+//        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
+//            } while (cursor.moveToNext())
+//        }
+//
+//        cursor.close()
+//        db.close()
+//        return words
+//    }
 }

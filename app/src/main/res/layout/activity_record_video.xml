@@ -9,7 +9,7 @@
     android:background="@drawable/login_background"
     tools:context=".features.tabs.playground.videorecognition.RecordVideoActivity">
 
-    <!-- loading animation -->
+    <!-- Loading Animation -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="40dp"
@@ -55,45 +55,60 @@
         android:background="@drawable/instruction_box_border"
         android:gravity="center"
         android:padding="8dp"
-        android:text="Enter the sign you intend to perform, then record your video in landscape mode. \n Make sure your face and arms are visible for more accurate sign prediction."
+        android:padding="16dp"
+        android:text="Enter the sign you want to perform, then record your video in landscape mode. \nEnsure your face and arms are visible for accurate sign prediction."
         android:textColor="@android:color/white"
-        android:textSize="15sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <!-- input text -->
+    <!-- Input Text -->
+
+    <!-- Record Button -->
     <AutoCompleteTextView
         android:id="@+id/inputSign"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:padding="16dp"
         android:hint="Enter Sign Here"
-        android:textSize="18sp"
+        android:padding="16dp"
         android:textColor="@android:color/white"
         android:textColorHint="@color/white"
         app:layout_constraintTop_toTopOf="@id/divider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.4"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/instructionText"
         tools:ignore="VisualLintTextFieldSize" />
 
-    <!-- Record Button -->
-
-    <!-- go back button -->
     <Button
         android:id="@+id/btnRecord"
         android:layout_width="185dp"
         android:layout_height="48dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="48dp"
         android:backgroundTint="?attr/colorPrimary"
         android:text="Record Video"
         android:textColor="#273990"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputSign" />
+
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="185dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="?attr/colorSecondary"
+        android:text="Back to Home"
+        android:textColor="#e3e8ff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnRecord" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

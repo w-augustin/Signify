@@ -13,11 +13,13 @@ import com.example.signifybasic.R
 import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.features.tabs.discussion.DiscussionFragment
 import com.example.signifybasic.features.tabs.playground.PlaygroundActivity
+import com.example.signifybasic.features.tabs.dictionary.DictionaryFragment
 import com.example.signifybasic.features.tabs.resources.ResourcesFragment
 import com.example.signifybasic.features.tabs.settings.SettingsFragment
 import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
+import com.example.signifybasic.signrecognition.RecordVideoActivity
 
 class HomeFragment : Fragment() {
 
@@ -38,7 +40,7 @@ class HomeFragment : Fragment() {
         textView.text = personalizedText
 
         val cardSettings = view.findViewById<CardView>(R.id.card_settings)
-        val cardDiscussion = view.findViewById<CardView>(R.id.card_discussion)
+        val cardDictionary = view.findViewById<CardView>(R.id.card_dictionary)
         val cardActivityCenter = view.findViewById<CardView>(R.id.card_activity_center)
         val cardPlayground = view.findViewById<CardView>(R.id.card_playground)
         val cardResources = view.findViewById<CardView>(R.id.card_resources)
@@ -55,10 +57,10 @@ class HomeFragment : Fragment() {
                 .commit()
         }
 
-        cardDiscussion.setOnClickListener {
 //            startActivity(Intent(requireContext(), RecordVideoActivity::class.java))
+        cardDictionary.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, DiscussionFragment())
+                .replace(R.id.fragment_container, DictionaryFragment())
                 .addToBackStack(null)
                 .commit()
         }

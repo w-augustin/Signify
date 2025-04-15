@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/dictionaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ASL Dictionary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Search Input -->
+        <EditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter sign name"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:backgroundTint="@color/white" />
+
+        <!-- Error Message -->
+        <TextView
+            android:id="@+id/errorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign not currently supported"
+            android:textColor="@color/light_red"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+        <!-- Search Button -->
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:textColor="@color/black"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/white"/>
+
+        <!-- Video Display -->
+        <WebView
+            android:id="@+id/videoWebView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            android:background="@android:color/black"/>
+
+        <!-- Back to Home Button -->
+        <Button
+            android:id="@+id/backToHomeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/white"
+            android:text="Back to Home"
+            android:textColor="@color/black" />
+    </LinearLayout>
+</ScrollView>

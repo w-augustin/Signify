@@ -32,6 +32,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Title -->
+    <TextView
+        android:id="@+id/recognitionResultTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Recognition Result"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Line Under Title -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recognitionResultTitle" />
+
     <!-- Recognized Sign Output -->
     <TextView
         android:id="@+id/tvRecognizedSign"
@@ -40,11 +64,11 @@
         android:gravity="center"
         android:padding="16dp"
         android:text="Recognized Sign: None"
-        android:textSize="18sp"
         android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="32dp" />
 
     <!-- Score Output -->
     <TextView
@@ -92,12 +116,11 @@
         android:id="@+id/btnGoBack"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="?attr/colorSecondary"
         android:text="Go Back to Home"
         android:textColor="#273990"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnRecordAnother" />
 
