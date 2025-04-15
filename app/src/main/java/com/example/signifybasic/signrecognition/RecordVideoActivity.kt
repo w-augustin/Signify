@@ -109,9 +109,16 @@ class RecordVideoActivity : AppCompatActivity() {
             Log.w("CameraConfig", "Resolution or FPS not available!")
         }
 
-        val support = listOf("hello", "hi", "thank you", "thanks", "name", "book", "bye", "goodbye", "i love you")
+        val support = listOf("hello", "hi", "thank you", "thanks", "name", "book", "bye", "goodbye", "i love you") + ('a'..'z').map { it.toString() }
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, support)
         inputEditText.setAdapter(adapter)
+
+        // Define a map for input phrases to their corresponding expected signs
+        val inputMapping = mapOf(
+            "hi" to "hello",
+            "thanks" to "thank you",
+            "bye" to "goodbye"
+        )
 
         recordVideoBtn.setOnClickListener {
             if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -119,7 +126,10 @@ class RecordVideoActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            expectedSign = inputEditText.text.toString().trim().lowercase()
+            val preMappedSign = inputEditText.text.toString().trim().lowercase()
+
+            // Check if the input is a mapped phrase
+            expectedSign = inputMapping[preMappedSign] ?: preMappedSign
 
             if (expectedSign.isEmpty()) {
                 showTextBoxUnderInput("Please enter a sign")
@@ -148,7 +158,7 @@ class RecordVideoActivity : AppCompatActivity() {
 
         val textView = TextView(this).apply {
             text = message
-            setTextColor(getColor(R.color.red))
+            setTextColor(getColor(R.color.light_red))
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             gravity = Gravity.CENTER_HORIZONTAL
             layoutParams = ViewGroup.LayoutParams(
@@ -212,7 +222,8 @@ class RecordVideoActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
 
         CoroutineScope(Dispatchers.IO).launch {
-            val result = recognizeSign(videoFile)
+            val method =  if (expectedSign.length == 1 && expectedSign.all { it.isLetter() }) "alpha" else "holistic"
+            val result = recognizeSign(videoFile, method)
 
             var sign = "Unknown"
             var score = "0.0"
@@ -248,13 +259,13 @@ class RecordVideoActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun recognizeSign(videoFile: File): String {
+    private suspend fun recognizeSign(videoFile: File, method: String): String {
         val mediaType = "video/mp4".toMediaType()
         val requestBody = videoFile.asRequestBody(mediaType)
         val videoPart = MultipartBody.Part.createFormData("video", videoFile.name, requestBody)
 
         return suspendCoroutine { continuation ->
-            ModelRetrofitClient.getInstance().predict(videoPart)
+            ModelRetrofitClient.getInstance().predict(videoPart, method)
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         val result = response.body()?.string()

@@ -101,6 +101,20 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     UNIQUE(userID, loginDate)
                 )
             """.trimIndent())
+        
+        val settingsTable = "CREATE TABLE user_settings (" +
+                "user_id INTEGER PRIMARY KEY, " +
+                "sound_effects INTEGER NOT NULL, " +
+                "vibration_feedback INTEGER NOT NULL, " +
+                "push_notifs INTEGER NOT NULL, " +
+                "email_updates INTEGER NOT NULL, " +
+                "notif_sound INTEGER NOT NULL, " +
+                "daily_reminder_time TIME NOT NULL, " +
+                "text_size INTEGER NOT NULL, " +
+                "contrast INTEGER NOT NULL, " +
+                "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);"
+
+        db.execSQL(settingsTable)
 
         // Create Additional Tables
         db.execSQL("CREATE TABLE $TABLE_ACCOUNT (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, token INTEGER)")
@@ -643,6 +657,140 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
     }
 
+    //        val settingsTable = "CREATE TABLE user_settings (" +
+    //                "user_id INTEGER PRIMARY KEY, " +
+    //                "sound_effects INTEGER NOT NULL, " +
+    //                "vibration_feedback INTEGER NOT NULL, " +
+    //                "push_notifs INTEGER NOT NULL, " +
+    //                "email_updates INTEGER NOT NULL, " +
+    //                "notif_sound INTEGER NOT NULL, " +
+    //                "daily_reminder_time TIME NOT NULL, " +
+    //                "text_size INTEGER NOT NULL, " +
+    //                "contrast INTEGER NOT NULL, " +
+    //                "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);"
+
+    fun insertUserSettings(userID: Int) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("user_id", userID)
+            put("sound_effects", 1)
+            put("vibration_feedback", 1)
+            put("push_notifs", 1)
+            put("email_updates", 1)
+            put("notif_sound", 1)
+            put("daily_reminder_time", "08:00:00")
+            put("text_size", 1)
+            put("contrast", 0)
+        }
+
+        db.insert("user_settings", null, values)
+        db.close()
+    }
+
+    fun getSoundEffects(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT sound_effects FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setSoundEffects(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET sound_effects = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getTextSize(userId: Int): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT text_size FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val size = if (cursor.moveToFirst()) cursor.getInt(0) else 1 // default fallback
+        cursor.close()
+        db.close()
+        return size
+    }
+
+    fun setTextSize(userId: Int, size: Int) {
+        val db = writableDatabase
+        db.execSQL("UPDATE user_settings SET text_size = ? WHERE user_id = ?", arrayOf(size, userId))
+        db.close()
+    }
+
+    fun getVibrationFeedback(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT vibration_feedback FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setVibrationFeedback(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET vibration_feedback = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getPushNotifs(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT push_notifs FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setPushNotifs(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET push_notifs = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getEmailUpdates(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT email_updates FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setEmailUpdates(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET email_updates = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getContrast(userId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT contrast FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) == 1 else false
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setContrast(userId: Int, enabled: Boolean) {
+        val db = writableDatabase
+        val value = if (enabled) 1 else 0
+        db.execSQL("UPDATE user_settings SET contrast = ? WHERE user_id = ?", arrayOf(value, userId))
+        db.close()
+    }
+
+    fun getNotifSound(userId: Int): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT notif_sound FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getInt(0) else 1
+        cursor.close()
+        db.close()
+        return result
+    }
+
 
     fun addKnownWord(userID: Int, word: String): Boolean {
         val db = this.writableDatabase
@@ -654,12 +802,48 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return result != -1L
     }
 
+
+    fun setNotifSound(userId: Int, soundId: Int) {
+        val db = writableDatabase
+        db.execSQL("UPDATE user_settings SET notif_sound = ? WHERE user_id = ?", arrayOf(soundId, userId))
+        db.close()
+    }
+
+    fun getDailyReminderTime(userId: Int): String {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT daily_reminder_time FROM user_settings WHERE user_id = ?", arrayOf(userId.toString()))
+        val result = if (cursor.moveToFirst()) cursor.getString(0) else "08:00:00"
+        cursor.close()
+        db.close()
+        return result
+    }
+
+    fun setDailyReminderTime(userId: Int, time: String) {
+        val db = writableDatabase
+        db.execSQL("UPDATE user_settings SET daily_reminder_time = ? WHERE user_id = ?", arrayOf(time, userId))
+        db.close()
+    }
+
+
+
+
+//    fun getKnownWords(userID: Int): List<String> {
+//        val db = this.readableDatabase
+//        val words = mutableListOf<String>()
+//        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
+//            } while (cursor.moveToNext())
+
     fun setUserBadge(userID: Int, slot: Int, achievementName: String) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put("userID", userID)
             put("slot", slot)
             put("achievementName", achievementName)
+
         }
         db.delete("UserBadges", "userID=? AND slot=?", arrayOf(userID.toString(), slot.toString()))
         db.insert("UserBadges", null, values)
@@ -731,19 +915,19 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
 
-//    fun getKnownWords(userID: Int): List<String> {
-//        val db = this.readableDatabase
-//        val words = mutableListOf<String>()
-//        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
-//            } while (cursor.moveToNext())
-//        }
-//
-//        cursor.close()
-//        db.close()
-//        return words
-//    }
+    fun getKnownWords(userID: Int): List<String> {
+        val db = this.readableDatabase
+        val words = mutableListOf<String>()
+        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
+
+        if (cursor.moveToFirst()) {
+            do {
+                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return words
+    }
 }

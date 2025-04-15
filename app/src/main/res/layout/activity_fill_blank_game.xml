@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="Fill in the blank: C A _"
+                android:text="Find the Missing Sign: CAT"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
