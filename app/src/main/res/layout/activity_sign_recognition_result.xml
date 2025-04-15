@@ -8,30 +8,6 @@
     android:background="@drawable/login_background"
     tools:context=".features.tabs.playground.videorecognition.SignRecognitionResultActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:backgroundTint="@color/primary_blue"
-        android:elevation="4dp"
-        app:title="Record a Sign"
-        app:titleTextColor="@android:color/white"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:navigationIconTint="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="4dp"
-        android:background="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/topAppBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <!-- Title -->
     <TextView
         android:id="@+id/recognitionResultTitle"
@@ -65,7 +41,8 @@
         android:padding="16dp"
         android:text="Recognized Sign: None"
         android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/divider"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/recognitionResultTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="32dp" />
@@ -118,7 +95,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="?attr/colorSecondary"
-        android:text="Go Back to Home"
+        android:text="Back to Home"
         android:textColor="#273990"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

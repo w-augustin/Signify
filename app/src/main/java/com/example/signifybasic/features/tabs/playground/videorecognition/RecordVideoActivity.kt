@@ -33,6 +33,7 @@ import java.io.FileOutputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import android.content.pm.PackageManager
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.android.material.appbar.MaterialToolbar
 
 class RecordVideoActivity : AppCompatActivity() {
@@ -43,6 +44,7 @@ class RecordVideoActivity : AppCompatActivity() {
     private lateinit var inputEditText: AutoCompleteTextView
     private lateinit var expectedSign: String
     private lateinit var progressBar: ProgressBar
+    private lateinit var backToHome: Button
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -66,6 +68,7 @@ class RecordVideoActivity : AppCompatActivity() {
         recordVideoBtn = findViewById(R.id.btnRecord)
         inputEditText = findViewById(R.id.inputSign)
         progressBar = findViewById(R.id.progressBar)
+        backToHome = findViewById(R.id.btnBack)
 
         val rootView = findViewById<ViewGroup>(android.R.id.content)
         applyTextSizeToAllTextViews(rootView, this)
@@ -132,6 +135,12 @@ class RecordVideoActivity : AppCompatActivity() {
 
             val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             startActivityForResult(intent, 1)
+        }
+
+        backToHome.setOnClickListener {
+            val intent = Intent(this@RecordVideoActivity, HomePage::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
