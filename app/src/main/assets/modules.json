@@ -31,6 +31,49 @@
         "resultKey": "IDENTIFY_BOOL"
       },
       {
+        "type": "matching",
+        "items": [
+          { "letter": "p", "imageRes": "p_sign" },
+          { "letter": "a", "imageRes": "a_sign" },
+          { "letter": "c", "imageRes": "c_sign" },
+          { "letter": "b", "imageRes": "b_sign" }
+        ],
+        "resultKey": "MATCHING_BOOL"
+      }
+    ]
+  },
+  {
+    "moduleId": "mod2",
+    "title": "ASL Basics",
+    "description": "Learn the first letters and signs",
+    "games": [
+      {
+        "type": "spell_word",
+        "prompt": "Spell the word COT using signs!",
+        "correctAnswer": "COT",
+        "resultKey": "SPELLWORD_BOOL"
+      },
+      {
+        "type": "selecting",
+        "prompt": "What sign is this?",
+        "imageRes": "p_sign",
+        "options": ["A", "P", "Z", "C"],
+        "correctAnswer": "P",
+        "resultKey": "SELECTING_BOOL"
+      },
+      {
+        "type": "identify",
+        "questionText": "Identify the Correct Sign: A",
+        "options": [
+          { "imageRes": "p_sign", "answerLabel": "P" },
+          { "imageRes": "a_sign", "answerLabel": "A" },
+          { "imageRes": "c_sign", "answerLabel": "C" },
+          { "imageRes": "b_sign", "answerLabel": "B" }
+        ],
+        "correctAnswer": "A",
+        "resultKey": "IDENTIFY_BOOL"
+      },
+      {
         "type": "fill_blank",
         "prompt": "Fill in the blank: C A _",
         "question": "Select the missing letter",

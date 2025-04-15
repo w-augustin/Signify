@@ -2,15 +2,18 @@ package com.example.signifybasic.features.games
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.signifybasic.R
+import com.example.signifybasic.database.DBHelper
 import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.games.BaseGameActivity
 import com.example.signifybasic.games.GameSequenceManager
+import com.example.signifybasic.games.ModuleManager
 import java.io.Serializable
 
 data class SelectingGameData(
@@ -33,7 +36,10 @@ class SelectingGameActivity : BaseGameActivity() {
         super.onCreate(savedInstanceState)
 
         val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
+        Log.d("GAME_LAUNCH", "Launching SelectingGameActivity with STEP_INDEX=$stepIndex")
+        Log.d("GAME_LAUNCH", "GameSequenceManager.sequence size = ${GameSequenceManager.sequence.size}")
         val step = GameSequenceManager.sequence.getOrNull(stepIndex)
+        Log.d("GAME_LAUNCH", "Resolved step type: ${step?.type}")
 
         if (step == null || step.type != "selecting") {
             Toast.makeText(this, "Error loading game data", Toast.LENGTH_SHORT).show()
@@ -103,16 +109,36 @@ class SelectingGameActivity : BaseGameActivity() {
                     optionButtons.forEach { it.isEnabled = false }
                     submitButton.text = "Continue"
                     answeredCorrectly = true
+
+                    // Get user info
+                    val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+                    val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
+
+                    // Progress update
+                    val moduleIndex = com.example.signifybasic.games.ModuleManager.currentModuleIndex
+                    val nextStep = com.example.signifybasic.games.ModuleManager.currentStepIndex + 1
+                    com.example.signifybasic.games.ModuleManager.currentStepIndex = nextStep
+
+                    DBHelper(this).updateUserProgress(username, moduleIndex, nextStep)
+                    Log.d("PROGRESS", "User '$username' now at module=$moduleIndex, step=$nextStep")
+
                 } else {
                     selectedButton!!.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
                     Toast.makeText(this, "Incorrect. Try again.", Toast.LENGTH_SHORT).show()
                     selectedButton = null
                 }
             } else {
-                val intent = Intent(this, com.example.signifybasic.features.activitycenter.ActivityCenter::class.java)
+                val intent = Intent(this, ActivityCenter::class.java)
+
+                val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
+                val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size
+
+                if (!isLastStep) {
+                    // Only set CONTINUE_SEQUENCE if there's more to do
+                    intent.putExtra("CONTINUE_SEQUENCE", true)
+                }
+
                 intent.putExtra("IS_CORRECT", true)
-                intent.putExtra(gameData.resultKey, true)
-                intent.putExtra("CONTINUE_SEQUENCE", true)
                 startActivity(intent)
                 finish()
             }
@@ -123,10 +149,6 @@ class SelectingGameActivity : BaseGameActivity() {
         buttons.forEach {
             it.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_blue))
             it.isEnabled = true
-        }
-        val returnbtn = findViewById<Button>(R.id.return_button)
-        returnbtn.setOnClickListener {
-            startActivity(Intent(this, ActivityCenter::class.java))
         }
     }
 }

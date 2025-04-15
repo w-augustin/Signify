@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
             dbHelper.addUser(adminUsername, "admin", "admin@admin.com")
         }
 
-        dbHelper.changeUserProgress(adminUsername, 10)
         val userId = adminUsername?.let { dbHelper.getUserIdByUsername(it) }
         val safeuserid = userId ?: 0
         dbHelper.setKnownWords(safeuserid, 7)

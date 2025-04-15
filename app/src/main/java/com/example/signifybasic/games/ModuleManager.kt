@@ -1,6 +1,7 @@
 package com.example.signifybasic.games
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -8,7 +9,6 @@ object   ModuleManager {
     private lateinit var modules: List<GameModule>
 
     var currentModuleIndex = 0
-        private set
     var currentStepIndex = 0
 
     fun loadModules(context: Context) {
@@ -17,6 +17,10 @@ object   ModuleManager {
         val jsonString = context.assets.open("modules.json").bufferedReader().use { it.readText() }
         val type = object : TypeToken<List<GameModule>>() {}.type
         modules = Gson().fromJson(jsonString, type)
+    }
+
+    fun getModuleIndex() : Int {
+        return currentModuleIndex
     }
 
     fun getCurrentStep(): GameStep? {
@@ -31,9 +35,8 @@ object   ModuleManager {
         if (currentStepIndex < currentModule.games.size - 1) {
             currentStepIndex++
         } else {
-            // move to next module
-            currentModuleIndex++
-            currentStepIndex = 0
+            // Reached the end of the module, stay on the last step
+            Log.d("DEBUG_FLOW", "Reached end of module $currentModuleIndex, not moving to next module")
         }
     }
 
@@ -45,6 +48,7 @@ object   ModuleManager {
     fun isAllModulesComplete(): Boolean {
         return currentModuleIndex >= modules.size
     }
+
     fun getModules(): List<GameModule> {
         return modules
     }

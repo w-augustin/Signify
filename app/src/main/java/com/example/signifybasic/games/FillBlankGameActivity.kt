@@ -8,8 +8,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.signifybasic.R
+import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.games.BaseGameActivity
 import com.example.signifybasic.games.GameSequenceManager
+import com.example.signifybasic.games.ModuleManager
 import java.io.Serializable
 
 data class FillBlankGameData(
@@ -111,11 +113,28 @@ class FillBlankGameActivity : BaseGameActivity() {
                 isCorrect = true
                 submitButton.text = "Continue"
 
+                val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+                val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
+
+                com.example.signifybasic.games.ModuleManager.moveToNextStep()
+                val modIndex = com.example.signifybasic.games.ModuleManager.currentModuleIndex
+                val stepIndex = com.example.signifybasic.games.ModuleManager.currentStepIndex
+
+                com.example.signifybasic.database.DBHelper(this).updateUserProgress(username, modIndex, stepIndex)
+                android.util.Log.d("PROGRESS", "Saved progress: module=$modIndex, step=$stepIndex")
+
                 submitButton.setOnClickListener {
-                    val intent = Intent(this, com.example.signifybasic.features.activitycenter.ActivityCenter::class.java)
+                    val intent = Intent(this, ActivityCenter::class.java)
+
+                    val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
+                    val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size
+
+                    if (!isLastStep) {
+                        // Only set CONTINUE_SEQUENCE if there's more to do
+                        intent.putExtra("CONTINUE_SEQUENCE", true)
+                    }
+
                     intent.putExtra("IS_CORRECT", true)
-                    intent.putExtra(gameData.resultKey, true)
-                    intent.putExtra("CONTINUE_SEQUENCE", true)
                     startActivity(intent)
                     finish()
                 }

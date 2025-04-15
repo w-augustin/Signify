@@ -11,7 +11,7 @@ object GameRouter {
     fun routeToGame(context: Context, stepIndex: Int) {
         GameSequenceManager.load(context)
 
-        val step = ModuleManager.getCurrentStep()
+        val step = GameSequenceManager.sequence.getOrNull(stepIndex)
 
         if (step == null) {
             Toast.makeText(context, "No more games to play.", Toast.LENGTH_SHORT).show()
@@ -19,12 +19,12 @@ object GameRouter {
         }
 
         val intent = when (step.type) {
+            "spell_word" -> Intent(context, SpellWordGameActivity::class.java)
             "selecting" -> Intent(context, SelectingGameActivity::class.java)
             "identify" -> Intent(context, IdentifyGameActivity::class.java)
             "fill_blank" -> Intent(context, FillBlankGameActivity::class.java)
             "matching" -> Intent(context, MatchingGameActivity::class.java)
             "signing" -> Intent(context, SigningGameActivity::class.java)
-            "spell_word" -> Intent(context, SpellWordGameActivity::class.java)
             else -> {
                 Toast.makeText(context, "Unknown game type: ${step.type}", Toast.LENGTH_SHORT).show()
                 return

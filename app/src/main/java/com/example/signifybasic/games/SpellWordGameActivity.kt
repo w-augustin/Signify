@@ -15,6 +15,9 @@ import com.example.signifybasic.R
 import com.example.signifybasic.features.tabs.playground.liverecognition.SignAnalyzer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import com.example.signifybasic.database.DBHelper
+import com.example.signifybasic.features.activitycenter.ActivityCenter
+import com.example.signifybasic.games.ModuleManager
 
 class SpellWordGameActivity : BaseGameActivity() {
 
@@ -84,21 +87,44 @@ class SpellWordGameActivity : BaseGameActivity() {
             }
         }
 
+        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val username = sharedPref.getString("loggedInUser", null) // Retrieve username
+
         submitButton.setOnClickListener {
             val spelled = letterStates.joinToString("")
             if (spelled.equals(word, ignoreCase = true)) {
                 predictionLabel.text = "You spelled $spelled correctly!"
                 continueButton.visibility = View.VISIBLE
                 submitButton.visibility = View.GONE
+
+                // Move to next step in sequence
+                ModuleManager.moveToNextStep()
+
+                // Save to DB
+                val nextModuleIndex = ModuleManager.currentModuleIndex
+                val nextStepIndex = ModuleManager.currentStepIndex
+                val user = username ?: "admin"
+
+                DBHelper(this).updateUserProgress(user, nextModuleIndex, nextStepIndex)
+
+                Log.d("PROGRESS", "Updated progress for $user: module=$nextModuleIndex, step=$nextStepIndex")
             } else {
                 Toast.makeText(this, "Incorrect spelling. Try again!", Toast.LENGTH_SHORT).show()
             }
         }
 
         continueButton.setOnClickListener {
-            val intent = Intent(this, com.example.signifybasic.features.activitycenter.ActivityCenter::class.java)
+            val intent = Intent(this, ActivityCenter::class.java)
+
+            val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
+            val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size
+
+            if (!isLastStep) {
+                // Only set CONTINUE_SEQUENCE if there's more to do
+                intent.putExtra("CONTINUE_SEQUENCE", true)
+            }
+
             intent.putExtra("IS_CORRECT", true)
-            intent.putExtra("CONTINUE_SEQUENCE", true)
             startActivity(intent)
             finish()
         }

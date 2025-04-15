@@ -72,15 +72,31 @@ class DebugActivity : AppCompatActivity() {
             debugTextView.text = achievements.joinToString(" ")
         }
 
-        setUserProg.setOnClickListener{
+        setUserProg.setOnClickListener {
             val username = usernameInput.text.toString().trim()
 
             if (username.isEmpty()) {
                 Toast.makeText(this, "Please enter a username", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val newprog = textUserProg.text.toString().trim().toInt()
-            dbHelper.changeUserProgress(username, newprog)
+
+            val parts = textUserProg.text.toString().trim().split(",")
+            if (parts.size != 2) {
+                Toast.makeText(this, "Enter progress as: moduleIndex,stepIndex", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val moduleIndex = parts[0].toIntOrNull()
+            val stepIndex = parts[1].toIntOrNull()
+
+            if (moduleIndex == null || stepIndex == null) {
+                Toast.makeText(this, "Invalid format. Use two numbers separated by a comma.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            dbHelper.updateUserProgress(username, moduleIndex, stepIndex)
+            Toast.makeText(this, "Progress updated: M$moduleIndex A$stepIndex", Toast.LENGTH_SHORT).show()
         }
+
     }
 }

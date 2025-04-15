@@ -10,6 +10,8 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.example.signifybasic.R
+import com.example.signifybasic.database.DBHelper
+import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.features.tabs.playground.videorecognition.ModelRetrofitClient
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -76,11 +78,17 @@ class SigningGameActivity : BaseGameActivity() {
         }
 
         continueButton.setOnClickListener {
-            val intent = Intent(this, com.example.signifybasic.features.activitycenter.ActivityCenter::class.java)
-            val isCorrect = recognizedSign.equals(expectedSign, ignoreCase = true) || failedAttempts >= 2
-            intent.putExtra("IS_CORRECT", isCorrect)
-            intent.putExtra(resultKey, isCorrect)
-            intent.putExtra("CONTINUE_SEQUENCE", true)
+            val intent = Intent(this, ActivityCenter::class.java)
+
+            val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
+            val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size
+
+            if (!isLastStep) {
+                // Only set CONTINUE_SEQUENCE if there's more to do
+                intent.putExtra("CONTINUE_SEQUENCE", true)
+            }
+
+            intent.putExtra("IS_CORRECT", true)
             startActivity(intent)
             finish()
         }
@@ -169,9 +177,20 @@ class SigningGameActivity : BaseGameActivity() {
     }
 
     private fun enableContinue() {
+        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
+
+        ModuleManager.moveToNextStep()
+        val modIndex = ModuleManager.currentModuleIndex
+        val stepIndex = ModuleManager.currentStepIndex
+
+        DBHelper(this).updateUserProgress(username, modIndex, stepIndex)
+        Log.d("PROGRESS", "SigningGame saved: module=$modIndex, step=$stepIndex")
+
         continueButton.isEnabled = true
         continueButton.alpha = 1f
     }
+
 
     private suspend fun recognizeSign(file: File): String {
         val mediaType = "video/mp4".toMediaType()
