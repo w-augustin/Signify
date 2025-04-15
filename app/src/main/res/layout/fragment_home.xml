@@ -55,6 +55,7 @@
             android:columnCount="3"
             android:rowCount="3">
 
+            <!-- Activity Center (Full Width) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_activity_center"
                 android:layout_width="250dp"
@@ -94,49 +95,12 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_settings"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_row="1"
-                android:layout_column="0"
-                android:layout_gravity="center"
-                android:layout_margin="12dp"
-                app:cardBackgroundColor="@color/card_background"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/settings_24" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/settings"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
+            <!-- Dictionary -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_dictionary"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_row="2"
+                android:layout_row="1"
                 android:layout_column="0"
                 android:layout_gravity="center"
                 android:layout_margin="12dp"
@@ -170,11 +134,12 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Playground -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_playground"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_row="2"
+                android:layout_row="1"
                 android:layout_column="1"
                 android:layout_gravity="center"
                 android:layout_margin="12dp"
@@ -208,12 +173,13 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Resources (now left) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_resources"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_row="1"
-                android:layout_column="1"
+                android:layout_row="2"
+                android:layout_column="0"
                 android:layout_gravity="center"
                 android:layout_margin="12dp"
                 app:cardBackgroundColor="@color/card_background"
@@ -245,6 +211,46 @@
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Settings (now right) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_settings"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_row="2"
+                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_margin="12dp"
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/settings_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/settings"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
         </GridLayout>
     </RelativeLayout>
 </ScrollView>
