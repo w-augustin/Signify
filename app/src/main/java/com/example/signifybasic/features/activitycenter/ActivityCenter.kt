@@ -29,8 +29,6 @@ import com.example.signifybasic.games.ModuleManager.currentStepIndex
 class ActivityCenter : AppCompatActivity() {
     private var gameSequenceInitialized = false
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_activity_center)
