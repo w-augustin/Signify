@@ -1,4 +1,4 @@
-package com.example.signifybasic.features.games
+package com.example.signifybasic.games
 
 import android.content.Context
 import com.google.gson.Gson

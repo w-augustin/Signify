@@ -105,18 +105,5 @@
         app:iconGravity="textStart"
         style="@style/Widget.MaterialComponents.Button" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/return_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="return"
-            android:backgroundTint="@color/black"
-            android:textColor="@color/white"
-            android:insetTop="8dp"
-            android:insetBottom="8dp"
-            app:iconGravity="textStart"
-            style="@style/Widget.MaterialComponents.Button" />
-
-
     </LinearLayout>
 </ScrollView>

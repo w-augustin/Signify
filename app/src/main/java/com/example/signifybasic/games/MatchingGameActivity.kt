@@ -1,12 +1,11 @@
-package com.example.signifybasic.features.games
+package com.example.signifybasic.games
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.signifybasic.R
-import com.example.signifybasic.features.base.BaseGameActivity
-import java.io.Serializable
 
 class MatchingGameActivity : BaseGameActivity() {
     override fun getGameLayoutId(): Int = R.layout.activity_matching_game
@@ -112,16 +111,38 @@ class MatchingGameActivity : BaseGameActivity() {
 
         continueButton.setOnClickListener {
             if (matchedCount == totalMatches) {
+                val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+                val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
+
+                val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
+                val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size - 1
+
+                if (!isLastStep) {
+                    ModuleManager.moveToNextStep()
+                } else {
+                    Log.d("DEBUG_FLOW", "Reached end of module, staying on last activity")
+                }
+
+                val modIndex = ModuleManager.currentModuleIndex
+                val stepIndex = ModuleManager.currentStepIndex
+
+                com.example.signifybasic.database.DBHelper(this).updateUserProgress(username, modIndex, stepIndex)
+                android.util.Log.d("PROGRESS", "MatchingGame saved: module=$modIndex, step=$stepIndex")
+
                 val intent = Intent(this, com.example.signifybasic.features.activitycenter.ActivityCenter::class.java)
+                if (!isLastStep) {
+                    intent.putExtra("CONTINUE_SEQUENCE", true)
+                }
+
                 intent.putExtra("IS_CORRECT", true)
-                intent.putExtra(resultKey, true)
-                intent.putExtra("CONTINUE_SEQUENCE", true)
                 startActivity(intent)
                 finish()
             } else {
                 Toast.makeText(this, "You got $matchedCount / $totalMatches correct", Toast.LENGTH_SHORT).show()
             }
         }
+
+
 
         resetButton.setOnClickListener {
             matchedCount = 0

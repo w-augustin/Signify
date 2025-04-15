@@ -1,4 +1,4 @@
-package com.example.signifybasic.signrecognition
+package com.example.signifybasic.features.tabs.playground.videorecognition
 
 import android.content.Intent
 import android.hardware.camera2.CameraCharacteristics
@@ -14,15 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.features.tabs.HomePage
 import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
-import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -37,13 +33,13 @@ import java.io.FileOutputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import android.content.pm.PackageManager
+import com.google.android.material.appbar.MaterialToolbar
 
 class RecordVideoActivity : AppCompatActivity() {
 
     private val CAMERA_PERMISSION_CODE = 101
 
     private lateinit var recordVideoBtn: Button
-    private lateinit var backBtn: Button
     private lateinit var inputEditText: AutoCompleteTextView
     private lateinit var expectedSign: String
     private lateinit var progressBar: ProgressBar
@@ -68,7 +64,6 @@ class RecordVideoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_record_video)
 
         recordVideoBtn = findViewById(R.id.btnRecord)
-        backBtn = findViewById(R.id.btnBack)
         inputEditText = findViewById(R.id.inputSign)
         progressBar = findViewById(R.id.progressBar)
 
@@ -78,16 +73,10 @@ class RecordVideoActivity : AppCompatActivity() {
             applyHighContrastToAllViews(rootView, this)
         }
 
-//        val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
-//        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
-//            val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
-//            v.setPadding(0, topInset, 0, 0)
-//            insets
-//        }
-//        toolbar.setNavigationOnClickListener {
-//            onBackPressedDispatcher.onBackPressed()
-//        }
+        val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
+        toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         val cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
         val cameraId = cameraManager.cameraIdList[0]
@@ -143,12 +132,6 @@ class RecordVideoActivity : AppCompatActivity() {
 
             val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             startActivityForResult(intent, 1)
-        }
-
-        backBtn.setOnClickListener {
-            val intent = Intent(this, HomePage::class.java)
-            startActivity(intent)
-            finish()
         }
     }
 
