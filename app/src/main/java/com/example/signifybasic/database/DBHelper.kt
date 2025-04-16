@@ -66,9 +66,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             $COLUMN_EMAIL TEXT UNIQUE,
     
             module_index INTEGER DEFAULT 0,
-            step_index INTEGER DEFAULT 0,
-            
-            knownWords INTEGER DEFAULT 0
+            step_index INTEGER DEFAULT 0
         )
         """.trimIndent()
         db.execSQL(createUsersTable)
@@ -140,6 +138,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 UNIQUE(userID, loginDate)
             )
         """.trimIndent())
+
+        db.execSQL(
+        """CREATE TABLE KnownWords (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            userID INTEGER NOT NULL,
+            word TEXT NOT NULL,
+            UNIQUE(userID, word)
+        )
+        """.trimIndent())
+
 
         // Create Additional Tables
         db.execSQL("CREATE TABLE $TABLE_ACCOUNT (userID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, token INTEGER)")
@@ -249,6 +257,29 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return result != -1L
     }
 
+    fun addKnownWord(userId: Int, word: String) {
+        val db = writableDatabase
+        val stmt = db.compileStatement("""
+        INSERT OR IGNORE INTO KnownWords (userID, word)
+        VALUES (?, ?)
+    """.trimIndent())
+        stmt.bindLong(1, userId.toLong())
+        stmt.bindString(2, word.uppercase())
+        stmt.execute()
+        stmt.close()
+        db.close()
+    }
+
+    fun getKnownWordCount(userId: Int): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT COUNT(*) FROM KnownWords WHERE userID = ?", arrayOf(userId.toString()))
+        val count = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        db.close()
+        return count
+    }
+
+
     fun getUserProgress(username: String): Pair<Int, Int> {
         val db = this.readableDatabase
         val query = "SELECT module_index, step_index FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?"
@@ -266,20 +297,19 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     fun updateUserProgress(username: String, moduleIndex: Int, stepIndex: Int) {
         val db = this.writableDatabase
-
         val cursor = db.rawQuery(
             "SELECT module_index, step_index FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?",
             arrayOf(username)
         )
-
         if (cursor.moveToFirst()) {
+            // get user's furthest progress
             val currentModule = cursor.getInt(cursor.getColumnIndexOrThrow("module_index"))
             val currentStep = cursor.getInt(cursor.getColumnIndexOrThrow("step_index"))
 
             // only update if this is a 'higher' module than user's 'highest'
             val shouldUpdate = when {
-                moduleIndex > currentModule -> true
-                moduleIndex == currentModule && stepIndex > currentStep -> true
+                moduleIndex > currentModule -> true // trying to move to a higher module
+                moduleIndex == currentModule && stepIndex > currentStep -> true // same module, but higher activity
                 else -> false
             }
 
@@ -367,32 +397,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 //        cursor.close()
 //        return total
 //    }
-
-    fun getKnownWordCount(userID: Int): Int {
-        val db = this.readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT knownWords FROM $TABLE_USERS WHERE id = ?",
-            arrayOf(userID.toString())
-        )
-
-        val knownWords = if (cursor.moveToFirst()) {
-            cursor.getInt(cursor.getColumnIndexOrThrow("knownWords"))
-        } else {
-            0
-        }
-
-        cursor.close()
-        db.close()
-        return knownWords
-    }
-
-    fun setKnownWords(userID: Int, value: Int) {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put("knownWords", value)
-        db.update(TABLE_USERS, values, "id = ?", arrayOf(userID.toString()))
-        db.close()
-    }
 
     fun getCurrentModuleTitle(userID: Int): String {
         val db = this.readableDatabase
@@ -505,7 +509,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             put(COLUMN_EMAIL, email)
             put("module_index", 0)
             put("step_index", 0)
-            put("knownWords", 0)
         }
 
         val result = db.insert(TABLE_USERS, null, values)
@@ -605,10 +608,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 val email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL))
 
                 val progress = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PROGRESS))
-                val knownwords = cursor.getInt(cursor.getColumnIndexOrThrow("knownWords"))
                 val currentMod = cursor.getString(cursor.getColumnIndexOrThrow("currentModuleTitle"))
                 users.add("ID: $id | Username: $username | Email: $email | Progress: $progress " +
-                "Known Words: $knownwords | CurrentModule : $currentMod")
+                "| CurrentModule : $currentMod")
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -795,45 +797,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return result
     }
 
-    fun changeUserProgress(username: String,  score: Int) {
-        val db = this.writableDatabase
-
-        // First, find the user's ID
-        val cursor = db.rawQuery(
-            "SELECT id FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?",
-            arrayOf(username)
-        )
-
-        if (cursor.moveToFirst()) {
-            val userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-
-            // Update the progress column for this user
-            val values = ContentValues()
-            values.put(COLUMN_PROGRESS, score)
-
-            db.update(
-                TABLE_USERS,
-                values,
-                "id = ?",
-                arrayOf(userId.toString())
-            )
-        }
-
-        cursor.close()
-        db.close()
-    }
-
-
-    fun addKnownWord(userID: Int, word: String): Boolean {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put("userID", userID)
-        values.put("word", word)
-        val result = db.insert("KnownWords", null, values)
-        db.close()
-        return result != -1L
-    }
-
     fun setUserBadge(userID: Int, slot: Int, achievementName: String) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -909,21 +872,4 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return streak
     }
-
-
-//    fun getKnownWords(userID: Int): List<String> {
-//        val db = this.readableDatabase
-//        val words = mutableListOf<String>()
-//        val cursor = db.rawQuery("SELECT word FROM KnownWords WHERE userID = ?", arrayOf(userID.toString()))
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                words.add(cursor.getString(cursor.getColumnIndexOrThrow("word")))
-//            } while (cursor.moveToNext())
-//        }
-//
-//        cursor.close()
-//        db.close()
-//        return words
-//    }
 }

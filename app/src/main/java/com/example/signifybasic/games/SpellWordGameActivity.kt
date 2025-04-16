@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.camera.core.*
@@ -18,21 +19,20 @@ import java.util.concurrent.Executors
 import com.example.signifybasic.database.DBHelper
 import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.games.ModuleManager
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 
 class SpellWordGameActivity : BaseGameActivity() {
 
     override fun getGameLayoutId(): Int = R.layout.activity_spell_word_game
 
     private lateinit var promptTextView: TextView
-    private lateinit var previewLabel: TextView
     private lateinit var predictionLabel: TextView
     private lateinit var selectButton1: Button
     private lateinit var selectButton2: Button
     private lateinit var selectButton3: Button
-    private lateinit var submitButton: Button
-    private lateinit var continueButton: Button
 
-    private lateinit var letterBoxes: List<Button>
+    private lateinit var letterBoxes: List<MaterialButton>
 
     private lateinit var word: String
     private var selectedIndex = 0
@@ -43,10 +43,16 @@ class SpellWordGameActivity : BaseGameActivity() {
     private var lastUpdateTime = 0L
     private val updateInterval = 2500L // ms
 
+    private var incorrectAttempts = 0
+    private val maxAttempts = 3
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val step: GameStep? = GameSequenceManager.sequence.getOrNull(intent.getIntExtra("STEP_INDEX", -1))
+        val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
+        val module = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
+        val step = module.games.getOrNull(stepIndex)
+
         word = step?.correctAnswer ?: "CAT"
         letterStates = MutableList(word.length) { "" }
 
@@ -55,10 +61,12 @@ class SpellWordGameActivity : BaseGameActivity() {
         selectButton1 = findViewById(R.id.select_button_1)
         selectButton2 = findViewById(R.id.select_button_2)
         selectButton3 = findViewById(R.id.select_button_3)
-        submitButton = findViewById(R.id.submit_button)
-        continueButton = findViewById(R.id.continue_button)
+        val actionCard = findViewById<MaterialCardView>(R.id.action_button_card)
+        val actionText = findViewById<TextView>(R.id.action_button_text)
 
-        // Dynamically initialize letter boxes
+        actionCard.isEnabled = false
+        actionCard.alpha = 0.5f
+
         letterBoxes = listOf(
             findViewById(R.id.letter_box_1),
             findViewById(R.id.letter_box_2),
@@ -75,7 +83,10 @@ class SpellWordGameActivity : BaseGameActivity() {
                 if (!top.isNullOrBlank()) {
                     letterStates[selectedIndex] = top
                     updateLetterBoxes()
-                    submitButton.isEnabled = letterStates.none { it.isBlank() }
+
+                    val allFilled = letterStates.none { it.isBlank() }
+                    actionCard.isEnabled = allFilled
+                    actionCard.alpha = if (allFilled) 1.0f else 0.5f
                 }
             }
         }
@@ -87,35 +98,73 @@ class SpellWordGameActivity : BaseGameActivity() {
             }
         }
 
-        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
-        val username = sharedPref.getString("loggedInUser", null) // Retrieve username
+        actionText.setOnClickListener {
+            if (!actionCard.isEnabled) return@setOnClickListener
 
-        submitButton.setOnClickListener {
             val spelled = letterStates.joinToString("")
             if (spelled.equals(word, ignoreCase = true)) {
-                predictionLabel.text = "You spelled $spelled correctly!"
-                continueButton.visibility = View.VISIBLE
-                submitButton.visibility = View.GONE
-
-                // Move to next step in sequence
-                ModuleManager.moveToNextStep()
-
-                // Save to DB
-                val nextModuleIndex = ModuleManager.currentModuleIndex
-                val nextStepIndex = ModuleManager.currentStepIndex
-                val user = username ?: "admin"
-
-                DBHelper(this).updateUserProgress(user, nextModuleIndex, nextStepIndex)
-
-                Log.d("PROGRESS", "Updated progress for $user: module=$nextModuleIndex, step=$nextStepIndex")
+                handleSuccess()
             } else {
-                Toast.makeText(this, "Incorrect spelling. Try again!", Toast.LENGTH_SHORT).show()
+                incorrectAttempts++
+
+
+                if (incorrectAttempts >= maxAttempts) {
+                    Toast.makeText(this, "Max attempts reached. You may continue.", Toast.LENGTH_SHORT).show()
+                    handleSuccess()
+                } else {
+                    flashErrorOnButton()
+                    Toast.makeText(this, "Incorrect spelling. Try again!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+    }
 
-        continueButton.setOnClickListener {
+    private fun flashErrorOnButton() {
+        val actionCard = findViewById<MaterialCardView>(R.id.action_button_card)
+        val actionText = findViewById<TextView>(R.id.action_button_text)
+
+        // Save current colors
+        val defaultBg = ContextCompat.getColor(this, android.R.color.white)
+        val defaultText = ContextCompat.getColor(this, R.color.primary_blue)
+
+        // Set error colors
+        actionCard.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_dark))
+        actionText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+
+        // Revert after 2 seconds (toast duration)
+        actionCard.postDelayed({
+            if (actionText.text.toString() != "Continue") {
+                actionCard.setCardBackgroundColor(defaultBg)
+                actionText.setTextColor(defaultText)
+            }
+        }, 2500)
+    }
+
+    private fun handleSuccess() {
+        val spelled = letterStates.joinToString("")
+        predictionLabel.text = "You spelled $spelled correctly!"
+
+        val actionCard = findViewById<MaterialCardView>(R.id.action_button_card)
+        val actionText = findViewById<TextView>(R.id.action_button_text)
+        actionText.text = "Continue"
+        actionCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.correct_green))
+        actionText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+
+        cameraExecutor.shutdown()
+        try {
+            val cameraProvider = ProcessCameraProvider.getInstance(this).get()
+            cameraProvider.unbindAll()
+        } catch (e: Exception) {
+            Log.e("SpellWordGame", "Camera release error", e)
+        }
+
+        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val username = sharedPref.getString("loggedInUser", null) // Retrieve username
+        ModuleManager.moveToNextStep()
+        DBHelper(this).updateUserProgress(username ?: "admin", ModuleManager.currentModuleIndex, ModuleManager.currentStepIndex)
+
+        actionText.setOnClickListener {
             val intent = Intent(this, ActivityCenter::class.java)
-
             val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
             val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size
 
@@ -129,6 +178,7 @@ class SpellWordGameActivity : BaseGameActivity() {
             finish()
         }
     }
+
 
     private fun updatePrompt() {
         promptTextView.text = "Spell the word: $word"
@@ -158,7 +208,6 @@ class SpellWordGameActivity : BaseGameActivity() {
                             val now = System.currentTimeMillis()
                             if (now - lastUpdateTime > updateInterval) {
                                 lastUpdateTime = now
-                                predictionLabel.text = topText
                                 val topLines = topText.lines().filter { it.contains(":") }
                                 topPredictions = topLines.map { it.take(1) }
                                 selectButton1.text = topLines.getOrNull(0) ?: "--"

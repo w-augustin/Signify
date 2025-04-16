@@ -2,8 +2,10 @@ package com.example.signifybasic.games
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,16 +28,15 @@ abstract class BaseGameActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.moduleProgressBar)
         progressBar.max = 100
 
-        val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
-        toolbar.setNavigationOnClickListener {
-            navigateToPreviousStep()
+        val backStepButton = findViewById<ImageButton>(R.id.backStepButton)
+        val nextStepButton = findViewById<ImageButton>(R.id.nextStepButton)
+
+        backStepButton.setOnClickListener {
+            if (backStepButton.isEnabled) navigateToPreviousStep()
         }
 
-        toolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.action_next) {
-                navigateToNextStep()
-                true
-            } else false
+        nextStepButton.setOnClickListener {
+            if (nextStepButton.isEnabled) navigateToNextStep()
         }
 
         val returnButton = findViewById<Button>(R.id.returnToCenterButton)
@@ -46,10 +47,13 @@ abstract class BaseGameActivity : AppCompatActivity() {
             finish()
         }
 
-        updateToolbarNavigation(toolbar)
+        updateNavigationButtons()
     }
 
-    private fun updateToolbarNavigation(toolbar: MaterialToolbar) {
+    private fun updateNavigationButtons() {
+        val backStepButton = findViewById<ImageButton>(R.id.backStepButton)
+        val nextStepButton = findViewById<ImageButton>(R.id.nextStepButton)
+
         val stepIndex = ModuleManager.currentStepIndex
         val moduleIndex = ModuleManager.currentModuleIndex
         val totalSteps = ModuleManager.getModules()[moduleIndex].games.size
@@ -58,23 +62,46 @@ abstract class BaseGameActivity : AppCompatActivity() {
         val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
         val (savedModule, savedStep) = DBHelper(this).getUserProgress(username)
 
-        val canGoNext = stepIndex < totalSteps - 1 && (
-                moduleIndex < savedModule || (moduleIndex == savedModule && stepIndex < savedStep)
-                )
+        // BACK BUTTON LOGIC
+        if (stepIndex == 0) {
+            backStepButton.visibility = View.INVISIBLE
+        } else {
+            backStepButton.visibility = View.VISIBLE
+            backStepButton.isEnabled = true
+            backStepButton.alpha = 1f
+        }
 
-        toolbar.navigationIcon = if (stepIndex > 0) ContextCompat.getDrawable(this, R.drawable.ic_arrow_back) else null
+        // NEXT BUTTON LOGIC
+        val canGoNext = stepIndex < totalSteps - 1 &&
+                (moduleIndex < savedModule || (moduleIndex == savedModule && stepIndex < savedStep))
 
-        toolbar.menu.findItem(R.id.action_next)?.isVisible = canGoNext
+        if (stepIndex == totalSteps - 1) {
+            nextStepButton.visibility = View.INVISIBLE
+        } else {
+            nextStepButton.visibility = View.VISIBLE
+            nextStepButton.isEnabled = canGoNext
+            nextStepButton.alpha = if (canGoNext) 1f else 0.2f
+        }
     }
+
+
 
     private fun navigateToPreviousStep() {
         val index = ModuleManager.currentStepIndex
         if (index > 0) {
             ModuleManager.currentStepIndex = index - 1
-            GameRouter.routeToGame(this, ModuleManager.currentStepIndex)
+
+            val options = android.app.ActivityOptions.makeCustomAnimation(
+                this,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+
+            GameRouter.routeToGame(this, ModuleManager.currentStepIndex, options.toBundle())
             finish()
         }
     }
+
 
     private fun navigateToNextStep() {
         val module = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
@@ -90,12 +117,20 @@ abstract class BaseGameActivity : AppCompatActivity() {
 
         if (canAdvance) {
             ModuleManager.currentStepIndex = currentIndex + 1
-            GameRouter.routeToGame(this, ModuleManager.currentStepIndex)
+
+            val options = android.app.ActivityOptions.makeCustomAnimation(
+                this,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
+
+            GameRouter.routeToGame(this, ModuleManager.currentStepIndex, options.toBundle())
             finish()
         } else {
             Toast.makeText(this, "You haven't unlocked the next activity yet.", Toast.LENGTH_SHORT).show()
         }
     }
+
 
 
     abstract fun getGameLayoutId(): Int

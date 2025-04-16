@@ -16,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.database.DBHelper
 import com.example.signifybasic.debug.DebugActivity
-import com.example.signifybasic.games.GameSequenceManager
 import com.example.signifybasic.features.tabs.HomePage
 
 
@@ -51,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         val userId = adminUsername?.let { dbHelper.getUserIdByUsername(it) }
         val safeuserid = userId ?: 0
-        dbHelper.setKnownWords(safeuserid, 7)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "reminder_channel",
@@ -64,10 +62,6 @@ class MainActivity : AppCompatActivity() {
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
-        }
-
-        if (!GameSequenceManager.isLoaded()) {
-            GameSequenceManager.load(applicationContext)
         }
 
         usernameInput = findViewById(R.id.username_input)

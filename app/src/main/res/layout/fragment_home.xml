@@ -32,7 +32,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="You have {10} minutes until you have reached your daily goal"
+            android:text="Keep working on your ASL learning goals!"
             android:textSize="15sp"
             android:textStyle="bold"
             android:textAlignment="center"

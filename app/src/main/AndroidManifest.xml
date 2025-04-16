@@ -26,9 +26,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <activity
-            android:name=".features.activitycenter.activity_center2"
-            android:exported="false" />
 
         <activity android:name=".features.auth.SignupPage" />
         <activity android:name=".features.tabs.HomePage" />
@@ -38,7 +35,7 @@
         <activity android:name=".features.tabs.playground.liverecognition.LiveSignRecognitionActivity" />
         <activity android:name=".features.tabs.playground.videorecognition.SignRecognitionResultActivity" />
         <activity android:name=".deprecated.LoadImageActivity" />
-        <activity android:name=".features.tabs.discussion.DiscussionPage" />
+        <activity android:name=".features.tabs.dictionary.DictionaryGame" />
         <activity android:name=".features.tabs.playground.PlaygroundActivity" />
         <activity android:name=".games.MatchingGameActivity" />
         <activity android:name=".features.games.SelectingGameActivity" />

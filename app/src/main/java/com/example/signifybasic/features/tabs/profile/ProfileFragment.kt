@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ import com.example.signifybasic.features.utility.applyHighContrastToAllViews
 import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
 import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.example.signifybasic.features.utility.loadAllAchievementsFromAssets
+import com.example.signifybasic.games.ModuleManager
 
 class ProfileFragment : Fragment() {
 
@@ -57,8 +59,17 @@ class ProfileFragment : Fragment() {
             (dialogView.parent as? ViewGroup)?.let { (it.parent as? AlertDialog)?.dismiss() }
         }
 
+        val titleView = TextView(requireContext()).apply {
+            text = "Select a Badge"
+            setPadding(32, 24, 32, 24)
+            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.signify_blue))
+            setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
+            textSize = 18f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+        }
+
         AlertDialog.Builder(requireContext())
-            .setTitle("Select Badge")
+            .setCustomTitle(titleView)
             .setView(dialogView)
             .setCancelable(true)
             .show()
@@ -80,6 +91,7 @@ class ProfileFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        ModuleManager.loadModules(requireContext())
 
 
         super.onViewCreated(view, savedInstanceState)
@@ -98,16 +110,39 @@ class ProfileFragment : Fragment() {
         val userId = username?.let { dbHelper.getUserIdByUsername(it) }
 
         val safeUsername = username ?: "0"
-        val xpPoints = dbHelper.getUserProgress(safeUsername)
+
+        if (userId != null) {
+            val streak = dbHelper.getLoginStreak(userId)
+
+            val streakTextView = view.findViewById<TextView>(R.id.streak_display)
+            streakTextView.text = "$streak day streak"
+        }
 
 
-        view.findViewById<TextView>(R.id.exptextview)?.text = "$xpPoints EXP"
+        val allModules = ModuleManager.getModules()
+        val (currentModIndex, currentStepIndex) = dbHelper.getUserProgress(safeUsername)
+
+        // XP = total completed activities
+        val baseStepXP = 5
+        val moduleBonusXP = 50
+        var totalXP = 0
+
+        allModules.forEachIndexed { index, module ->
+            if (index < currentModIndex) {
+                totalXP += (module.games.size * baseStepXP) + moduleBonusXP
+            } else if (index == currentModIndex) {
+                totalXP += (currentModIndex * baseStepXP)
+            }
+        }
+        binding.exptextview.text = "$totalXP XP"
 
         val knownWords = userId?.let { dbHelper.getKnownWordCount(it) } ?: 0
         view.findViewById<TextView>(R.id.wordsKnownTextView)?.text = "$knownWords words"
 
-        val currentModule = userId?.let { dbHelper.getCurrentModuleTitle(it) } ?: "None"
-        view.findViewById<TextView>(R.id.currentModuleTextView)?.text = currentModule
+        val (modIndex, stepIndex) = dbHelper.getUserProgress(safeUsername)
+        val modules = ModuleManager.getModules()
+        val currentModuleTitle = modules.getOrNull(modIndex)?.title ?: "Unknown"
+        binding.currentModuleTextView.text = currentModuleTitle
 
 
         val badgeViews = listOf(
