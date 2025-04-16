@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         val userId = adminUsername?.let { dbHelper.getUserIdByUsername(it) }
         val safeuserid = userId ?: 0
-        dbHelper.setKnownWords(safeuserid, 7)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "reminder_channel",

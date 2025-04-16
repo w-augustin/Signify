@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
@@ -11,16 +12,21 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <!-- Title -->
-        <TextView
-            android:id="@+id/dictionaryTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ASL Dictionary"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_marginBottom="24dp"/>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="ASL Dictionary"
+            app:titleTextColor="@android:color/white"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@android:color/white"
+            android:elevation="4dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:backgroundTint="@color/white"
+            android:background="?attr/colorOutline" />
 
         <!-- Search Input -->
         <EditText
@@ -29,6 +35,7 @@
             android:layout_height="wrap_content"
             android:hint="Enter sign name"
             android:inputType="text"
+            android:layout_marginTop="20dp"
             android:minHeight="48dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
@@ -52,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Search"
-            android:textColor="@color/black"
+            android:textColor="@color/signify_blue"
             android:layout_marginTop="12dp"
             android:backgroundTint="@color/white"/>
 
@@ -65,14 +72,14 @@
             android:visibility="gone"
             android:background="@android:color/black"/>
 
-        <!-- Back to Home Button -->
         <Button
-            android:id="@+id/backToHomeButton"
+            android:id="@+id/gameButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/white"
-            android:text="Back to Home"
-            android:textColor="@color/black" />
+            android:text="Play Dictionary Game"
+            android:textColor="@color/signify_blue"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/white"/>
+
     </LinearLayout>
 </ScrollView>

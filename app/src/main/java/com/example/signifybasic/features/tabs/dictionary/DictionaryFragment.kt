@@ -12,7 +12,14 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.signifybasic.R
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.features.tabs.HomePage
+import com.example.signifybasic.features.utility.applyHighContrastToAllViews
+import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
+import com.example.signifybasic.features.utility.isHighContrastEnabled
+import com.google.android.material.appbar.MaterialToolbar
 
 data class SignVideo(
     val url: String,
@@ -65,7 +72,7 @@ class DictionaryFragment : Fragment() {
     private lateinit var searchButton: Button
     private lateinit var videoWebView: WebView
     private lateinit var errorMessage: TextView
-    private lateinit var backButton: Button
+    private lateinit var gameButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,12 +81,29 @@ class DictionaryFragment : Fragment() {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_dictionary, container, false)
 
+        val toolbar = rootView.findViewById<MaterialToolbar>(R.id.topAppBar)
+        applyTextSizeToAllTextViews(rootView, requireContext())
+        if (isHighContrastEnabled(requireContext())) {
+            applyHighContrastToAllViews(rootView, requireContext())
+        }
+
+//        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
+//        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
+//            val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+//            v.setPadding(0, topInset, 0, 0)
+//            insets
+//        }
+
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
         // Initialize views
         searchInput = rootView.findViewById(R.id.searchInput)
         searchButton = rootView.findViewById(R.id.searchButton)
         videoWebView = rootView.findViewById(R.id.videoWebView)
         errorMessage = rootView.findViewById(R.id.errorMessage)
-        backButton = rootView.findViewById(R.id.backToHomeButton)
+        gameButton = rootView.findViewById(R.id.gameButton)
 
         videoWebView.settings.javaScriptEnabled = true
         videoWebView.settings.loadWithOverviewMode = true
@@ -122,10 +146,9 @@ class DictionaryFragment : Fragment() {
             }
         }
 
-        backButton.setOnClickListener {
-            val intent = Intent(activity, HomePage::class.java)  // Navigate to HomePage activity
+        gameButton.setOnClickListener {
+            val intent = Intent(activity, DictionaryGame::class.java)
             startActivity(intent)
-            activity?.finish()
         }
 
         return rootView
