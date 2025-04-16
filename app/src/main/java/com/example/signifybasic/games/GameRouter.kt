@@ -1,17 +1,23 @@
 package com.example.signifybasic.games
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.widget.Toast
 import com.example.signifybasic.features.games.FillBlankGameActivity
 import com.example.signifybasic.features.games.IdentifyGameActivity
 import com.example.signifybasic.features.games.SelectingGameActivity
 
 object GameRouter {
-    fun routeToGame(context: Context, stepIndex: Int) {
-        GameSequenceManager.load(context)
 
-        val step = GameSequenceManager.sequence.getOrNull(stepIndex)
+    fun routeToGame(context: Context, stepIndex: Int) {
+        routeToGame(context, stepIndex, null)
+    }
+
+    fun routeToGame(context: Context, stepIndex: Int, options: Bundle?) {
+
+        val step = ModuleManager.getModules()[ModuleManager.currentModuleIndex].games[stepIndex]
 
         if (step == null) {
             Toast.makeText(context, "No more games to play.", Toast.LENGTH_SHORT).show()
@@ -32,7 +38,11 @@ object GameRouter {
         }
 
         intent.putExtra("STEP_INDEX", stepIndex)
-        context.startActivity(intent)
+        if (context is Activity && options != null) {
+            context.startActivity(intent, options)
+        } else {
+            context.startActivity(intent)
+        }
     }
 }
 

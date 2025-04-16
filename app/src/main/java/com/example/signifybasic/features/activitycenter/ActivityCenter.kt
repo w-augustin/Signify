@@ -27,36 +27,38 @@ import com.example.signifybasic.features.utility.isHighContrastEnabled
 import com.example.signifybasic.getStarted
 import com.google.android.material.appbar.MaterialToolbar
 import com.example.signifybasic.games.GameRouter
-import com.example.signifybasic.games.GameSequenceManager
 import com.example.signifybasic.games.ModuleManager
 import com.example.signifybasic.database.DBHelper
+import com.example.signifybasic.features.tabs.HomePage
 import com.example.signifybasic.games.ModuleManager.currentStepIndex
 
 
 class ActivityCenter : AppCompatActivity() {
-    private var gameSequenceInitialized = false
 
     fun getMaxUnlockedModuleIndex(context: Context): Int {
+        // get full list of gameModules
+        val modules = ModuleManager.getModules()
+
+        // get user's furthest completed module and activity
         val dbHelper = DBHelper(context)
         val username = context.getSharedPreferences("UserSession", Context.MODE_PRIVATE)
             .getString("loggedInUser", "admin") ?: "admin"
-
-        val modules = ModuleManager.getModules()
         val (modIndex, stepIndex) = dbHelper.getUserProgress(username)
 
         return if (
             modIndex < modules.size &&
             stepIndex >= modules[modIndex].games.size - 1
         ) {
-            // Current module fully completed, unlock next one
+            // current module fully completed + there's a further module => next module unlocked
             (modIndex + 1).coerceAtMost(modules.size - 1)
         } else {
+            // all modules completed / current module not completed => current module is max module.
             modIndex
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        // setting basic xml
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_activity_center)
 
@@ -74,19 +76,30 @@ class ActivityCenter : AppCompatActivity() {
             insets
         }
         toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            val intent = Intent(this, HomePage::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
 
+        // setting state values of page
         val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
         val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
         val dbHelper = DBHelper(this)
-
         ModuleManager.loadModules(this)
 
-        // Get user progress as (moduleIndex, stepIndex)
-        val (modIndex, stepIndex) = dbHelper.getUserProgress(username)
-        ModuleManager.currentModuleIndex = modIndex
-        ModuleManager.currentStepIndex = stepIndex
+        // when user opens activity center, put them at their max progress point automatically
+        if (!intent.getBooleanExtra("FORCE_OVERRIDE", false)) {
+            Log.d("PROGRESS", "AUTO PLACING USER")
+            val (modIndex, stepIndex) = dbHelper.getUserProgress(username)
+            ModuleManager.currentModuleIndex = modIndex
+            ModuleManager.currentStepIndex = stepIndex
+        }
+
+        // set up buttons and progress using module state information
+        val (maxModIndex, maxStepIndex) = dbHelper.getUserProgress(username)
+        setupButtons(ModuleManager.currentModuleIndex, maxModIndex, maxStepIndex)
+        updateProgressBar(findViewById(R.id.progressBar), ModuleManager.currentModuleIndex, maxModIndex, maxStepIndex)
 
         val continueFromSequence = intent.getBooleanExtra("CONTINUE_SEQUENCE", false)
         if (continueFromSequence) {
@@ -106,42 +119,67 @@ class ActivityCenter : AppCompatActivity() {
 
             val step = ModuleManager.getCurrentStep()
             if (step != null) {
-                GameRouter.routeToGame(this, ModuleManager.currentStepIndex)
+                val options = android.app.ActivityOptions.makeCustomAnimation(
+                    this,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
+                GameRouter.routeToGame(this, ModuleManager.currentStepIndex, options.toBundle())
             } else {
                 Toast.makeText(this, "No more steps found.", Toast.LENGTH_SHORT).show()
             }
             return
         }
 
-        setupButtons(modIndex, stepIndex)
-        updateProgressBar(findViewById(R.id.progressBar), modIndex, stepIndex)
+        val currentModule = ModuleManager.getModules().getOrNull(ModuleManager.currentModuleIndex)
+        val totalSteps = currentModule?.games?.size ?: 0
 
-        if (!gameSequenceInitialized) {
-            GameSequenceManager.load(this)
-            gameSequenceInitialized = true
+        // Get user's saved progress (NOT just the currently selected step)
+        val (progressModuleIndex, progressStepIndex) = dbHelper.getUserProgress(username)
+
+        val moduleComplete = ModuleManager.currentModuleIndex < progressModuleIndex || (
+                ModuleManager.currentModuleIndex == progressModuleIndex &&
+                        progressStepIndex >= totalSteps
+                )
+
+        if (moduleComplete) {
+            val userId = dbHelper.getUserIdByUsername(username)
+            val currentModIndex = ModuleManager.currentModuleIndex
+            val totalModules = ModuleManager.getModules().size
+
+            if (userId != null) {
+                when (currentModIndex) {
+                    0 -> dbHelper.addAchievement(userId, "Getting Started", this)
+                    1 -> dbHelper.addAchievement(userId, "Module 2", this)
+                }
+
+                // if all modules + steps completed
+                val (savedModuleIndex, savedStepIndex) = dbHelper.getUserProgress(username)
+                val lastModule = ModuleManager.getModules().lastOrNull()
+                val allModulesComplete = savedModuleIndex >= totalModules - 1 &&
+                        lastModule != null &&
+                        savedStepIndex >= lastModule.games.size
+
+                if (allModulesComplete) {
+                    dbHelper.addAchievement(userId, "Module Master", this)
+                }
+            }
+
         }
-
-        val moduleComplete = ModuleManager.getModules()
-            .getOrNull(ModuleManager.currentModuleIndex)
-            ?.games
-            ?.size
-            ?.let { ModuleManager.currentStepIndex >= it - 1 } ?: false
 
         val nextModuleButton = findViewById<Button>(R.id.nextMod)
         nextModuleButton.isEnabled = moduleComplete
+        nextModuleButton.alpha = if (moduleComplete) 1f else 0.5f
 
         nextModuleButton.setOnClickListener {
             val nextIndex = ModuleManager.currentModuleIndex + 1
             val maxAllowed = getMaxUnlockedModuleIndex(this)
 
             if (nextIndex <= maxAllowed && nextIndex < ModuleManager.getModules().size) {
-                // Fetch the saved step index for the next module
-                val (_, savedStepIndex) = DBHelper(this).getUserProgress(username)
-
-                ModuleManager.currentModuleIndex = nextIndex
-                ModuleManager.currentStepIndex = 0
-
+                // Start from the beginning of the next module
                 val intent = Intent(this, ActivityCenter::class.java)
+                intent.putExtra("FORCE_MODULE_INDEX", nextIndex)
+                intent.putExtra("FORCE_STEP_INDEX", 0) // start from beginning
                 startActivity(intent)
                 finish()
             } else {
@@ -152,13 +190,14 @@ class ActivityCenter : AppCompatActivity() {
 
 
 
+
         findViewById<Button>(R.id.getStarted).setOnClickListener {
             startActivity(Intent(this, getStarted::class.java))
         }
 
         val moduleSpinner = findViewById<Spinner>(R.id.moduleSpinner)
         val moduleTitles = ModuleManager.getModules().map { it.title }
-        val moduleAdapter = ArrayAdapter(this, R.layout.spinner_item_black, moduleTitles)
+        val moduleAdapter = ArrayAdapter(this, R.layout.spinner_item_white, moduleTitles)
         moduleAdapter.setDropDownViewResource(R.layout.spinner_item_black)
         moduleSpinner.adapter = moduleAdapter
 
@@ -178,8 +217,8 @@ class ActivityCenter : AppCompatActivity() {
                         ModuleManager.getModules()[position].games.size - 1
                     }
 
-                    setupButtons(position, ModuleManager.currentStepIndex)
-                    updateProgressBar(findViewById(R.id.progressBar), position, ModuleManager.currentStepIndex)
+                    setupButtons(currentModuleIndex = ModuleManager.currentModuleIndex, userProgressModule = maxModIndex, userProgressStep = maxStepIndex)
+                    updateProgressBar(findViewById(R.id.progressBar), ModuleManager.currentModuleIndex, maxModIndex, maxStepIndex)
                 } else {
                     Toast.makeText(this@ActivityCenter, "This module is locked!", Toast.LENGTH_SHORT).show()
                     moduleSpinner.setSelection(ModuleManager.currentModuleIndex)
@@ -188,13 +227,12 @@ class ActivityCenter : AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-
-
     }
 
 
-    private fun setupButtons(modIndex: Int, fallbackStepIndex: Int = 0) {
-        val module = ModuleManager.getModules()[modIndex]
+    // programmatically generate all the buttons for the currently loaded module
+    private fun setupButtons(currentModuleIndex: Int, userProgressModule: Int, userProgressStep: Int) {
+        val module = ModuleManager.getModules()[currentModuleIndex]
         val density = resources.displayMetrics.density
         val screenWidth = resources.displayMetrics.widthPixels
         val usableWidth = screenWidth - 2 * (50 * density).toInt()
@@ -204,28 +242,22 @@ class ActivityCenter : AppCompatActivity() {
         val container = findViewById<LinearLayout>(R.id.gameButtonContainer)
         container.removeAllViews()
 
-        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
-        val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
-        val dbHelper = DBHelper(this)
-
-        // 💡 Only get the user's progress for THIS module
-        val (currentModIndex, currentStepIndex) = dbHelper.getUserProgress(username)
-
+        // iterate over each game in the module
         for (i in module.games.indices) {
+            // is a button enabled?
             val isEnabled = when {
-                modIndex < currentModIndex -> true
-                modIndex == currentModIndex -> i <= currentStepIndex
+                currentModuleIndex < userProgressModule -> true // if user has progressed to another module => auto yes
+                currentModuleIndex == userProgressModule -> i <= userProgressStep // if user has progressed to this button in the module => yes
                 else -> false
             }
 
             val button = Button(this).apply {
-                text = "M$modIndex" + "A${i + 1}"
+                text = "M${currentModuleIndex + 1}" + "A${i + 1}"
                 background = ContextCompat.getDrawable(context, R.drawable.rounded_ac_button)
                 setTextColor(ContextCompat.getColor(context, android.R.color.black))
                 isAllCaps = false
                 textSize = 16f
                 this.isEnabled = isEnabled
-
                 if (!isEnabled) alpha = 0.5f
             }
 
@@ -237,7 +269,6 @@ class ActivityCenter : AppCompatActivity() {
 
             button.setOnClickListener {
                 if (isEnabled) {
-                    ModuleManager.currentModuleIndex = modIndex
                     ModuleManager.currentStepIndex = i
                     GameRouter.routeToGame(this@ActivityCenter, i)
                 }
@@ -247,12 +278,21 @@ class ActivityCenter : AppCompatActivity() {
         }
     }
 
-    private fun updateProgressBar(progressBar: ProgressBar, modIndex: Int, stepIndex: Int) {
-        val totalSteps = ModuleManager.getModules()[modIndex].games.size
-        val progress = ((stepIndex.toFloat() / totalSteps.toFloat()) * 100).toInt()
+    private fun updateProgressBar(progressBar: ProgressBar, currentModuleIndex: Int, userProgressModule: Int, userProgressStep: Int) {
+        val currentModule = ModuleManager.getModules()[currentModuleIndex]
+        val totalSteps = currentModule.games.size
+
+        // find step progress in this module
+        val completedSteps = when {
+            userProgressModule > currentModuleIndex -> totalSteps // module must be completed.
+            userProgressModule == currentModuleIndex -> userProgressStep // 0-based index
+            else -> 0 // module locked => 0 progress
+        }
+
+        val progress = ((completedSteps.toFloat() / totalSteps.toFloat()) * 100).toInt()
         progressBar.progress = progress
 
-        Log.d("ProgressTracking", "Progress: $progress% (Step $stepIndex of $totalSteps)")
+        Log.d("ProgressTracking", "Module $currentModuleIndex: $completedSteps / $totalSteps → $progress%")
     }
 
     // save progress for user
@@ -263,27 +303,38 @@ class ActivityCenter : AppCompatActivity() {
         val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
 
         val dbHelper = DBHelper(this)
-        val (savedModuleIndex, savedStepIndex) = dbHelper.getUserProgress(username)
-        ModuleManager.currentModuleIndex = savedModuleIndex
-        ModuleManager.currentStepIndex = savedStepIndex
-        Log.d("DEBUG_FLOW", "Reloaded from DB: mod=$savedModuleIndex step=$savedStepIndex")
-        val continueFromSequence = intent.getBooleanExtra("CONTINUE_SEQUENCE", false)
-        if (!continueFromSequence) {
-            ModuleManager.loadModules(this)
-            Log.d("DEBUG_FLOW", "Retrieved score from DB for $username: module=$savedModuleIndex, step=$savedStepIndex")
+        val (maxModIndex, maxStepIndex) = dbHelper.getUserProgress(username)
 
+        // Load modules (if needed)
+        ModuleManager.loadModules(this)
+
+        // Check if intent is forcing a module switch
+        val forcedModuleIndex = intent.getIntExtra("FORCE_MODULE_INDEX", -1)
+        val forcedStepIndex = intent.getIntExtra("FORCE_STEP_INDEX", -1)
+
+        if (forcedModuleIndex != -1 && forcedStepIndex != -1) {
+            ModuleManager.currentModuleIndex = forcedModuleIndex
+            ModuleManager.currentStepIndex = forcedStepIndex
+            Log.d("DEBUG_FLOW", "FORCED to mod=$forcedModuleIndex step=$forcedStepIndex")
+        } else {
+            val (savedModuleIndex, savedStepIndex) = dbHelper.getUserProgress(username)
             ModuleManager.currentModuleIndex = savedModuleIndex
             ModuleManager.currentStepIndex = savedStepIndex
-
-            // Refresh progress bar
-            val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-            updateProgressBar(progressBar, savedModuleIndex, savedStepIndex)
-
-            // 🔥 NEW: Refresh activity buttons based on latest progress
-            setupButtons(savedModuleIndex, savedStepIndex)
+            Log.d("DEBUG_FLOW", "Reloaded from DB: mod=$savedModuleIndex step=$savedStepIndex")
         }
+
+        // Logging final resolved values
+        Log.d(
+            "DEBUG_FLOW",
+            "Final resolved: module=${ModuleManager.currentModuleIndex} step=${ModuleManager.currentStepIndex}"
+        )
+
+        // Refresh UI based on final resolved state
+        updateProgressBar(findViewById(R.id.progressBar), ModuleManager.currentModuleIndex, maxModIndex, maxStepIndex)
+        setupButtons(currentModuleIndex = ModuleManager.currentModuleIndex, userProgressModule = maxModIndex, userProgressStep = maxStepIndex)
+
+        // Optional: clear intent extras after use
+        intent.removeExtra("FORCE_MODULE_INDEX")
+        intent.removeExtra("FORCE_STEP_INDEX")
     }
-
-
-
 }

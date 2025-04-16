@@ -16,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.database.DBHelper
 import com.example.signifybasic.debug.DebugActivity
-import com.example.signifybasic.games.GameSequenceManager
 import com.example.signifybasic.features.tabs.HomePage
 
 
@@ -64,10 +63,6 @@ class MainActivity : AppCompatActivity() {
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
-        }
-
-        if (!GameSequenceManager.isLoaded()) {
-            GameSequenceManager.load(applicationContext)
         }
 
         usernameInput = findViewById(R.id.username_input)

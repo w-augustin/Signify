@@ -11,6 +11,7 @@ object   ModuleManager {
     var currentModuleIndex = 0
     var currentStepIndex = 0
 
+    // load all the modules into this manager class from assets/modules.json
     fun loadModules(context: Context) {
         if (ModuleManager::modules.isInitialized) return
 

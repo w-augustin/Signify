@@ -12,8 +12,8 @@ import com.example.signifybasic.R
 import com.example.signifybasic.database.DBHelper
 import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.games.BaseGameActivity
-import com.example.signifybasic.games.GameSequenceManager
 import com.example.signifybasic.games.ModuleManager
+import com.google.android.material.card.MaterialCardView
 import java.io.Serializable
 
 data class SelectingGameData(
@@ -36,10 +36,9 @@ class SelectingGameActivity : BaseGameActivity() {
         super.onCreate(savedInstanceState)
 
         val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
-        Log.d("GAME_LAUNCH", "Launching SelectingGameActivity with STEP_INDEX=$stepIndex")
-        Log.d("GAME_LAUNCH", "GameSequenceManager.sequence size = ${GameSequenceManager.sequence.size}")
-        val step = GameSequenceManager.sequence.getOrNull(stepIndex)
-        Log.d("GAME_LAUNCH", "Resolved step type: ${step?.type}")
+        val module = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
+        val step = module.games.getOrNull(stepIndex)
+
 
         if (step == null || step.type != "selecting") {
             Toast.makeText(this, "Error loading game data", Toast.LENGTH_SHORT).show()
@@ -67,7 +66,7 @@ class SelectingGameActivity : BaseGameActivity() {
         )
 
 
-        val question = findViewById<TextView>(R.id.question)
+        val question = findViewById<TextView>(R.id.prompt)
         val imageView = findViewById<ImageView>(R.id.p_sign)
         val optionButtons = listOf(
             findViewById<Button>(R.id.option1),
@@ -75,7 +74,8 @@ class SelectingGameActivity : BaseGameActivity() {
             findViewById<Button>(R.id.option3),
             findViewById<Button>(R.id.option4)
         )
-        val submitButton = findViewById<Button>(R.id.submit_button)
+        val actionButtonCard = findViewById<MaterialCardView>(R.id.action_button_card)
+        val actionButtonText = findViewById<TextView>(R.id.action_button_text)
 
         question.text = gameData.prompt
         imageView.setImageResource(gameData.imageRes)
@@ -86,13 +86,13 @@ class SelectingGameActivity : BaseGameActivity() {
 
         optionButtons.forEach { btn ->
             btn.setOnClickListener {
-                resetButtonStyles(optionButtons)
+                selectedButton?.setBackgroundColor(ContextCompat.getColor(this, R.color.signify_blue))
                 selectedButton = btn
                 btn.setBackgroundColor(ContextCompat.getColor(this, R.color.light_blue))
             }
         }
 
-        submitButton.setOnClickListener {
+        actionButtonCard.setOnClickListener {
             if (!answeredCorrectly) {
                 if (selectedButton == null) {
                     Toast.makeText(this, "Please select an option", Toast.LENGTH_SHORT).show()
@@ -105,49 +105,81 @@ class SelectingGameActivity : BaseGameActivity() {
                 resetButtonStyles(optionButtons)
 
                 if (correct) {
-                    selectedButton!!.setBackgroundColor(ContextCompat.getColor(this, R.color.green))
+                    selectedButton!!.setBackgroundColor(ContextCompat.getColor(this, R.color.correct_green))
                     optionButtons.forEach { it.isEnabled = false }
-                    submitButton.text = "Continue"
+
+                    actionButtonCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.correct_green))
+                    actionButtonText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+                    actionButtonText.text = "Continue"
                     answeredCorrectly = true
 
-                    // Get user info
+                    // Progress update
                     val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
                     val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
+                    val moduleIndex = ModuleManager.currentModuleIndex
+                    val nextStep = ++ModuleManager.currentStepIndex
 
-                    // Progress update
-                    val moduleIndex = com.example.signifybasic.games.ModuleManager.currentModuleIndex
-                    val nextStep = com.example.signifybasic.games.ModuleManager.currentStepIndex + 1
-                    com.example.signifybasic.games.ModuleManager.currentStepIndex = nextStep
+                    val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
+                    val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size - 1
 
-                    DBHelper(this).updateUserProgress(username, moduleIndex, nextStep)
+                    if (!isLastStep){
+                        DBHelper(this).updateUserProgress(username, ModuleManager.currentModuleIndex, ModuleManager.currentStepIndex)
+                    }
+                    else {
+                        DBHelper(this).updateUserProgress(username, moduleIndex, stepIndex)
+                    }
                     Log.d("PROGRESS", "User '$username' now at module=$moduleIndex, step=$nextStep")
 
                 } else {
-                    selectedButton!!.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+                    actionButtonCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.red))
+                    actionButtonText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+
                     Toast.makeText(this, "Incorrect. Try again.", Toast.LENGTH_SHORT).show()
+
                     selectedButton = null
+
+                    // Reset color after delay
+                    actionButtonCard.postDelayed({
+                        actionButtonCard.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
+                        actionButtonText.setTextColor(ContextCompat.getColor(this, R.color.signify_blue))
+                    }, 2500)
                 }
+
             } else {
                 val intent = Intent(this, ActivityCenter::class.java)
+                intent.putExtra("IS_CORRECT", true)
 
                 val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
-                val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size
+                val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size - 1
 
+                val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+                val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
+
+                // if more activities remain in this module, simply continue
                 if (!isLastStep) {
-                    // Only set CONTINUE_SEQUENCE if there's more to do
+                    ModuleManager.moveToNextStep()
                     intent.putExtra("CONTINUE_SEQUENCE", true)
+                } else {
+                    // no more activities - send back to activity center
+                    val nextModuleIndex = ModuleManager.currentModuleIndex + 1
+                    if (nextModuleIndex < ModuleManager.getModules().size) { // we are moving to next module
+                        DBHelper(this).updateUserProgress(username, nextModuleIndex, 0)
+                        intent.putExtra("FORCE_OVERRIDE", true)
+                    } else {
+                        DBHelper(this).updateUserProgress(username, ModuleManager.currentModuleIndex, ModuleManager.currentStepIndex)
+                    }
                 }
 
-                intent.putExtra("IS_CORRECT", true)
                 startActivity(intent)
                 finish()
             }
         }
+
     }
 
     private fun resetButtonStyles(buttons: List<Button>) {
         buttons.forEach {
-            it.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_blue))
+            it.setBackgroundColor(ContextCompat.getColor(this, R.color.signify_blue))
             it.isEnabled = true
         }
     }

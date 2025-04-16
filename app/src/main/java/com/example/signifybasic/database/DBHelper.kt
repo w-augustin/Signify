@@ -266,20 +266,19 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     fun updateUserProgress(username: String, moduleIndex: Int, stepIndex: Int) {
         val db = this.writableDatabase
-
         val cursor = db.rawQuery(
             "SELECT module_index, step_index FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?",
             arrayOf(username)
         )
-
         if (cursor.moveToFirst()) {
+            // get user's furthest progress
             val currentModule = cursor.getInt(cursor.getColumnIndexOrThrow("module_index"))
             val currentStep = cursor.getInt(cursor.getColumnIndexOrThrow("step_index"))
 
             // only update if this is a 'higher' module than user's 'highest'
             val shouldUpdate = when {
-                moduleIndex > currentModule -> true
-                moduleIndex == currentModule && stepIndex > currentStep -> true
+                moduleIndex > currentModule -> true // trying to move to a higher module
+                moduleIndex == currentModule && stepIndex > currentStep -> true // same module, but higher activity
                 else -> false
             }
 
@@ -794,35 +793,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return result
     }
-
-    fun changeUserProgress(username: String,  score: Int) {
-        val db = this.writableDatabase
-
-        // First, find the user's ID
-        val cursor = db.rawQuery(
-            "SELECT id FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?",
-            arrayOf(username)
-        )
-
-        if (cursor.moveToFirst()) {
-            val userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-
-            // Update the progress column for this user
-            val values = ContentValues()
-            values.put(COLUMN_PROGRESS, score)
-
-            db.update(
-                TABLE_USERS,
-                values,
-                "id = ?",
-                arrayOf(userId.toString())
-            )
-        }
-
-        cursor.close()
-        db.close()
-    }
-
 
     fun addKnownWord(userID: Int, word: String): Boolean {
         val db = this.writableDatabase

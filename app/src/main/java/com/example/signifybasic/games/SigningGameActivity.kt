@@ -47,8 +47,9 @@ class SigningGameActivity : BaseGameActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        stepIndex = intent.getIntExtra("STEP_INDEX", -1)
-        val step = GameSequenceManager.sequence.getOrNull(stepIndex)
+        val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
+        val module = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
+        val step = module.games.getOrNull(stepIndex)
 
         if (step == null || step.type != "signing") {
             Toast.makeText(this, "Error loading signing step", Toast.LENGTH_SHORT).show()

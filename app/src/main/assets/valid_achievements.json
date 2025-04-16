@@ -5,13 +5,18 @@
     "description": "Complete Module 1."
   },
   {
+    "name": "Module 2",
+    "icon": "folder",
+    "description": "Complete Module 2."
+  },
+  {
     "name": "Module Master",
     "icon": "trophy",
     "description": "Complete all available modules."
   },
   {
     "name": "First Login",
-    "icon": "fire",
+    "icon": "checkmark",
     "description": "Log in to your account for the first time."
   },
   {
