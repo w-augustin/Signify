@@ -47,10 +47,10 @@ class SignRecognitionResultActivity : AppCompatActivity() {
             applyHighContrastToAllViews(rootView, this)
         }
 
-        val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
+        /*val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
         toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
-        }
+        }*/
 
         // Handle "Record Another Video" button click
         btnRecordAnother.setOnClickListener {
