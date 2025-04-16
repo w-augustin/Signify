@@ -1,3 +1,5 @@
+# Reference: https://github.com/Mirwe/Real-time-ASL-alphabet-recognition/tree/main
+
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split

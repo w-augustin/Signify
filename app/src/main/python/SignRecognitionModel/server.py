@@ -1,4 +1,7 @@
-#TODO: call this from where i need to use the sign rec model
+# References
+# https://github.com/nicknochnack/ActionDetectionforSignLanguage
+# https://github.com/Mirwe/Real-time-ASL-alphabet-recognition/tree/main
+
 import cv2
 import os
 import numpy as np
