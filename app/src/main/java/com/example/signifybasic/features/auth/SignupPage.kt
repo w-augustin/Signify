@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.signifybasic.R
 import com.example.signifybasic.database.DBHelper
+import com.example.signifybasic.features.tabs.HomePage
 
 
 class SignupPage : AppCompatActivity() {
@@ -73,7 +74,7 @@ class SignupPage : AppCompatActivity() {
                 Toast.makeText(this, "Signup failed, try again", Toast.LENGTH_SHORT).show()
             }
 
-            val intent = Intent(this, TestPage::class.java)
+            val intent = Intent(this, HomePage::class.java)
             startActivity(intent)
         }
     }

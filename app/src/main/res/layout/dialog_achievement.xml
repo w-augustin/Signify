@@ -26,6 +26,7 @@
         android:id="@+id/dialog_add_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="Add to My Achievements"
         android:backgroundTint="@color/black"
         android:textColor="@android:color/white" />
