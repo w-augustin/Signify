@@ -32,15 +32,18 @@ preference = "1.2.1"
 media3CommonKtx = "1.6.0"
 coreKtxVersion = "1.6.1"
 firebaseAppdistributionGradle = "5.1.1"
+androidx-camera = "1.1.0"
+androidx-camera-view = "1.0.0-alpha31"
+mediapipe-tasks-vision = "0.10.20"
+tasksVision = "0.10.14"
+tensorflowLite = "2.13.0"
+tensorflowLiteSupport = "0.4.3"
+core = "1.13.0"
 
 
 [libraries]
-androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
-androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraCore" }
 androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraCore" }
-androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraCore" }
 androidx-camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraCore" }
-androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraCore" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espressoIdlingResource" }
 androidx-junit-v121 = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
@@ -72,7 +75,15 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 firebase-appdistribution-gradle = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "firebaseAppdistributionGradle" }
-
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "androidx-camera" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "androidx-camera" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "androidx-camera" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "androidx-camera-view" }
+tasks-vision = { module = "com.google.mediapipe:tasks-vision", version.ref = "mediapipe-tasks-vision" }
+tasks-vision-v01014 = { module = "com.google.mediapipe:tasks-vision", version.ref = "tasksVision" }
+tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
+tensorflow-lite-support = { module = "org.tensorflow:tensorflow-lite-support", version.ref = "tensorflowLiteSupport" }
+androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

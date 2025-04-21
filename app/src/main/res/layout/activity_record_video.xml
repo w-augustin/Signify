@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@drawable/login_background"
-    tools:context=".signrecognition.RecordVideoActivity">
+    tools:context=".features.tabs.playground.videorecognition.RecordVideoActivity">
 
-    <!-- loading animation -->
+    <!-- Loading Animation -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="40dp"
@@ -21,49 +21,76 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:backgroundTint="@color/primary_blue"
+        android:elevation="4dp"
+        app:title="Record a Sign"
+        app:titleTextColor="@android:color/white"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/topAppBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Instruction Text -->
     <TextView
         android:id="@+id/instructionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
+        app:layout_constraintTop_toBottomOf="@id/divider"
         android:background="@drawable/instruction_box_border"
         android:gravity="center"
         android:padding="8dp"
-        android:text="Enter the sign you intend to perform, then record your video in landscape mode. \n Make sure you face and arms are visible for more accurate sign prediction."
+        android:text="Enter the sign you want to perform, then record your video in landscape mode. \nEnsure your face and arms are visible for accurate sign prediction."
         android:textColor="@android:color/white"
-        android:textSize="15sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
-    <!-- input text -->
+    <!-- Input Text -->
+
+    <!-- Record Button -->
+
     <AutoCompleteTextView
         android:id="@+id/inputSign"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:padding="16dp"
         android:hint="Enter Sign Here"
-        android:textSize="18sp"
+        android:padding="16dp"
         android:textColor="@android:color/white"
         android:textColorHint="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/instructionText"
+        app:layout_constraintTop_toTopOf="@id/divider"
+        app:layout_constraintVertical_bias="0.368"
         tools:ignore="VisualLintTextFieldSize" />
 
-    <!-- Record Button -->
-
-    <!-- go back button -->
     <Button
         android:id="@+id/btnRecord"
         android:layout_width="185dp"
         android:layout_height="48dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="48dp"
         android:backgroundTint="?attr/colorPrimary"
         android:text="Record Video"
         android:textColor="#273990"
@@ -71,6 +98,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputSign" />
 
+    <!-- Back Button -->
     <Button
         android:id="@+id/btnBack"
         android:layout_width="185dp"

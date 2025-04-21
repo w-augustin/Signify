@@ -106,6 +106,7 @@
                     app:cardElevation="4dp"
                     app:cardBackgroundColor="@android:color/white">
                     <TextView
+                        android:id="@+id/streak_display"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"

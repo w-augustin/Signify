@@ -11,6 +11,7 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
+        app:titleCentered="true"
         android:layout_height="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
         android:gravity="center_vertical"
@@ -19,8 +20,7 @@
         android:elevation="4dp"
         app:title="Activity"
         app:titleTextColor="@android:color/white"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:navigationIconTint="@android:color/white"
+        app:menu="@menu/navigation_menu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -49,14 +49,74 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Game content will be injected here -->
-    <FrameLayout
-        android:id="@+id/gameContentContainer"
+    <LinearLayout
+        android:id="@+id/gameContainerWrapper"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
         app:layout_constraintTop_toBottomOf="@id/moduleProgressBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="16dp">
+
+        <FrameLayout
+            android:id="@+id/gameContentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:id="@+id/bottomNavButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:weightSum="3">
+
+            <ImageButton
+                android:id="@+id/backStepButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/baseline_arrow_circle_left_24"
+                android:contentDescription="Back"
+                app:tint="@color/white"
+                android:alpha="0.2"
+                android:enabled="false" />
+
+            <Button
+                android:id="@+id/returnToCenterButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Back to Modules"
+                android:backgroundTint="@color/primary_blue"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"/>
+
+            <ImageButton
+                android:id="@+id/nextStepButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/baseline_arrow_circle_right_24"
+                android:contentDescription="Next"
+                app:tint="@color/white"
+                android:alpha="0.2"
+                android:enabled="false" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
