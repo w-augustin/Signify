@@ -33,8 +33,10 @@ import java.io.FileOutputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import android.content.pm.PackageManager
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.android.material.appbar.MaterialToolbar
+import android.content.Context
+import java.io.IOException
+import java.io.InputStream
 
 class RecordVideoActivity : AppCompatActivity() {
 
@@ -101,7 +103,7 @@ class RecordVideoActivity : AppCompatActivity() {
             Log.w("CameraConfig", "Resolution or FPS not available!")
         }
 
-        val support = listOf("hello", "hi", "thank you", "thanks", "name", "book", "bye", "goodbye", "i love you") + ('a'..'z').map { it.toString() }
+        val support = listOf("hello", "hi", "thank you", "thanks", "book", "bye", "goodbye", "i love you") + ('a'..'z').map { it.toString() }
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, support)
         inputEditText.setAdapter(adapter)
 
@@ -109,7 +111,7 @@ class RecordVideoActivity : AppCompatActivity() {
         val inputMapping = mapOf(
             "hi" to "hello",
             "thanks" to "thank you",
-            "bye" to "goodbye"
+            "goodbye" to "bye"
         )
 
         recordVideoBtn.setOnClickListener {
@@ -215,7 +217,12 @@ class RecordVideoActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val method =  if (expectedSign.length == 1 && expectedSign.all { it.isLetter() }) "alpha" else "holistic"
-            val result = recognizeSign(videoFile, method)
+
+            // For testing purposes, fetch video from assets instead of using the camera/video capture.
+            // val videoFileFromAssets = getVideoFromAssets(applicationContext, "bye.mp4")
+
+            // TODO: change to videoFile after
+            val result = recognizeSign(videoFile, method, expectedSign)
 
             var sign = "Unknown"
             var score = "0.0"
@@ -251,13 +258,15 @@ class RecordVideoActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun recognizeSign(videoFile: File, method: String): String {
+    private suspend fun recognizeSign(videoFile: File, method: String, expectedSign: String): String {
         val mediaType = "video/mp4".toMediaType()
         val requestBody = videoFile.asRequestBody(mediaType)
         val videoPart = MultipartBody.Part.createFormData("video", videoFile.name, requestBody)
+        val expectedSignPart = MultipartBody.Part.createFormData("expectedSign", expectedSign)
+
 
         return suspendCoroutine { continuation ->
-            ModelRetrofitClient.getInstance().predict(videoPart, method)
+            ModelRetrofitClient.getInstance().predict(videoPart, expectedSignPart, method)
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         val result = response.body()?.string()
@@ -274,4 +283,31 @@ class RecordVideoActivity : AppCompatActivity() {
     fun setExpectedSignForTest(value: String) {
         expectedSign = value
     }
+
+    /*suspend fun getVideoFromAssets(context: Context, videoFileName: String): File? {
+        val assetManager = context.assets
+        val videoFile = File(context.cacheDir, videoFileName)
+
+        try {
+            // Open the video file from assets
+            val inputStream: InputStream = assetManager.open(videoFileName)
+            val outputStream = FileOutputStream(videoFile)
+
+            val buffer = ByteArray(1024)
+            var length: Int
+            while (inputStream.read(buffer).also { length = it } > 0) {
+                outputStream.write(buffer, 0, length)
+            }
+
+            // Close the streams
+            inputStream.close()
+            outputStream.close()
+
+            return videoFile
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        }
+    }*/
+
 }

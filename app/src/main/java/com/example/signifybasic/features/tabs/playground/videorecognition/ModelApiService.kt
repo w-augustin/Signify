@@ -11,6 +11,7 @@ interface ModelApiService {
     @POST("predict")
     fun predict(
         @Part video: MultipartBody.Part,
+        @Part expectedSign: MultipartBody.Part,
         @Query("method") method: String = "holistic" // Default to "holistic"
     ): Call<ResponseBody>
 }

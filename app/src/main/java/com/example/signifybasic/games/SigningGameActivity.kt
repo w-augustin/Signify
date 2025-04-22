@@ -145,9 +145,11 @@ class SigningGameActivity : BaseGameActivity() {
     private fun processVideo(file: File) {
         loadingProgressBar.visibility = View.VISIBLE
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val result = recognizeSign(file)
 
+        CoroutineScope(Dispatchers.IO).launch {
+            val method =  if (expectedSign.length == 1 && expectedSign.all { it.isLetter() }) "alpha" else "holistic"
+
+            val result = recognizeSign(file, method)
             recognizedSign = try {
                 if (result.startsWith("{")) JSONObject(result).optString("sign", "Unknown")
                 else "Unknown"
@@ -193,13 +195,15 @@ class SigningGameActivity : BaseGameActivity() {
     }
 
 
-    private suspend fun recognizeSign(file: File): String {
+    private suspend fun recognizeSign(file: File, method: String): String {
         val mediaType = "video/mp4".toMediaType()
         val body = file.asRequestBody(mediaType)
         val part = MultipartBody.Part.createFormData("video", file.name, body)
+        val expectedSignPart = MultipartBody.Part.createFormData("expectedSign", expectedSign)
+
 
         return suspendCoroutine { cont ->
-            ModelRetrofitClient.getInstance().predict(part).enqueue(object : Callback<ResponseBody> {
+            ModelRetrofitClient.getInstance().predict(part, expectedSignPart, method).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     cont.resume(response.body()?.string() ?: "")
                 }
