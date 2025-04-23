@@ -13,6 +13,7 @@ import com.example.signifybasic.R
 import com.example.signifybasic.database.DBHelper
 import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.example.signifybasic.features.tabs.playground.videorecognition.ModelRetrofitClient
+import com.example.signifybasic.features.tabs.playground.videorecognition.Prediction
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -25,6 +26,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class SigningGameActivity : BaseGameActivity() {
@@ -150,13 +152,8 @@ class SigningGameActivity : BaseGameActivity() {
             val method =  if (expectedSign.length == 1 && expectedSign.all { it.isLetter() }) "alpha" else "holistic"
 
             val result = recognizeSign(file, method)
-            recognizedSign = try {
-                if (result.startsWith("{")) JSONObject(result).optString("sign", "Unknown")
-                else "Unknown"
-            } catch (e: Exception) {
-                Log.e("Parsing", "Error parsing result", e)
-                "Unknown"
-            }
+
+            recognizedSign = result.firstOrNull()?.sign ?: "Unknown"
 
             val isMatch = recognizedSign.equals(expectedSign, ignoreCase = true)
 
@@ -195,23 +192,29 @@ class SigningGameActivity : BaseGameActivity() {
     }
 
 
-    private suspend fun recognizeSign(file: File, method: String): String {
+    private suspend fun recognizeSign(file: File, method: String): List<Prediction> {
         val mediaType = "video/mp4".toMediaType()
         val body = file.asRequestBody(mediaType)
         val part = MultipartBody.Part.createFormData("video", file.name, body)
         val expectedSignPart = MultipartBody.Part.createFormData("expectedSign", expectedSign)
 
 
-        return suspendCoroutine { cont ->
-            ModelRetrofitClient.getInstance().predict(part, expectedSignPart, method).enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    cont.resume(response.body()?.string() ?: "")
-                }
+        return suspendCoroutine { continuation ->
+            ModelRetrofitClient.getInstance().predict(part, expectedSignPart, method)
+                .enqueue(object : Callback<List<Prediction>>  {
+                    override fun onResponse(call: Call<List<Prediction>>, response: Response<List<Prediction>>) {
+                        if (response.isSuccessful) {
+                            val predictions = response.body() ?: emptyList()
+                            continuation.resume(predictions)  // Returning the list of predictions
+                        } else {
+                            continuation.resumeWithException(Exception("Failed to recognize sign: ${response.message()}"))
+                        }
+                    }
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    cont.resume("Network error: ${t.message}")
-                }
-            })
+                    override fun onFailure(call: Call<List<Prediction>>, t: Throwable) {
+                        continuation.resumeWithException(Exception("Network failure: ${t.message}"))
+                    }
+                })
         }
     }
 }

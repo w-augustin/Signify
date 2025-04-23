@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign Recognition Result"
-        android:textSize="24sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:layout_marginBottom="8dp"
@@ -22,83 +22,117 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- Line Under Title -->
+    <!-- Divider -->
     <View
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recognitionResultTitle" />
-
-    <!-- Recognized Sign Output -->
-    <TextView
-        android:id="@+id/tvRecognizedSign"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="Recognized Sign: None"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/recognitionResultTitle"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="32dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Score Output -->
+    <!-- Inputted Sign -->
     <TextView
-        android:id="@+id/tvScore"
-        android:layout_width="0dp"
+        android:id="@+id/inputtedSignTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="Confidence: 0%"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/tvRecognizedSign"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginTop="24dp"
+        android:text="You signed: [SIGN]"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/recognitionResultTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Match Result Output -->
+    <!-- Explanation -->
     <TextView
-        android:id="@+id/tvMatchResult"
-        android:layout_width="0dp"
+        android:id="@+id/explanationText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="Match Result: Not Checked"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/tvScore"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="24dp"
+        android:text="Top predictions with confidence:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/inputtedSignTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Record Another Video Button -->
+    <!-- Predictions Output -->
+    <TextView
+        android:id="@+id/predictionsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Predictions will appear here"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:background="@drawable/prediction_card_background"
+        app:layout_constraintTop_toBottomOf="@id/explanationText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Dictionary Hint -->
+    <TextView
+        android:id="@+id/dictionaryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="See Dictionary to confirm sign accuracy"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/predictionsTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Buttons -->
     <Button
         android:id="@+id/btnRecordAnother"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginTop="32dp"
         android:text="Record Another Video"
         android:textColor="#273990"
-        app:layout_constraintTop_toBottomOf="@id/tvMatchResult"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:backgroundTint="?attr/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/dictionaryTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Go Back Button -->
+    <Button
+        android:id="@+id/btnGoToDictionary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Go to Dictionary"
+        android:textColor="#273990"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btnRecordAnother"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <Button
         android:id="@+id/btnGoBack"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="?attr/colorSecondary"
         android:text="Back to Home"
         android:textColor="#273990"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="?attr/colorSecondary"
+        app:layout_constraintTop_toBottomOf="@id/btnGoToDictionary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnRecordAnother" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Hidden Dictionary Fragment -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.signifybasic.features.tabs.dictionary.DictionaryFragment"
+        tools:layout="@layout/fragment_dictionary"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
