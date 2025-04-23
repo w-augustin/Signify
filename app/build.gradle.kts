@@ -115,4 +115,5 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
+    debugImplementation("androidx.fragment:fragment-testing:1.5.7")
 }
