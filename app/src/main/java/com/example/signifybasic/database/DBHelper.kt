@@ -19,7 +19,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     init {
         Log.d("DB_DEBUG", "DBHelper constructed using path: ${context.getDatabasePath(DATABASE_NAME).absolutePath}")
     }
-
+    //Used to label tables and columns
     companion object {
         private const val DATABASE_NAME = "SignifyDB"
         private const val DATABASE_VERSION = 11 // Incremented to account for new tables
@@ -71,7 +71,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         """.trimIndent()
         db.execSQL(createUsersTable)
 
-
+        //Discussion table creation
         val createDiscussionTable = """
             CREATE TABLE discussions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -83,7 +83,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         """.trimIndent()
         db.execSQL(createDiscussionTable)
 
-
+        //Create Achievements table
         val achievementTable = """
             CREATE TABLE IF NOT EXISTS Achievements (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -104,7 +104,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     UNIQUE(userID, loginDate)
                 )
             """.trimIndent())
-
+        // Create User badges table
         db.execSQL("""
                 CREATE TABLE IF NOT EXISTS UserBadges (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -114,7 +114,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     FOREIGN KEY (userID) REFERENCES users(id)
                 )
             """.trimIndent())
-        
+        // Create user settings table
         val settingsTable = "CREATE TABLE user_settings (" +
                 "user_id INTEGER PRIMARY KEY, " +
                 "sound_effects INTEGER NOT NULL, " +
@@ -128,7 +128,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);"
 
         db.execSQL(settingsTable)
-
+        // Create login history of users table
         db.execSQL(
         """
             CREATE TABLE IF NOT EXISTS LoginHistory (
@@ -138,7 +138,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 UNIQUE(userID, loginDate)
             )
         """.trimIndent())
-
+        // Create known words table
         db.execSQL(
         """CREATE TABLE KnownWords (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -158,7 +158,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.execSQL("CREATE TABLE $TABLE_USER_ANSWER (userAnswerID INTEGER PRIMARY KEY AUTOINCREMENT, userID INTEGER, questionID INTEGER, userAnswer TEXT NOT NULL, isCorrect BOOLEAN DEFAULT 0, FOREIGN KEY (userID) REFERENCES $TABLE_ACCOUNT(userID), FOREIGN KEY (questionID) REFERENCES $TABLE_QUESTION(questionID))")
         db.execSQL("""CREATE TABLE notifications (id INTEGER PRIMARY KEY AUTOINCREMENT, message TEXT NOT NULL, timestamp INTEGER )""".trimIndent())
     }
-
+    // Onupgrade for adding new tables/columns and updating database version when
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) {
             val addColumnQuery = "ALTER TABLE $TABLE_USER_IMAGES ADD COLUMN $COLUMN_USER_ID TEXT"
@@ -218,7 +218,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         }
 
     }
-
+    // function to add new acheivement for an user
     fun addAchievement(userID: Int, achievementName: String, context: Context): Boolean {
         val inputName = achievementName.trim().lowercase()
         val validNames = loadValidAchievementNames(context).map { it.trim().lowercase() }
@@ -236,7 +236,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             "SELECT * FROM Achievements WHERE userID = ? AND LOWER(TRIM(achievementName)) = ?",
             arrayOf(userID.toString(), inputName)
         )
-
+        //Check if user already has acheivement
         val exists = cursor.count > 0
         cursor.close()
 
@@ -256,7 +256,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         return result != -1L
     }
-
+    // Add word to users known word collection
     fun addKnownWord(userId: Int, word: String) {
         val db = writableDatabase
         val stmt = db.compileStatement("""
@@ -269,7 +269,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         stmt.close()
         db.close()
     }
-
+    // Return count of known words
     fun getKnownWordCount(userId: Int): Int {
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT COUNT(*) FROM KnownWords WHERE userID = ?", arrayOf(userId.toString()))
@@ -279,7 +279,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return count
     }
 
-
+    // Fuction to get user progress
     fun getUserProgress(username: String): Pair<Int, Int> {
         val db = this.readableDatabase
         val query = "SELECT module_index, step_index FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?"
@@ -294,7 +294,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return result
     }
-
+    // Function to update user progress
     fun updateUserProgress(username: String, moduleIndex: Int, stepIndex: Int) {
         val db = this.writableDatabase
         val cursor = db.rawQuery(
@@ -337,7 +337,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
 
 
-
+    // Use to return list of acheivements for user
     fun getAchievements(userID: Int): List<String> {
         val achievements = mutableListOf<String>()
         val db = this.readableDatabase
@@ -353,14 +353,14 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return achievements
     }
-
+    // Clear all user acheivements
     fun clearAchievementsForUser(userID: Int): Boolean {
         val db = this.writableDatabase
         val rowsDeleted = db.delete("Achievements", "userID = ?", arrayOf(userID.toString()))
         db.close()
         return rowsDeleted > 0
     }
-
+    // Get labels of all acheivments possible within the app
     private fun loadValidAchievementNames(context: Context): List<String> {
         val inputStream = context.assets.open("valid_achievements.json")
         val jsonString = inputStream.bufferedReader().use { it.readText() }
@@ -377,7 +377,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return list
     }
 
-
+    // get a valid user ID with username
     fun getUserIdByUsername(username: String): Int? {
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT id FROM users WHERE username = ?", arrayOf(username))
@@ -423,7 +423,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.update(TABLE_USERS, values, "id = ?", arrayOf(userID.toString()))
         db.close()
     }
-
+    // Add notification to users notif page
     fun insertNotification(message: String): Boolean {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -499,7 +499,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
 
-
+    // CRUD OPERATIONS FOR USERS TABLE
     // Add a new user
     fun addUser(username: String, password: String, email: String): Boolean {
         val db = this.writableDatabase
@@ -671,7 +671,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     //                "text_size INTEGER NOT NULL, " +
     //                "contrast INTEGER NOT NULL, " +
     //                "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);"
-
+    // Getters and setters for settings table
+    // Load default settings on first app startup
     fun insertUserSettings(userID: Int) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -796,7 +797,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return result
     }
-
+    //getters and setters for user badges
     fun setUserBadge(userID: Int, slot: Int, achievementName: String) {
         val db = writableDatabase
         val values = ContentValues().apply {
