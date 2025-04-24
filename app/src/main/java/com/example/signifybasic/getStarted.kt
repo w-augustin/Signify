@@ -14,7 +14,7 @@ class getStarted : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_get_started)
-
+        // go back to activity center and begin module activities
         val nextBtn = findViewById<Button>(R.id.nextButton)
         nextBtn.setOnClickListener {
            startActivity(Intent(this,ActivityCenter::class.java ))

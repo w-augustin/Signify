@@ -133,13 +133,13 @@ class FillBlankGameActivity : BaseGameActivity() {
 
                 val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
                 val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size - 1
-
+                    // add to the database
                 if (!isLastStep){
                     DBHelper(this).updateUserProgress(username, ModuleManager.currentModuleIndex, ModuleManager.currentStepIndex)
                 }
                 else {
                     DBHelper(this).updateUserProgress(username, modIndex, stepIndex)
-                }
+                }       // log in system to see if actually being added
                 android.util.Log.d("PROGRESS", "Saved progress: module=$modIndex, step=$stepIndex")
 
                 actionButtonCard.setOnClickListener {

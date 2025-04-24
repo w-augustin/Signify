@@ -67,7 +67,7 @@ class IdentifyGameActivity : BaseGameActivity() {
                 else -> null
             }
         } ?: emptyList()
-
+            //setting the game up
         val gameData = IdentifyGameData(
             questionText = step.questionText ?: "Identify the sign",
             imageOptions = options,
@@ -106,6 +106,7 @@ class IdentifyGameActivity : BaseGameActivity() {
         val actionButtonText = findViewById<TextView>(R.id.action_button_text)
 
         // on submit
+        // user did not select an answer but try to move forward
         actionButtonCard.setOnClickListener {
             if (selectedButton == null) {
                 Toast.makeText(this, "Please select an answer", Toast.LENGTH_SHORT).show()
