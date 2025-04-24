@@ -57,7 +57,7 @@
                 android:layout_height="140dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:background="@drawable/rounded_edges"
                 android:contentDescription="Option 1" />
 
@@ -67,7 +67,7 @@
                 android:layout_height="140dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:background="@drawable/rounded_edges"
                 android:contentDescription="Option 2" />
         </LinearLayout>
@@ -91,7 +91,7 @@
                 android:layout_height="140dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:background="@drawable/rounded_edges"
                 android:contentDescription="Option 3" />
 
@@ -101,7 +101,7 @@
                 android:layout_height="140dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:background="@drawable/rounded_edges"
                 android:contentDescription="Option 4" />
         </LinearLayout>
