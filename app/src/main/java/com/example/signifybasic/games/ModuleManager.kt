@@ -5,7 +5,8 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-object   ModuleManager {
+// helper for managing different modules
+object ModuleManager {
     private lateinit var modules: List<GameModule>
 
     var currentModuleIndex = 0
@@ -30,6 +31,7 @@ object   ModuleManager {
             ?.getOrNull(currentStepIndex)
     }
 
+    // proceed to next step
     fun moveToNextStep() {
         val currentModule = modules.getOrNull(currentModuleIndex) ?: return
 

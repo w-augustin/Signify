@@ -1,8 +1,4 @@
-package com.example.signifybasic.games
-
-import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+package com.example.signifybasic.deprecated
 
 object GameSequenceManager {
 //    private var _sequence: List<GameStep>? = null

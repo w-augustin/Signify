@@ -24,6 +24,7 @@ class HandTracker(context: Context) {
         private const val PALM_SCORE_THRESHOLD = 0.7f
     }
 
+    // load the model from files
     private fun loadModelFile(context: Context, filename: String): MappedByteBuffer {
         val fileDescriptor: AssetFileDescriptor = context.assets.openFd(filename)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
@@ -33,6 +34,7 @@ class HandTracker(context: Context) {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
     }
 
+    // match the hand positions with given anchors
     private fun loadAnchors(context: Context): Array<FloatArray> {
         val inputStream = context.assets.open("anchors.csv")
         val reader = BufferedReader(InputStreamReader(inputStream))
@@ -44,6 +46,7 @@ class HandTracker(context: Context) {
         return anchorsList.toTypedArray()
     }
 
+    // normalize image to improve matching for model
     private fun normalizeImage(bitmap: Bitmap): ByteBuffer {
         val imgData = ByteBuffer.allocateDirect(1 * INPUT_IMAGE_SIZE * INPUT_IMAGE_SIZE * 3 * 4).apply {
             order(ByteOrder.nativeOrder())
@@ -65,9 +68,10 @@ class HandTracker(context: Context) {
 
     private fun sigmoid(x: Float): Float = 1 / (1 + exp(-x))
 
+    // attempt to detect user hand presence and position
     fun detect(bitmap: Bitmap): FloatArray? {
         val input = normalizeImage(bitmap)
-        val outputReg = Array(1) { Array(2944) { FloatArray(18) } } // adjust based on model shape
+        val outputReg = Array(1) { Array(2944) { FloatArray(18) } }
         val outputClf = Array(1) { Array(2944) { FloatArray(1) } }
 
         palmInterpreter.runForMultipleInputsOutputs(arrayOf(input), mapOf(
@@ -86,9 +90,10 @@ class HandTracker(context: Context) {
         return keypoints
     }
 
+    // get the hand position landmarks
     fun getLandmarks(handBitmap: Bitmap): FloatArray {
         val input = normalizeImage(handBitmap)
-        val output = Array(1) { FloatArray(63) }  // ✅ EXPECT 63 VALUES
+        val output = Array(1) { FloatArray(63) }
         landmarkInterpreter.run(input, output)
         return output[0]
     }

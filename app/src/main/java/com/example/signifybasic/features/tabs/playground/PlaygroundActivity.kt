@@ -18,6 +18,7 @@ import com.google.android.material.card.MaterialCardView
 
 class PlaygroundActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // set up xml
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playground)
 
@@ -32,10 +33,12 @@ class PlaygroundActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        // allow navigation to live recognition activity
         findViewById<MaterialCardView>(R.id.cardLiveCamera).setOnClickListener {
             startActivity(Intent(this, LiveSignRecognitionActivity::class.java))
         }
 
+        // allow navigation to recorded recognition activity
         findViewById<MaterialCardView>(R.id.cardRecording).setOnClickListener {
             startActivity(Intent(this, RecordVideoActivity::class.java))
         }

@@ -27,22 +27,23 @@ class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val sharedPref = context.getSharedPreferences("NotificationSettings", Context.MODE_PRIVATE)
 
+        // don't send a push notification if they're disabled
         if (!sharedPref.getBoolean("push_enabled", true)) {
             Log.d("ReminderReceiver", "Push notifications disabled. Skipping notification.")
             return
         }
 
+        // fetch the sound name and set accordingly
         val soundName = sharedPref.getString("notification_sound", "Chime") ?: "Chime"
         val soundResId = when (soundName) {
             "Ding" -> R.raw.ding
             "Pop" -> R.raw.pop
             else -> R.raw.chime
         }
-
         val soundUri = Uri.parse("android.resource://${context.packageName}/$soundResId")
-
         val channelId = "reminder_channel_$soundName"
 
+        // attempt to send notification to user
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val audioAttributes = AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -77,6 +78,7 @@ class ReminderReceiver : BroadcastReceiver() {
             NotificationManagerCompat.from(context).notify(1001, notification)
         }
 
+        // update db to reflect existence of notification
         val dbHelper = DBHelper(context)
         dbHelper.insertNotification("It's time for your daily check-in!")
 

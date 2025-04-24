@@ -28,6 +28,7 @@ import com.example.signifybasic.games.ModuleManager
 
 class ProfileFragment : Fragment() {
 
+    // to allow user to display selected achievements
     private fun showBadgePickerDialog(
         userId: Int,
         slot: Int,
@@ -37,7 +38,7 @@ class ProfileFragment : Fragment() {
     ) {
         val currentBadges = dbHelper.getUserBadges(userId)
 
-        // Filter out badges already used in other slots
+        // filter badges used in other slots
         val alreadyUsed = currentBadges.filterKeys { it != slot }.values.toSet()
         val available = unlocked.filter { it.name !in alreadyUsed }
 
@@ -55,7 +56,7 @@ class ProfileFragment : Fragment() {
 
         dialogView.findViewById<Button>(R.id.clearButton)?.setOnClickListener {
             dbHelper.clearUserBadge(userId, slot)
-            targetView.setImageResource(R.drawable.checkmark) // Reset to default
+            targetView.setImageResource(R.drawable.checkmark) // reset
             (dialogView.parent as? ViewGroup)?.let { (it.parent as? AlertDialog)?.dismiss() }
         }
 
@@ -91,9 +92,8 @@ class ProfileFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // basic xml setup
         ModuleManager.loadModules(requireContext())
-
-
         super.onViewCreated(view, savedInstanceState)
 
         applyTextSizeToAllTextViews(view, requireContext())
@@ -101,7 +101,7 @@ class ProfileFragment : Fragment() {
             applyHighContrastToAllViews(view, requireContext())
         }
 
-        //Retrieve username to assign text
+        // retrieve username to establish text
         val sharedPref = requireContext().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
         val username = sharedPref.getString("loggedInUser", null)
         val email = sharedPref.getString("userEmail", null)
@@ -111,13 +111,13 @@ class ProfileFragment : Fragment() {
 
         val safeUsername = username ?: "0"
 
+        // display various user stats
         if (userId != null) {
             val streak = dbHelper.getLoginStreak(userId)
 
             val streakTextView = view.findViewById<TextView>(R.id.streak_display)
             streakTextView.text = "$streak day streak"
         }
-
 
         val allModules = ModuleManager.getModules()
         val (currentModIndex, currentStepIndex) = dbHelper.getUserProgress(safeUsername)
@@ -136,6 +136,7 @@ class ProfileFragment : Fragment() {
         }
         binding.exptextview.text = "$totalXP XP"
 
+        // get known words
         val knownWords = userId?.let { dbHelper.getKnownWordCount(it) } ?: 0
         view.findViewById<TextView>(R.id.wordsKnownTextView)?.text = "$knownWords words"
 
@@ -143,7 +144,6 @@ class ProfileFragment : Fragment() {
         val modules = ModuleManager.getModules()
         val currentModuleTitle = modules.getOrNull(modIndex)?.title ?: "Unknown"
         binding.currentModuleTextView.text = currentModuleTitle
-
 
         val badgeViews = listOf(
             view.findViewById<ImageView>(R.id.badgeSlot1),

@@ -24,6 +24,7 @@ class SignupPage : AppCompatActivity() {
     private lateinit var confirmPasswordInput: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // setting basic xml
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.signup_page)

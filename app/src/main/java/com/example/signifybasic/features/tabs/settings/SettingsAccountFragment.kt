@@ -36,6 +36,7 @@ class SettingsAccountFragment : Fragment(R.layout.account_preferences) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // basic xml setup of page
         val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
 
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
@@ -45,7 +46,6 @@ class SettingsAccountFragment : Fragment(R.layout.account_preferences) {
             v.setPadding(0, topInset, 0, 0)
             insets
         }
-
         applyTextSizeToAllTextViews(view, requireContext())
         if (isHighContrastEnabled(requireContext())) {
             applyHighContrastToAllViews(view, requireContext())
@@ -91,11 +91,13 @@ class SettingsAccountFragment : Fragment(R.layout.account_preferences) {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        // change username
         view.findViewById<MaterialButton>(R.id.btn_change_user).setOnClickListener {
             usernameDisplayRow.visibility = View.GONE
             usernameEditRow.visibility = View.VISIBLE
         }
 
+        // dialog for changing username
         btnSubmitUsername.setOnClickListener {
             btnSubmitUsername.setOnClickListener {
                 val newUsername = inputUsername.text.toString().trim()
@@ -125,11 +127,13 @@ class SettingsAccountFragment : Fragment(R.layout.account_preferences) {
 
         }
 
+        // change email
         view.findViewById<MaterialButton>(R.id.btn_change_email).setOnClickListener {
             emailDisplayRow.visibility = View.GONE
             emailEditRow.visibility = View.VISIBLE
         }
 
+        // dialog for changing email
         btnSubmitEmail.setOnClickListener {
             val newEmail = inputEmail.text.toString().trim()
 
@@ -156,11 +160,13 @@ class SettingsAccountFragment : Fragment(R.layout.account_preferences) {
             }
         }
 
+        // change password
         view.findViewById<MaterialButton>(R.id.btn_change_password).setOnClickListener {
             passwordDisplayRow.visibility = View.GONE
             passwordEditRow.visibility = View.VISIBLE
         }
 
+        // dialog for changing password
         btnSubmitPassword.setOnClickListener {
             val newPassword = inputPasswordEdit.text.toString().trim()
 
@@ -187,6 +193,7 @@ class SettingsAccountFragment : Fragment(R.layout.account_preferences) {
             }
         }
 
+        // log user out of session
         view.findViewById<MaterialButton>(R.id.btn_log_out).setOnClickListener {
             if (username != null) {
                     // clear session
@@ -203,9 +210,10 @@ class SettingsAccountFragment : Fragment(R.layout.account_preferences) {
             }
         }
 
+        // delete account
         view.findViewById<MaterialButton>(R.id.btn_delete_account).setOnClickListener {
             if (username != null) {
-                val deleted = dbHelper.deleteUser(username)
+                val deleted = dbHelper.deleteUser(username) // remove user from db
                 if (deleted) {
                     Toast.makeText(requireContext(), "Account deleted", Toast.LENGTH_SHORT).show()
 

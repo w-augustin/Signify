@@ -16,6 +16,7 @@ import com.example.signifybasic.games.ModuleManager
 import com.google.android.material.card.MaterialCardView
 import java.io.Serializable
 
+// helper class for importing data
 data class IdentifyGameData(
     val questionText: String,
     val imageOptions: List<IdentifyOption>, // up to 4
@@ -39,6 +40,7 @@ class IdentifyGameActivity : BaseGameActivity() {
     private var identifyCorrect = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // set basic xml
         super.onCreate(savedInstanceState)
 
         val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
@@ -51,6 +53,7 @@ class IdentifyGameActivity : BaseGameActivity() {
             return
         }
 
+        // dynamically set up xml according to data
         val options = step.options?.mapNotNull {
             when (it) {
                 is Map<*, *> -> {
@@ -85,7 +88,7 @@ class IdentifyGameActivity : BaseGameActivity() {
             findViewById<ImageButton?>(R.id.option_image_4)
         )
 
-        // Load up to 4 options
+        // load up to 4 options
         gameData.imageOptions.forEachIndexed { index, option ->
             val button = optionButtons[index]
             button.setImageResource(option.imageRes)
@@ -102,6 +105,7 @@ class IdentifyGameActivity : BaseGameActivity() {
         val actionButtonCard = findViewById<MaterialCardView>(R.id.action_button_card)
         val actionButtonText = findViewById<TextView>(R.id.action_button_text)
 
+        // on submit
         actionButtonCard.setOnClickListener {
             if (selectedButton == null) {
                 Toast.makeText(this, "Please select an answer", Toast.LENGTH_SHORT).show()
@@ -113,6 +117,7 @@ class IdentifyGameActivity : BaseGameActivity() {
 
             resetImageButtonStyles(optionButtons)
 
+            // if user is correct, move on etc.
             if (isCorrect) {
                 actionButtonCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.correct_green))
                 actionButtonText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
@@ -122,7 +127,7 @@ class IdentifyGameActivity : BaseGameActivity() {
                 actionButtonText.text = "Continue"
                 identifyCorrect = true
 
-                // Update progress
+                // update progress
                 val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
                 val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
                 ModuleManager.moveToNextStep()
@@ -140,7 +145,7 @@ class IdentifyGameActivity : BaseGameActivity() {
                 }
                 Log.d("PROGRESS", "Correct! Saved progress: module=$modIndex, step=$stepIndex")
 
-                // Update listener to continue
+                // update listener to continue
                 actionButtonCard.setOnClickListener {
                     val intent = Intent(this, ActivityCenter::class.java)
                     intent.putExtra("IS_CORRECT", true)
@@ -165,6 +170,7 @@ class IdentifyGameActivity : BaseGameActivity() {
                 }
 
             } else {
+                // if user is wrong, don't progress
                 actionButtonCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.red))
                 actionButtonText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
 
@@ -180,6 +186,7 @@ class IdentifyGameActivity : BaseGameActivity() {
         }
     }
 
+    // reset the image buttons to default state
     private fun resetImageButtonStyles(buttons: List<ImageButton>) {
         buttons.forEach {
             it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.white)

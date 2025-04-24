@@ -16,6 +16,7 @@ import com.example.signifybasic.games.ModuleManager
 import com.google.android.material.card.MaterialCardView
 import java.io.Serializable
 
+// helper classes to establish game data
 data class FillBlankGameData(
     val prompt: String,
     val question: String,
@@ -39,6 +40,7 @@ class FillBlankGameActivity : BaseGameActivity() {
     private var isCorrect = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // basic xml establishment
         super.onCreate(savedInstanceState)
 
         val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
@@ -51,6 +53,7 @@ class FillBlankGameActivity : BaseGameActivity() {
             return
         }
 
+        // getting all the game data and dynamically setting up xml
         val options = step.options?.mapNotNull {
             when (it) {
                 is Map<*, *> -> {
@@ -73,8 +76,6 @@ class FillBlankGameActivity : BaseGameActivity() {
             nextGameClass = null,
             resultKey = step.resultKey
         )
-
-
 
         findViewById<TextView>(R.id.prompt).text = gameData.prompt
         findViewById<TextView>(R.id.question).text = gameData.question
@@ -103,6 +104,7 @@ class FillBlankGameActivity : BaseGameActivity() {
             }
         }
 
+        // allow selection of answer
         actionButtonCard.setOnClickListener {
             if (selectedButton == null) {
                 Toast.makeText(this, "Please select an answer.", Toast.LENGTH_SHORT).show()
@@ -113,6 +115,7 @@ class FillBlankGameActivity : BaseGameActivity() {
                 it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.white)
             }
 
+            // correct answer submitted - move forward, etc.
             if (selectedAnswer.equals(gameData.correctAnswer, ignoreCase = true)) {
                 selectedButton?.backgroundTintList = ContextCompat.getColorStateList(this, R.color.green)
                 isCorrect = true
@@ -163,6 +166,7 @@ class FillBlankGameActivity : BaseGameActivity() {
                 }
 
             } else {
+                // bad answer submitted - don't move forward
                 selectedButton?.backgroundTintList = ContextCompat.getColorStateList(this, R.color.red)
                 Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show()
 

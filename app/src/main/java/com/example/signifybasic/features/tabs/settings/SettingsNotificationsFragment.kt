@@ -42,6 +42,7 @@ class SettingsNotificationsFragment : Fragment(R.layout.notifications_preference
 
     private lateinit var sharedPref: android.content.SharedPreferences
 
+    // need permission for notifications
     private val requestNotificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -52,8 +53,7 @@ class SettingsNotificationsFragment : Fragment(R.layout.notifications_preference
         }
     }
 
-
-
+    // helper function to format times
     private fun formatTime(hour: Int, minute: Int): String {
         val isPM = hour >= 12
         val hour12 = if (hour % 12 == 0) 12 else hour % 12
@@ -63,6 +63,7 @@ class SettingsNotificationsFragment : Fragment(R.layout.notifications_preference
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // check permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
@@ -72,6 +73,8 @@ class SettingsNotificationsFragment : Fragment(R.layout.notifications_preference
                 requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+
+        // apply xml
         applyTextSizeToAllTextViews(view, requireContext())
         if (isHighContrastEnabled(requireContext())) {
             applyHighContrastToAllViews(view, requireContext())
@@ -92,26 +95,26 @@ class SettingsNotificationsFragment : Fragment(R.layout.notifications_preference
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // Initialize SharedPreferences
-        sharedPref = requireContext().getSharedPreferences("NotificationSettings", Context.MODE_PRIVATE)
 
-        // Grab views
+        // grab views
         val switchPush = view.findViewById<MaterialSwitch>(R.id.switch_push_notifications)
         val switchEmail = view.findViewById<MaterialSwitch>(R.id.switch_email_updates)
         val tvReminderTime = view.findViewById<TextView>(R.id.tv_reminder_time)
         val btnChangeReminder = view.findViewById<MaterialButton>(R.id.btn_change_reminder)
 
-        // Load saved states
+        // use sharedPref
+        sharedPref = requireContext().getSharedPreferences("NotificationSettings", Context.MODE_PRIVATE)
         switchPush.isChecked = sharedPref.getBoolean("push_enabled", true)
         switchEmail.isChecked = sharedPref.getBoolean("email_enabled", false)
         tvReminderTime.text = sharedPref.getString("reminder_time", "08:00 AM")
 
-        // Save toggles
+        // allow toggle of push notifications
         switchPush.setOnCheckedChangeListener { _, isChecked ->
             sharedPref.edit().putBoolean("push_enabled", isChecked).apply()
             Toast.makeText(requireContext(), if (isChecked) "Push notifications enabled" else "Push notifications disabled", Toast.LENGTH_SHORT).show()
         }
 
+        // enable email notifications
         switchEmail.setOnCheckedChangeListener { _, isChecked ->
             sharedPref.edit().putBoolean("email_enabled", isChecked).apply()
             Toast.makeText(requireContext(), if (isChecked) "Email updates enabled" else "Email updates disabled", Toast.LENGTH_SHORT).show()
@@ -120,7 +123,7 @@ class SettingsNotificationsFragment : Fragment(R.layout.notifications_preference
         val tvNotificationSound = view.findViewById<TextView>(R.id.tv_notification_sound)
         val btnChangeSound = view.findViewById<MaterialButton>(R.id.btn_change_sound)
 
-        // Load saved sound name
+        // allow change of notification sound
         tvNotificationSound.text = sharedPref.getString("notification_sound", "Chime")
 
         btnChangeSound.setOnClickListener {
@@ -128,6 +131,7 @@ class SettingsNotificationsFragment : Fragment(R.layout.notifications_preference
             val currentSound = sharedPref.getString("notification_sound", "Chime")
             val selectedIndex = soundOptions.indexOf(currentSound)
 
+            // pop up dialog
             android.app.AlertDialog.Builder(requireContext())
                 .setTitle("Choose Notification Sound")
                 .setSingleChoiceItems(soundOptions, selectedIndex) { dialog, which ->
@@ -141,6 +145,7 @@ class SettingsNotificationsFragment : Fragment(R.layout.notifications_preference
                 .show()
         }
 
+        // more permissions assistance
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
             if (!alarmManager.canScheduleExactAlarms()) {
@@ -150,8 +155,7 @@ class SettingsNotificationsFragment : Fragment(R.layout.notifications_preference
             }
         }
 
-
-        // Handle time change
+        // handle time change
         btnChangeReminder.setOnClickListener {
             val calendar = Calendar.getInstance()
             val currentHour = calendar.get(Calendar.HOUR_OF_DAY)

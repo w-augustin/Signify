@@ -30,12 +30,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.signifybasic.features.utility.loadAllAchievementsFromAssets
 import com.google.android.material.appbar.MaterialToolbar
 
+// class for a given achievement
 data class AchievementItem(
     val name: String, // achievement name
     val iconResId: Int, // achievement icon
     val isUnlocked: Boolean
 )
 
+// class for all achievements
 data class AchievementMeta(
     val name: String,
     val iconResId: Int,
@@ -73,8 +75,6 @@ class AchievementGridAdapter(
         }
     }
 
-
-
     override fun getItemCount() = achievements.size
 }
 
@@ -83,7 +83,7 @@ class AchievementsFragment : Fragment() {
     private var _binding: FragmentAchievementsBinding? = null
     private val binding get() = _binding!!
 
-    // We'll load this from assets in onViewCreated
+    // to be loaded in oncreate
     private lateinit var allAchievements: List<AchievementMeta>
 
     override fun onCreateView(
@@ -95,30 +95,7 @@ class AchievementsFragment : Fragment() {
         return binding.root
     }
 
-    // Load from assets/valid_achievements.json
-//    fun loadAllAchievementsFromAssets(context: Context): List<AchievementMeta> {
-//        val inputStream = context.assets.open("valid_achievements.json")
-//        val jsonString = inputStream.bufferedReader().use { it.readText() }
-//
-//        val jsonArray = org.json.JSONArray(jsonString)
-//        val list = mutableListOf<AchievementMeta>()
-//
-//        for (i in 0 until jsonArray.length()) {
-//            val obj = jsonArray.getJSONObject(i)
-//            val name = obj.getString("name")
-//            val iconName = obj.getString("icon")
-//            val description = obj.getString("description")
-//            val resId = mapToResId(context, iconName)
-//            list.add(AchievementMeta(name, resId, description))
-//        }
-//
-//        return list
-//    }
-
-    private fun mapToResId(context: Context, iconName: String): Int {
-        return context.resources.getIdentifier(iconName, "drawable", context.packageName)
-    }
-
+    // given the achievements, render the images to the grid
     private fun mapAchievementsToIcons(unlockedNames: List<String>): List<AchievementItem> {
         val normalizedUnlocked = unlockedNames.map { it.trim().lowercase() }
 
@@ -132,7 +109,7 @@ class AchievementsFragment : Fragment() {
         }.sortedByDescending { it.isUnlocked }
     }
 
-
+    // when necessary, refresh the unlocked achievements
     private fun refreshAchievements(userID: Int) {
         val dbHelper = DBHelper(requireContext())
         val unlocked = dbHelper.getAchievements(userID)
@@ -141,6 +118,7 @@ class AchievementsFragment : Fragment() {
             AchievementGridAdapter(updatedItems) { item -> showAchievementDialog(item, dbHelper, userID) }
     }
 
+    // open a small dialog describing the achievement
     private fun showAchievementDialog(item: AchievementItem, dbHelper: DBHelper, userID: Int) {
         val inflater = LayoutInflater.from(requireContext())
         val dialogView = inflater.inflate(R.layout.dialog_achievement, null)
@@ -153,7 +131,6 @@ class AchievementsFragment : Fragment() {
         val meta = allAchievements.find { it.name.trim().equals(item.name.trim(), ignoreCase = true) }
         descView.text = meta?.description ?: "No description available."
 
-        // 👇 Log just to confirm it’s inflating correctly
         Log.d("ACHIEVEMENT", "Dialog shown for: ${item.name}")
 
         addButton.setOnClickListener {
@@ -171,6 +148,7 @@ class AchievementsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // basic xml setup
         super.onViewCreated(view, savedInstanceState)
 
         applyTextSizeToAllTextViews(view, requireContext())
@@ -189,18 +167,16 @@ class AchievementsFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.achievementsRecyclerView)
         val userID = username?.let { dbHelper.getUserIdByUsername(it) } ?: return
 
-        // Load valid achievement definitions
+        // load valid achievements
         allAchievements = loadAllAchievementsFromAssets(requireContext())
 
-        // Get user's unlocked achievements from the database
+        // get the achievements user has unlocked
         val unlockedAchievementNames = dbHelper.getAchievements(userID)
         Log.d("ACHIEVEMENT", "Loaded userID: $userID")
         Log.d("ACHIEVEMENT", unlockedAchievementNames.toString())
 
-        // Combine both into what the adapter will use
+        // combine both into what should be displayed
         val achievementItems = mapAchievementsToIcons(unlockedAchievementNames)
-
-        // Show in RecyclerView
         val adapter = AchievementGridAdapter(achievementItems) { item ->
             showAchievementDialog(item, dbHelper, userID)
         }
@@ -208,6 +184,7 @@ class AchievementsFragment : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         recyclerView.adapter = adapter
 
+        // temporary clear button
         binding.buttonClearAchievements.setOnClickListener {
             val userId = username?.let { dbHelper.getUserIdByUsername(it) }
 

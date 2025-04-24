@@ -15,30 +15,33 @@ import com.example.signifybasic.database.DBHelper
 import com.example.signifybasic.features.activitycenter.ActivityCenter
 import com.google.android.material.appbar.MaterialToolbar
 
+// default, basic game actiivty
 abstract class BaseGameActivity : AppCompatActivity() {
     lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // simple xml
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_game)
 
         val container = findViewById<FrameLayout>(R.id.gameContentContainer)
         layoutInflater.inflate(getGameLayoutId(), container, true)
 
+        // set progress bar UI
         progressBar = findViewById(R.id.moduleProgressBar)
         progressBar.max = 100
 
+        // allow forward/backward navigation between activities
         val backStepButton = findViewById<ImageButton>(R.id.backStepButton)
         val nextStepButton = findViewById<ImageButton>(R.id.nextStepButton)
-
         backStepButton.setOnClickListener {
             if (backStepButton.isEnabled) navigateToPreviousStep()
         }
-
         nextStepButton.setOnClickListener {
             if (nextStepButton.isEnabled) navigateToNextStep()
         }
 
+        // allow navigation back to activity center
         val returnButton = findViewById<Button>(R.id.returnToCenterButton)
         returnButton.setOnClickListener {
             val intent = Intent(this, ActivityCenter::class.java)
@@ -50,6 +53,7 @@ abstract class BaseGameActivity : AppCompatActivity() {
         updateNavigationButtons()
     }
 
+    // consistently update nav buttons according to changes
     private fun updateNavigationButtons() {
         val backStepButton = findViewById<ImageButton>(R.id.backStepButton)
         val nextStepButton = findViewById<ImageButton>(R.id.nextStepButton)
@@ -62,7 +66,7 @@ abstract class BaseGameActivity : AppCompatActivity() {
         val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
         val (savedModule, savedStep) = DBHelper(this).getUserProgress(username)
 
-        // BACK BUTTON LOGIC
+        // back button logic
         if (stepIndex == 0) {
             backStepButton.visibility = View.INVISIBLE
         } else {
@@ -71,7 +75,7 @@ abstract class BaseGameActivity : AppCompatActivity() {
             backStepButton.alpha = 1f
         }
 
-        // NEXT BUTTON LOGIC
+        // next button logic
         val canGoNext = stepIndex < totalSteps - 1 &&
                 (moduleIndex < savedModule || (moduleIndex == savedModule && stepIndex < savedStep))
 
@@ -84,13 +88,13 @@ abstract class BaseGameActivity : AppCompatActivity() {
         }
     }
 
-
-
+    // go back an activity
     private fun navigateToPreviousStep() {
         val index = ModuleManager.currentStepIndex
         if (index > 0) {
             ModuleManager.currentStepIndex = index - 1
 
+            // use nice animation
             val options = android.app.ActivityOptions.makeCustomAnimation(
                 this,
                 R.anim.slide_in_left,
@@ -102,7 +106,7 @@ abstract class BaseGameActivity : AppCompatActivity() {
         }
     }
 
-
+    // go forward an activity
     private fun navigateToNextStep() {
         val module = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
         val currentIndex = ModuleManager.currentStepIndex
@@ -118,6 +122,7 @@ abstract class BaseGameActivity : AppCompatActivity() {
         if (canAdvance) {
             ModuleManager.currentStepIndex = currentIndex + 1
 
+            // use nice animation
             val options = android.app.ActivityOptions.makeCustomAnimation(
                 this,
                 R.anim.slide_in_right,
@@ -130,8 +135,6 @@ abstract class BaseGameActivity : AppCompatActivity() {
             Toast.makeText(this, "You haven't unlocked the next activity yet.", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 
     abstract fun getGameLayoutId(): Int
 }

@@ -29,6 +29,7 @@ class HomePage : AppCompatActivity() {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
+        // bottom nav bar - navigation
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -52,6 +53,8 @@ class HomePage : AppCompatActivity() {
         }
 
     }
+
+    // helper function to switch between tabs
         private fun switchFragment(fragment: Fragment) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)

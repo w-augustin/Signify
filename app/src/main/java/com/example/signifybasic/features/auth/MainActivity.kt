@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        this.deleteDatabase("SignifyDB")
+        //this.deleteDatabase("SignifyDB")
 
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
             dbHelper.addUser(adminUsername, "admin", "admin@admin.com")
         }
 
+        // establish notification channel
         val userId = adminUsername?.let { dbHelper.getUserIdByUsername(it) }
         val safeuserid = userId ?: 0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -63,6 +64,8 @@ class MainActivity : AppCompatActivity() {
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+
+        dbHelper.insertUserSettings(safeuserid)
 
         usernameInput = findViewById(R.id.username_input)
         passwordInput = findViewById(R.id.password_input)
@@ -92,6 +95,7 @@ class MainActivity : AppCompatActivity() {
                 val email = dbHelper.getEmailByUsername(username)
                 editor.putString("userEmail", email)
 
+                // store logged-in password
                 editor.putString("userPassword", password) // save password
                 editor.apply()
 
@@ -99,6 +103,8 @@ class MainActivity : AppCompatActivity() {
                 if (loginUserId != null) {
                     dbHelper.recordLoginDate(loginUserId)
                 }
+
+                // update login streak according to user's login history
                 val streak = loginUserId?.let { it1 -> dbHelper.getLoginStreak(it1) }
                 if (streak != null) {
                     if (streak == 1) {
@@ -112,8 +118,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-
-                // Go to Homepage
+                // navigate to homepage
                 val intent = Intent(this, HomePage::class.java)
                 startActivity(intent)
             } else {
@@ -130,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // continue as guest should route to the WelcomeCenter - but for now, use to go to cameras
+        // continue as guest should route to the home page straight away
         guestBtn.setOnClickListener {
             // User will be listed as "Guest"
             val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)

@@ -37,45 +37,45 @@ class HomeFragment : Fragment() {
 
         textView.text = personalizedText
 
+        // set up basic xml
         val cardSettings = view.findViewById<CardView>(R.id.card_settings)
         val cardDictionary = view.findViewById<CardView>(R.id.card_dictionary)
         val cardActivityCenter = view.findViewById<CardView>(R.id.card_activity_center)
         val cardPlayground = view.findViewById<CardView>(R.id.card_playground)
         val cardResources = view.findViewById<CardView>(R.id.card_resources)
-
         applyTextSizeToAllTextViews(view, requireContext())
         if (isHighContrastEnabled(requireContext())) {
             applyHighContrastToAllViews(view, requireContext())
         }
 
+        // allow user navigation among cards
+        // navigate to settings
         cardSettings.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, SettingsFragment())
                 .addToBackStack(null)
                 .commit()
         }
-
-//            startActivity(Intent(requireContext(), RecordVideoActivity::class.java))
+        // navigate to dictionary
         cardDictionary.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, DictionaryFragment())
                 .addToBackStack(null)
                 .commit()
         }
-
+        // navigate to resources
         cardResources.setOnClickListener{
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ResourcesFragment())
                 .addToBackStack(null)
                 .commit()
         }
-
+        // navigate to activity center
         cardActivityCenter.setOnClickListener {
             startActivity(Intent(requireContext(), ActivityCenter::class.java))
         }
-
+        // navigate to playground
         cardPlayground.setOnClickListener {
-            //playground
             startActivity(Intent(requireContext(), PlaygroundActivity::class.java))
         }
 

@@ -29,6 +29,7 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // setting basic xml
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
 
         val dbHelper = DBHelper(requireContext())
@@ -43,7 +44,6 @@ class NotificationsFragment : Fragment() {
             applyHighContrastToAllViews(binding.root, requireContext())
         }
 
-
 //        val clearButton = Button(requireContext()).apply {
 //            text = "Clear All Notifications"
 //            setBackgroundResource(R.drawable.button_background)
@@ -57,6 +57,7 @@ class NotificationsFragment : Fragment() {
 //        }
 //        screenContainer.addView(clearButton)
 
+        // if empty, don't try to render notifications
         if (notifications.isEmpty()) {
             val emptyText = TextView(requireContext()).apply {
                 text = "No notifications yet."
@@ -66,6 +67,7 @@ class NotificationsFragment : Fragment() {
             }
             screenContainer.addView(emptyText)
         } else {
+            // otherwise, render each as a notification object
             for (item in notifications) {
                 val view = inflater.inflate(R.layout.notification_card_item, screenContainer, false)
 

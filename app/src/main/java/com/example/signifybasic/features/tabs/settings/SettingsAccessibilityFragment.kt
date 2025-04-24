@@ -30,32 +30,30 @@ class SettingsAccessibilityFragment : Fragment(R.layout.accessibility_preference
 
         val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
 
-        // Make content draw behind system bars
+        // make content draw behind system bars
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
-
-        // Apply padding to avoid overlap with status bar
         ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
             val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
             v.setPadding(0, topInset, 0, 0)
             insets
         }
 
+        // more basic xml
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-
 
         applyTextSizeToAllTextViews(view, requireContext())
         if (isHighContrastEnabled(requireContext())) {
             applyHighContrastToAllViews(view, requireContext())
         }
 
+        // use prefs to store settings
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
+        // customize contrast across app
         val contrastSwitch = view.findViewById<MaterialSwitch>(R.id.switch_high_contrast)
-
         contrastSwitch.isChecked = prefs.getBoolean("high_contrast_enabled", false)
-
         contrastSwitch.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean("high_contrast_enabled", isChecked).apply()
 
@@ -66,9 +64,8 @@ class SettingsAccessibilityFragment : Fragment(R.layout.accessibility_preference
 //                removeHighContrastFromAllViews(view, requireContext())
             }
         }
-
+        // customize text size across app
         val radioGroup = view.findViewById<RadioGroup>(R.id.radio_text_size)
-
         when (prefs.getString("text_size", "medium")) {
             "small" -> radioGroup.check(R.id.radio_small)
             "medium" -> radioGroup.check(R.id.radio_medium)
@@ -85,11 +82,5 @@ class SettingsAccessibilityFragment : Fragment(R.layout.accessibility_preference
             prefs.edit().putString("text_size", sizePref).apply()
             Toast.makeText(requireContext(), "Text size set to $sizePref", Toast.LENGTH_SHORT).show()
         }
-
-//
-//        view.findViewById<MaterialButton>(R.id.btn_delete_account).setOnClickListener {
-//            // TODO: Delete account logic
-//        }
     }
-
 }

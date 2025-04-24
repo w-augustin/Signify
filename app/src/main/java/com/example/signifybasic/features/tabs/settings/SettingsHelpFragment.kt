@@ -30,6 +30,7 @@ import com.google.android.material.card.MaterialCardView
 
 class SettingsHelpFragment : Fragment(R.layout.help_preferences) {
 
+    // display / hide an faq section
     fun toggleFaq(answerView: TextView, arrowIcon: ImageView) {
         val isVisible = answerView.visibility == View.VISIBLE
         answerView.visibility = if (isVisible) View.GONE else View.VISIBLE
@@ -41,6 +42,7 @@ class SettingsHelpFragment : Fragment(R.layout.help_preferences) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // setup basic xml
         val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
 
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
@@ -60,6 +62,7 @@ class SettingsHelpFragment : Fragment(R.layout.help_preferences) {
             applyHighContrastToAllViews(view, requireContext())
         }
 
+        // establish questions and answers
         val q1 = view.findViewById<LinearLayout>(R.id.faq_q1)
         val a1 = view.findViewById<TextView>(R.id.tv_answer_1)
         val arrow1 = view.findViewById<ImageView>(R.id.icon_arrow_1)
@@ -76,6 +79,7 @@ class SettingsHelpFragment : Fragment(R.layout.help_preferences) {
             feedbackSection.visibility = View.VISIBLE
         }
 
+        // send feedback option
         val feedbackInput = view.findViewById<EditText>(R.id.edit_feedback)
         val sendButton = view.findViewById<Button>(R.id.btn_send_feedback)
 
@@ -85,6 +89,7 @@ class SettingsHelpFragment : Fragment(R.layout.help_preferences) {
             if (message.isEmpty()) {
                 Toast.makeText(requireContext(), "Feedback can't be empty", Toast.LENGTH_SHORT).show()
             } else {
+                // send feedback email via email app
                 val intent = Intent(Intent.ACTION_SENDTO).apply {
                     data = Uri.parse("mailto:")
                     putExtra(Intent.EXTRA_EMAIL, arrayOf("aidantambling@gmail.com"))

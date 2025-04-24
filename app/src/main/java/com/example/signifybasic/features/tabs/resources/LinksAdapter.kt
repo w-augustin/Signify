@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.signifybasic.databinding.ResourcesItemLinkBinding
 
+// help us adapt and use links
 class LinksAdapter(private val items: List<LinkItem>) :
     RecyclerView.Adapter<LinksAdapter.LinkViewHolder>() {
 

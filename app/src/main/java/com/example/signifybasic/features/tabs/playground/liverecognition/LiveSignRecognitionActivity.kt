@@ -30,6 +30,7 @@ class LiveSignRecognitionActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // set up basic xml
         super.onCreate(savedInstanceState)
         binding = ActivityLiveSignRecognitionBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -45,6 +46,7 @@ class LiveSignRecognitionActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        // if permitted, start the camera for sign recognition
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -54,9 +56,11 @@ class LiveSignRecognitionActivity : AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
+    // helper function
     private fun allPermissionsGranted() =
         ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
 
+    // permissions-related helper
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CAMERA_PERMISSION_CODE && allPermissionsGranted()) {
@@ -66,30 +70,31 @@ class LiveSignRecognitionActivity : AppCompatActivity() {
         }
     }
 
+    // if permitted, start the camera
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
-            // Build the preview use case
+            // build preview use case
             val preview = Preview.Builder()
                 .build()
                 .also { it.setSurfaceProvider(binding.previewView.surfaceProvider) }
 
-            // Build the analyzer use case and attach our custom SignAnalyzer.
+            // build analyzer use case using custom analyzer
             val imageAnalyzer = ImageAnalysis.Builder()
                 .setTargetRotation(Surface.ROTATION_0)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build().also {
                     it.setAnalyzer(cameraExecutor, SignAnalyzer(this) { word ->
-                        // Update UI with the current accumulated word
+                        // continuously update UI according to suggested word/letter
                         runOnUiThread {
                             binding.signText.text = word
                         }
                     })
                 }
 
-            // Choose a camera (using the front camera here)
+            // pick camera (front)
             val cameraSelector: CameraSelector = CameraSelector.Builder()
                 .apply {
                     if (cameraProvider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA)) {

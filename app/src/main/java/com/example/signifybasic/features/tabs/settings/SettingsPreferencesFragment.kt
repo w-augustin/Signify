@@ -26,6 +26,7 @@ import com.google.android.material.materialswitch.MaterialSwitch
 class SettingsPreferencesFragment : Fragment(R.layout.app_preferences) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // basic xml
         super.onViewCreated(view, savedInstanceState)
 
         val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
@@ -35,10 +36,8 @@ class SettingsPreferencesFragment : Fragment(R.layout.app_preferences) {
             applyHighContrastToAllViews(view, requireContext())
         }
 
-        // Make content draw behind system bars
+        // make content draw behind system bars
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
-
-        // Apply padding to avoid overlap with status bar
         ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, insets ->
             val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
             v.setPadding(0, topInset, 0, 0)
@@ -49,6 +48,7 @@ class SettingsPreferencesFragment : Fragment(R.layout.app_preferences) {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        // enable/disable sound effects
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val switchSound = view.findViewById<MaterialSwitch>(R.id.switch_sound_effects)
 
@@ -58,6 +58,7 @@ class SettingsPreferencesFragment : Fragment(R.layout.app_preferences) {
             prefs.edit().putBoolean("sound_effects_enabled", isChecked).apply()
         }
 
+        // enable/disable vibration
         val switchVibration = view.findViewById<MaterialSwitch>(R.id.switch_vibration)
         switchVibration.isChecked = prefs.getBoolean("vibration_enabled", true)
 
@@ -65,6 +66,7 @@ class SettingsPreferencesFragment : Fragment(R.layout.app_preferences) {
             prefs.edit().putBoolean("vibration_enabled", isChecked).apply()
         }
 
+        // reset account progress
         val btnClearProgress = view.findViewById<MaterialButton>(R.id.clear_progress)
 
         btnClearProgress.setOnClickListener {
@@ -72,7 +74,6 @@ class SettingsPreferencesFragment : Fragment(R.layout.app_preferences) {
                 .setTitle("Confirm Reset")
                 .setMessage("Are you sure you want to delete all your progress?")
                 .setPositiveButton("Yes") { _, _ ->
-                    // Your logic here
                     Toast.makeText(requireContext(), "Progress reset", Toast.LENGTH_SHORT).show()
                 }
                 .setNegativeButton("Cancel", null)

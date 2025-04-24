@@ -25,6 +25,7 @@ class SettingsMenuFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // basic xml setup
         val toolbar = view.findViewById<MaterialToolbar>(R.id.topAppBar)
         applyTextSizeToAllTextViews(view, requireContext())
         if (isHighContrastEnabled(requireContext())) {
@@ -42,27 +43,33 @@ class SettingsMenuFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        // navigate to account settings
         view.findViewById<MaterialCardView>(R.id.btn_account).setOnClickListener {
             openFragment(SettingsAccountFragment())
         }
 
+        // navigate to prefernce settings
         view.findViewById<MaterialCardView>(R.id.btn_preferences).setOnClickListener {
             openFragment(SettingsPreferencesFragment())
         }
 
+        // navigate to notification settings
         view.findViewById<MaterialCardView>(R.id.btn_notifications).setOnClickListener {
             openFragment(SettingsNotificationsFragment())
         }
 
+        // navigate to accessibility settings
         view.findViewById<MaterialCardView>(R.id.btn_accessibility).setOnClickListener {
             openFragment(SettingsAccessibilityFragment())
         }
 
+        // navigate to help settings
         view.findViewById<MaterialCardView>(R.id.btn_help).setOnClickListener {
             openFragment(SettingsHelpFragment())
         }
     }
 
+    // helper function to facilitate navigation
     private fun openFragment(fragment: Fragment) {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.settings_container, fragment)

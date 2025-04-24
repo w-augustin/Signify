@@ -47,6 +47,7 @@ class SpellWordGameActivity : BaseGameActivity() {
     private val maxAttempts = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // establish basic xml of page
         super.onCreate(savedInstanceState)
 
         val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
@@ -77,6 +78,7 @@ class SpellWordGameActivity : BaseGameActivity() {
         updateLetterBoxes()
         startCamera()
 
+        // set up the selection buttons for user input
         listOf(selectButton1, selectButton2, selectButton3).forEachIndexed { index, button ->
             button.setOnClickListener {
                 val top = topPredictions.getOrNull(index)
@@ -91,6 +93,7 @@ class SpellWordGameActivity : BaseGameActivity() {
             }
         }
 
+        // each letter box prepares to take in user input upon selection
         letterBoxes.forEachIndexed { index, button ->
             button.setOnClickListener {
                 selectedIndex = index
@@ -98,6 +101,7 @@ class SpellWordGameActivity : BaseGameActivity() {
             }
         }
 
+        // check if submitted word matches specification
         actionText.setOnClickListener {
             if (!actionCard.isEnabled) return@setOnClickListener
 
@@ -107,7 +111,7 @@ class SpellWordGameActivity : BaseGameActivity() {
             } else {
                 incorrectAttempts++
 
-
+                // if max attempts reached, let the user proceed
                 if (incorrectAttempts >= maxAttempts) {
                     Toast.makeText(this, "Max attempts reached. You may continue.", Toast.LENGTH_SHORT).show()
                     handleSuccess()
@@ -119,19 +123,20 @@ class SpellWordGameActivity : BaseGameActivity() {
         }
     }
 
+    // take the button and flash error warning on it
     private fun flashErrorOnButton() {
         val actionCard = findViewById<MaterialCardView>(R.id.action_button_card)
         val actionText = findViewById<TextView>(R.id.action_button_text)
 
-        // Save current colors
+        // current colors
         val defaultBg = ContextCompat.getColor(this, android.R.color.white)
         val defaultText = ContextCompat.getColor(this, R.color.primary_blue)
 
-        // Set error colors
+        // set error colors
         actionCard.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_dark))
         actionText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
 
-        // Revert after 2 seconds (toast duration)
+        // revert after 2 seconds (approx. toast duration)
         actionCard.postDelayed({
             if (actionText.text.toString() != "Continue") {
                 actionCard.setCardBackgroundColor(defaultBg)
@@ -140,16 +145,20 @@ class SpellWordGameActivity : BaseGameActivity() {
         }, 2500)
     }
 
+    // if successfully signed,
     private fun handleSuccess() {
+        // display success message
         val spelled = letterStates.joinToString("")
         predictionLabel.text = "You spelled $spelled correctly!"
 
+        // enable user to continue
         val actionCard = findViewById<MaterialCardView>(R.id.action_button_card)
         val actionText = findViewById<TextView>(R.id.action_button_text)
         actionText.text = "Continue"
         actionCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.correct_green))
         actionText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
 
+        // try to shutdown camera
         cameraExecutor.shutdown()
         try {
             val cameraProvider = ProcessCameraProvider.getInstance(this).get()
@@ -158,18 +167,20 @@ class SpellWordGameActivity : BaseGameActivity() {
             Log.e("SpellWordGame", "Camera release error", e)
         }
 
+        // db related function - proceed to next step, update progress
         val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
         val username = sharedPref.getString("loggedInUser", null) // Retrieve username
         ModuleManager.moveToNextStep()
         DBHelper(this).updateUserProgress(username ?: "admin", ModuleManager.currentModuleIndex, ModuleManager.currentStepIndex)
 
+        // facilitate progress to next step
         actionText.setOnClickListener {
             val intent = Intent(this, ActivityCenter::class.java)
             val currentModule = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
             val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size
 
             if (!isLastStep) {
-                // Only set CONTINUE_SEQUENCE if there's more to do
+                // only set CONTINUE_SEQUENCE if there's more to do
                 intent.putExtra("CONTINUE_SEQUENCE", true)
             }
 
@@ -179,11 +190,12 @@ class SpellWordGameActivity : BaseGameActivity() {
         }
     }
 
-
+    // update the activity's prompt
     private fun updatePrompt() {
         promptTextView.text = "Spell the word: $word"
     }
 
+    // update letter boxes when camera detects ASL signs
     private fun updateLetterBoxes() {
         for (i in letterBoxes.indices) {
             letterBoxes[i].text = letterStates.getOrNull(i)?.ifBlank { "_" } ?: "_"
@@ -191,6 +203,7 @@ class SpellWordGameActivity : BaseGameActivity() {
         }
     }
 
+    // initiate and start the camera
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
