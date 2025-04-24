@@ -9,12 +9,15 @@ import com.example.signifybasic.features.games.FillBlankGameActivity
 import com.example.signifybasic.features.games.IdentifyGameActivity
 import com.example.signifybasic.features.games.SelectingGameActivity
 
+// class to enable routing between games
 object GameRouter {
 
+    // simple routing function
     fun routeToGame(context: Context, stepIndex: Int) {
         routeToGame(context, stepIndex, null)
     }
 
+    // routing function with animation support
     fun routeToGame(context: Context, stepIndex: Int, options: Bundle?) {
 
         val step = ModuleManager.getModules()[ModuleManager.currentModuleIndex].games[stepIndex]
@@ -24,6 +27,7 @@ object GameRouter {
             return
         }
 
+        // according to step, navigate to given activity
         val intent = when (step.type) {
             "spell_word" -> Intent(context, SpellWordGameActivity::class.java)
             "selecting" -> Intent(context, SelectingGameActivity::class.java)

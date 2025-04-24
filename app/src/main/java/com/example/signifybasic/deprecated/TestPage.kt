@@ -1,4 +1,4 @@
-package com.example.signifybasic.features.auth
+package com.example.signifybasic.deprecated
 
 import android.content.Intent
 import android.os.Bundle

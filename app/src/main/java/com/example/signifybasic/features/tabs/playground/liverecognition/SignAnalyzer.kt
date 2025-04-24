@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream
 
 class SignAnalyzer(
     context: Context,
-    private val onSignDetected: (String) -> Unit  // Callback to update the UI with the accumulated word
+    private val onSignDetected: (String) -> Unit  // callback, update UI with the identified word
 ) : ImageAnalysis.Analyzer {
 
     private val gestureInterpreter: Interpreter
@@ -26,6 +26,7 @@ class SignAnalyzer(
     private var staticGestureCount: Int = 0
     private val wordBuilder = StringBuilder()
 
+    // pre-sourced mean and scale values
     val mean = floatArrayOf(
         82.374864f, 78.174733f, 118.896166f, 140.090894f, 103.462561f,
         31.250618f, 48.557068f, 50.368350f, 65.145337f
@@ -36,6 +37,7 @@ class SignAnalyzer(
         30.194658f, 46.130457f, 35.866967f, 41.414944f
     )
 
+    // map of acceptable labels for model (no J or Z)
     val labelMap = listOf(
         "A", "B", "C", "D", "E", "F", "G", "H", "I",
         "K", "L", "M", "N", "O", "P", "Q", "R",
@@ -43,11 +45,11 @@ class SignAnalyzer(
     )
 
     companion object {
-        private const val STATIC_THRESHOLD = 6  // Frames needed for a stable prediction.
+        private const val STATIC_THRESHOLD = 6
     }
 
+    // load the gesture model and set up
     init {
-        // Load your gesture classification TFLite model.
         val model = loadModelFile(context, "gesture_model.tflite")
         gestureInterpreter = Interpreter(model)
     }
@@ -61,6 +63,7 @@ class SignAnalyzer(
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
     }
 
+    // try to analyze the hand position
     override fun analyze(image: ImageProxy) {
         try {
             if (image.format != ImageFormat.YUV_420_888) {
@@ -72,6 +75,7 @@ class SignAnalyzer(
             val keypoints = handTracker.detect(bitmap)
 
             if (keypoints != null) {
+                // if keypoints exist, try to get landmarks and use them to predict sign
                 val landmarks = handTracker.getLandmarks(bitmap)
                 val predictedLetter = predictSign(landmarks)
                 Log.d("SignAnalyzer", "Predicted letter: $predictedLetter")
@@ -97,7 +101,8 @@ class SignAnalyzer(
         }
     }
 
-    private fun extract9FeaturesFromLandmarks(landmarks: FloatArray): FloatArray {
+    // attempt to match the distances betweem specific keypoints (nine of them)
+    private fun extractFeatures(landmarks: FloatArray): FloatArray {
         fun dist(a: Int, b: Int): Float {
             val ax = landmarks[a * 3]
             val ay = landmarks[a * 3 + 1]
@@ -119,13 +124,14 @@ class SignAnalyzer(
         )
     }
 
+    // given the extracted landmarks, try to predict the sign
     private fun predictSign(landmarks: FloatArray): String {
         if (landmarks.size < 63) {
             Log.w("SignAnalyzer", "Expected 21 landmarks (x, y, z) but got ${landmarks.size / 3}")
             return ""
         }
 
-        val rawFeatures = extract9FeaturesFromLandmarks(landmarks)
+        val rawFeatures = extractFeatures(landmarks)
         val normalized = rawFeatures.mapIndexed { i, v -> (v - mean[i]) / scale[i] }.toFloatArray()
 
         val inputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 9), org.tensorflow.lite.DataType.FLOAT32)
@@ -136,6 +142,7 @@ class SignAnalyzer(
 
         val output = outputBuffer.floatArray
 
+        // get the top three predictions for return
         val topN = output.mapIndexed { i, prob -> i to prob }
             .sortedByDescending { it.second }
             .take(3)
@@ -144,6 +151,7 @@ class SignAnalyzer(
         return topN.joinToString("\n")
     }
 
+    // helper to convert to bitmap
     private fun imageProxyToBitmap(image: ImageProxy): Bitmap {
         val yBuffer = image.planes[0].buffer
         val uBuffer = image.planes[1].buffer

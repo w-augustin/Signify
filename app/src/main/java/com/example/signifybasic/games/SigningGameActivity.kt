@@ -45,6 +45,7 @@ class SigningGameActivity : BaseGameActivity() {
     private var recognizedSign: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // basic xml setup
         super.onCreate(savedInstanceState)
 
         val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
@@ -70,6 +71,7 @@ class SigningGameActivity : BaseGameActivity() {
         continueButton.isEnabled = false
         continueButton.alpha = 0.5f
 
+        // launch recording process
         recordButton.setOnClickListener {
             if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(android.Manifest.permission.CAMERA), REQUEST_VIDEO_CAPTURE)
@@ -78,6 +80,7 @@ class SigningGameActivity : BaseGameActivity() {
             }
         }
 
+        // check if recording is valid
         continueButton.setOnClickListener {
             val intent = Intent(this, ActivityCenter::class.java)
 
@@ -85,7 +88,7 @@ class SigningGameActivity : BaseGameActivity() {
             val isLastStep = ModuleManager.currentStepIndex >= currentModule.games.size
 
             if (!isLastStep) {
-                // Only set CONTINUE_SEQUENCE if there's more to do
+                // only set CONTINUE_SEQUENCE if there's more to do
                 intent.putExtra("CONTINUE_SEQUENCE", true)
             }
 
@@ -95,11 +98,13 @@ class SigningGameActivity : BaseGameActivity() {
         }
     }
 
+    // launch camera app
     private fun launchCamera() {
         val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         startActivityForResult(intent, REQUEST_VIDEO_CAPTURE)
     }
 
+    // permissions helper
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
@@ -111,6 +116,7 @@ class SigningGameActivity : BaseGameActivity() {
         }
     }
 
+    // try to get results of video processing
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_OK) {
@@ -142,6 +148,7 @@ class SigningGameActivity : BaseGameActivity() {
         }
     }
 
+    // process the video and assign a sign to it
     private fun processVideo(file: File) {
         loadingProgressBar.visibility = View.VISIBLE
 
@@ -177,6 +184,7 @@ class SigningGameActivity : BaseGameActivity() {
         }
     }
 
+    // let user continue onward to next activity
     private fun enableContinue() {
         val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
         val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
@@ -192,7 +200,7 @@ class SigningGameActivity : BaseGameActivity() {
         continueButton.alpha = 1f
     }
 
-
+    // attempt to classify the sign user recorded
     private suspend fun recognizeSign(file: File): String {
         val mediaType = "video/mp4".toMediaType()
         val body = file.asRequestBody(mediaType)

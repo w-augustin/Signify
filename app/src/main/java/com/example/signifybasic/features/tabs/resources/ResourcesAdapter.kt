@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.signifybasic.databinding.ResourcesItemVideoBinding
 
+// help us adapt and use videos in resources
 class ResourcesAdapter(
     private val items: MutableList<ResourceItem>
 ) : RecyclerView.Adapter<ResourcesAdapter.ResourceViewHolder>() {

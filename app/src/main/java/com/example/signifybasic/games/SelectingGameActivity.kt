@@ -16,6 +16,7 @@ import com.example.signifybasic.games.ModuleManager
 import com.google.android.material.card.MaterialCardView
 import java.io.Serializable
 
+// helper class for importing game data
 data class SelectingGameData(
     val imageRes: Int,
     val prompt: String,
@@ -33,12 +34,12 @@ class SelectingGameActivity : BaseGameActivity() {
     private var answeredCorrectly = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // set basic xml
         super.onCreate(savedInstanceState)
 
         val stepIndex = intent.getIntExtra("STEP_INDEX", -1)
         val module = ModuleManager.getModules()[ModuleManager.currentModuleIndex]
         val step = module.games.getOrNull(stepIndex)
-
 
         if (step == null || step.type != "selecting") {
             Toast.makeText(this, "Error loading game data", Toast.LENGTH_SHORT).show()
@@ -46,6 +47,7 @@ class SelectingGameActivity : BaseGameActivity() {
             return
         }
 
+        // dynamically set xml according to game data
         val imageResId = resources.getIdentifier(step.imageRes, "drawable", packageName)
 
         val options = step.options?.mapNotNull {
@@ -64,7 +66,6 @@ class SelectingGameActivity : BaseGameActivity() {
             nextGameClass = null, // We'll override this logic at the bottom
             resultKey = step.resultKey
         )
-
 
         val question = findViewById<TextView>(R.id.prompt)
         val imageView = findViewById<ImageView>(R.id.p_sign)
@@ -92,6 +93,7 @@ class SelectingGameActivity : BaseGameActivity() {
             }
         }
 
+        // when user submits
         actionButtonCard.setOnClickListener {
             if (!answeredCorrectly) {
                 if (selectedButton == null) {
@@ -105,6 +107,7 @@ class SelectingGameActivity : BaseGameActivity() {
                 resetButtonStyles(optionButtons)
 
                 if (correct) {
+                    // user is right => continue
                     selectedButton!!.setBackgroundColor(ContextCompat.getColor(this, R.color.correct_green))
                     optionButtons.forEach { it.isEnabled = false }
 
@@ -113,7 +116,7 @@ class SelectingGameActivity : BaseGameActivity() {
                     actionButtonText.text = "Continue"
                     answeredCorrectly = true
 
-                    // Progress update
+                    // progress update
                     val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
                     val username = sharedPref.getString("loggedInUser", "admin") ?: "admin"
                     val moduleIndex = ModuleManager.currentModuleIndex
@@ -131,6 +134,7 @@ class SelectingGameActivity : BaseGameActivity() {
                     Log.d("PROGRESS", "User '$username' now at module=$moduleIndex, step=$nextStep")
 
                 } else {
+                    // user is wrong => don't continue
                     actionButtonCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.red))
                     actionButtonText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
 
@@ -138,7 +142,7 @@ class SelectingGameActivity : BaseGameActivity() {
 
                     selectedButton = null
 
-                    // Reset color after delay
+                    // reset color after delay
                     actionButtonCard.postDelayed({
                         actionButtonCard.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
                         actionButtonText.setTextColor(ContextCompat.getColor(this, R.color.signify_blue))
@@ -177,6 +181,7 @@ class SelectingGameActivity : BaseGameActivity() {
 
     }
 
+    // reset  buttons to initial state
     private fun resetButtonStyles(buttons: List<Button>) {
         buttons.forEach {
             it.setBackgroundColor(ContextCompat.getColor(this, R.color.signify_blue))

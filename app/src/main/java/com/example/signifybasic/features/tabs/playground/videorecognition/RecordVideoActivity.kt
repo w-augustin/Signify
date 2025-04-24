@@ -62,6 +62,7 @@ class RecordVideoActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // generic xml setup
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_video)
 
@@ -144,6 +145,7 @@ class RecordVideoActivity : AppCompatActivity() {
         }
     }
 
+    // render the predicted sign to text under the input
     private fun showTextBoxUnderInput(message: String) {
         val location = IntArray(2)
         inputEditText.getLocationOnScreen(location)
@@ -169,6 +171,7 @@ class RecordVideoActivity : AppCompatActivity() {
         }
     }
 
+    // when result is received, act accordingly
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == 1) {

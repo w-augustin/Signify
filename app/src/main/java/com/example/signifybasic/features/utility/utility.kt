@@ -12,6 +12,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.example.signifybasic.features.tabs.achievements.AchievementMeta
 import org.json.JSONArray
 
+// grab achievements from .json
 fun loadAllAchievementsFromAssets(context: Context): List<AchievementMeta> {
     val inputStream = context.assets.open("valid_achievements.json")
     val jsonString = inputStream.bufferedReader().use { it.readText() }
@@ -31,7 +32,7 @@ fun loadAllAchievementsFromAssets(context: Context): List<AchievementMeta> {
     return list
 }
 
-
+// rescale certain text according to settings
 fun getScaledTextSize(context: Context): Float {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     return when (prefs.getString("text_size", "medium")) {
@@ -42,6 +43,7 @@ fun getScaledTextSize(context: Context): Float {
     }
 }
 
+// use text size to rescale text across app
 fun applyTextSizeToAllTextViews(root: View, context: Context) {
     val textSize = getScaledTextSize(context)
     if (root is MaterialToolbar) return
@@ -54,11 +56,14 @@ fun applyTextSizeToAllTextViews(root: View, context: Context) {
         }
     }
 }
+
+// fetch preferred contrast
 fun isHighContrastEnabled(context: Context): Boolean {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     return prefs.getBoolean("high_contrast_enabled", false)
 }
 
+// apply contrast across app
 fun applyHighContrastToAllViews(root: View, context: Context) {
     if (root is MaterialToolbar) return // Skip toolbar
 

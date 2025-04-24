@@ -38,6 +38,7 @@ class ResourcesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // basic xml setup
         applyTextSizeToAllTextViews(view, requireContext())
         if (isHighContrastEnabled(requireContext())) {
             applyHighContrastToAllViews(view, requireContext())
@@ -54,6 +55,7 @@ class ResourcesFragment : Fragment() {
         binding.resourcesRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.resourcesRecyclerView.adapter = videoAdapter
 
+        // display more resources when clicked
         binding.seeMoreButton.setOnClickListener {
             showingAllVideos = !showingAllVideos
             if (showingAllVideos) {

@@ -14,6 +14,7 @@ class MatchingGameActivity : BaseGameActivity() {
     override fun getGameLayoutId(): Int = R.layout.activity_matching_game
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // simple xml setup
         super.onCreate(savedInstanceState)
 
         val signColumn = findViewById<LinearLayout>(R.id.sign_column)
@@ -37,6 +38,7 @@ class MatchingGameActivity : BaseGameActivity() {
             return
         }
 
+        // dynamically set xml according to activity data
         val resultKey = step.resultKey
 
         val signData = step.items?.mapNotNull {
@@ -49,6 +51,7 @@ class MatchingGameActivity : BaseGameActivity() {
         } ?: emptyList()
 
 
+        // randomize the signs and match them with counterparts
         val randomizedSigns = signData.shuffled()
         signData.forEach { item ->
             val sign = ImageButton(this).apply {
@@ -74,6 +77,7 @@ class MatchingGameActivity : BaseGameActivity() {
             signs.add(sign)
         }
 
+        // more randomization
         randomizedSigns.forEach { item ->
             val option = Button(this).apply {
                 text = item.letter
@@ -89,8 +93,7 @@ class MatchingGameActivity : BaseGameActivity() {
             options.add(option)
         }
 
-
-        // Logic
+        // selection and matching logic
         var matchedCount = 0
         val totalMatches = signs.size
         var lastClickedSign: ImageButton? = null
@@ -106,12 +109,14 @@ class MatchingGameActivity : BaseGameActivity() {
             }
         }
 
+        // indicate correctness after eatch match is made
         options.forEach { option ->
             option.setOnClickListener {
                 if (btnSelected && lastClickedSign != null && option.isEnabled) {
                     val sign = lastClickedSign!!
                     val correct = sign.contentDescription.toString().equals(option.text.toString(), ignoreCase = true)
 
+                    // correct match => process
                     if (correct) {
                         sign.backgroundTintList = ContextCompat.getColorStateList(this, R.color.green)
                         option.backgroundTintList = ContextCompat.getColorStateList(this, R.color.green)
@@ -119,10 +124,12 @@ class MatchingGameActivity : BaseGameActivity() {
                         sign.isEnabled = false
                         option.isEnabled = false
                     } else {
+                        // bad match => indicate wrong
                         sign.backgroundTintList = ContextCompat.getColorStateList(this, R.color.red)
                         option.backgroundTintList = ContextCompat.getColorStateList(this, R.color.red)
                     }
 
+                    // once all have been matched, success. allow continue
                     if (matchedCount == totalMatches){
                         actionButtonCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.correct_green))
                         actionButtonText.setTextColor(ContextCompat.getColor(this, android.R.color.white))
@@ -134,6 +141,7 @@ class MatchingGameActivity : BaseGameActivity() {
             }
         }
 
+        // user continues to next activity
         actionButtonCard.setOnClickListener {
             if (matchedCount == totalMatches) {
                 val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
@@ -167,6 +175,7 @@ class MatchingGameActivity : BaseGameActivity() {
             }
         }
 
+        // reset button to clear all matches
         resetButton.setOnClickListener {
             if (matchedCount == totalMatches){
                 return@setOnClickListener

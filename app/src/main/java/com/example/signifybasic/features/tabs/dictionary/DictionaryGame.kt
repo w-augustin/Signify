@@ -44,6 +44,7 @@ class DictionaryGame : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // set up basic xml
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_free_spell_game)
 
@@ -66,13 +67,16 @@ class DictionaryGame : AppCompatActivity() {
             findViewById(R.id.select_button_3)
         )
 
+        // when user clicks go, take the word and start the game
         goButton.setOnClickListener {
+            // input validation
             val input = wordInput.text.toString().uppercase()
             if (input.isBlank() || input.length > 4) {
                 Toast.makeText(this, "Enter a word with 1–4 letters.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            // make changes to UI to reflect beginning of game
             wordToSpell = input
             selectedIndex = 0
             letterStates = MutableList(wordToSpell.length) { "" }
@@ -103,6 +107,7 @@ class DictionaryGame : AppCompatActivity() {
 
         }
 
+        // allow user to access the top three options for their sign
         selectButtons.forEachIndexed { index, button ->
             button.setOnClickListener {
                 if (wordToSpell.isBlank()) {
@@ -131,9 +136,11 @@ class DictionaryGame : AppCompatActivity() {
 
         val submitButton = findViewById<Button>(R.id.submitButton)
 
+        // when user attempts to submit a word
         submitButton.setOnClickListener {
             val userWord = letterStates.joinToString("")
             if (userWord.equals(wordToSpell, ignoreCase = true)) {
+                // update user's known words
                 val dbHelper = DBHelper(this)
                 val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
                 val username = sharedPref.getString("loggedInUser", null)
@@ -142,6 +149,8 @@ class DictionaryGame : AppCompatActivity() {
                     dbHelper.addKnownWord(userId, wordToSpell)
                 }
                 predictionLabel.text = "You spelled '$wordToSpell' correctly!"
+
+                // reset xml to allow for new game to begin
                 findViewById<TextView>(R.id.wordDisplay).visibility = View.GONE
                 findViewById<LinearLayout>(R.id.wordEntryRow).visibility = View.VISIBLE
                 wordInput.setText("")
@@ -149,7 +158,6 @@ class DictionaryGame : AppCompatActivity() {
                 val constraintSet = ConstraintSet()
                 val layout = findViewById<ConstraintLayout>(R.id.freeSpellLayout)
                 constraintSet.clone(layout)
-
                 constraintSet.clear(R.id.letterBoxContainer, ConstraintSet.TOP)
                 constraintSet.connect(
                     R.id.letterBoxContainer,
@@ -158,9 +166,7 @@ class DictionaryGame : AppCompatActivity() {
                     ConstraintSet.BOTTOM,
                     16
                 )
-
                 constraintSet.applyTo(layout)
-
 
                 findViewById<LinearLayout>(R.id.wordEntryRow).visibility = LinearLayout.VISIBLE
 
@@ -173,6 +179,7 @@ class DictionaryGame : AppCompatActivity() {
 
     }
 
+    // function to assist in camera use
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -189,6 +196,7 @@ class DictionaryGame : AppCompatActivity() {
         }
     }
 
+    // dynamically render the amount of boxes necessary for the chosen word
     private fun renderLetterBoxes() {
         letterBoxContainer.removeAllViews()
         wordToSpell.forEachIndexed { index, _ ->
@@ -211,6 +219,7 @@ class DictionaryGame : AppCompatActivity() {
         updateLetterBoxes()
     }
 
+    // update the letter boxes as letters are signed and selected
     private fun updateLetterBoxes() {
         for (i in 0 until letterBoxContainer.childCount) {
             val btn = letterBoxContainer.getChildAt(i) as MaterialButton
@@ -227,7 +236,7 @@ class DictionaryGame : AppCompatActivity() {
         }
     }
 
-
+    // function for launching camera
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({

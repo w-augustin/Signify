@@ -35,6 +35,7 @@ import com.example.signifybasic.games.ModuleManager.currentStepIndex
 
 class ActivityCenter : AppCompatActivity() {
 
+    // find the furthest unlocked module
     fun getMaxUnlockedModuleIndex(context: Context): Int {
         // get full list of gameModules
         val modules = ModuleManager.getModules()
@@ -101,6 +102,7 @@ class ActivityCenter : AppCompatActivity() {
         setupButtons(ModuleManager.currentModuleIndex, maxModIndex, maxStepIndex)
         updateProgressBar(findViewById(R.id.progressBar), ModuleManager.currentModuleIndex, maxModIndex, maxStepIndex)
 
+        // if we are continuing to the next activity in the sequence
         val continueFromSequence = intent.getBooleanExtra("CONTINUE_SEQUENCE", false)
         if (continueFromSequence) {
             Log.d("DEBUG_FLOW", "continueFromSequence triggered")
@@ -112,6 +114,7 @@ class ActivityCenter : AppCompatActivity() {
                 Log.d("DEBUG_FLOW", "${ModuleManager.currentStepIndex}, and ${module.games.size}")
             }
 
+            // if user completed last activity in module, don't continue
             if (hasFinishedModule) {
                 Toast.makeText(this, "You've completed all activities in this module!", Toast.LENGTH_SHORT).show()
                 return
@@ -142,6 +145,7 @@ class ActivityCenter : AppCompatActivity() {
                         progressStepIndex >= totalSteps
                 )
 
+        // if user completed the module, make the necessary updates to the user's account
         if (moduleComplete) {
             val userId = dbHelper.getUserIdByUsername(username)
             val currentModIndex = ModuleManager.currentModuleIndex
@@ -187,10 +191,6 @@ class ActivityCenter : AppCompatActivity() {
             }
         }
 
-
-
-
-
         findViewById<Button>(R.id.getStarted).setOnClickListener {
             startActivity(Intent(this, getStarted::class.java))
         }
@@ -204,6 +204,7 @@ class ActivityCenter : AppCompatActivity() {
         // Set currently selected module
         moduleSpinner.setSelection(ModuleManager.currentModuleIndex)
 
+        // allow user to switch between unlocked modules
         moduleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val maxUnlocked = getMaxUnlockedModuleIndex(this@ActivityCenter)
@@ -228,7 +229,6 @@ class ActivityCenter : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
-
 
     // programmatically generate all the buttons for the currently loaded module
     private fun setupButtons(currentModuleIndex: Int, userProgressModule: Int, userProgressStep: Int) {
@@ -278,6 +278,7 @@ class ActivityCenter : AppCompatActivity() {
         }
     }
 
+    // dynamically update the progress bar according to user's completion rate
     private fun updateProgressBar(progressBar: ProgressBar, currentModuleIndex: Int, userProgressModule: Int, userProgressStep: Int) {
         val currentModule = ModuleManager.getModules()[currentModuleIndex]
         val totalSteps = currentModule.games.size

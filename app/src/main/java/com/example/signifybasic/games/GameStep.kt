@@ -1,5 +1,6 @@
 package com.example.signifybasic.games
 
+// helper class for gamerouter
 data class GameStep(
     val type: String,
     val prompt: String? = null,
