@@ -2,55 +2,56 @@ package com.example.signifybasic.features.tabs.playground.videorecognition
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentContainerView
 import com.example.signifybasic.R
 import com.example.signifybasic.features.tabs.HomePage
-import com.example.signifybasic.features.utility.applyHighContrastToAllViews
-import com.example.signifybasic.features.utility.applyTextSizeToAllTextViews
-import com.example.signifybasic.features.utility.isHighContrastEnabled
-import com.google.android.material.appbar.MaterialToolbar
+import com.example.signifybasic.features.tabs.dictionary.DictionaryFragment
 
 class SignRecognitionResultActivity : AppCompatActivity() {
-    private lateinit var tvRecognizedSign: TextView
-    private lateinit var tvScore: TextView
     private lateinit var btnRecordAnother: Button
     private lateinit var btnGoBack: Button
-    private lateinit var tvMatchResult: TextView
+    private lateinit var predictionsTextView: TextView
+    private lateinit var btnGoToDictionary: Button
+    private lateinit var fragmentContainer: FragmentContainerView
+    private lateinit var dictionaryTextView: TextView
+    private lateinit var inputtedSignTextView: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_recognition_result)
 
-        // Initialize views
-        tvRecognizedSign = findViewById(R.id.tvRecognizedSign)
-        tvScore = findViewById(R.id.tvScore)
         btnRecordAnother = findViewById(R.id.btnRecordAnother)
         btnGoBack = findViewById(R.id.btnGoBack)
-        tvMatchResult = findViewById(R.id.tvMatchResult)
+        btnGoToDictionary = findViewById(R.id.btnGoToDictionary)
+        predictionsTextView = findViewById(R.id.predictionsTextView)
+        fragmentContainer = findViewById(R.id.fragmentContainer)
+        dictionaryTextView = findViewById(R.id.dictionaryTextView)
+        inputtedSignTextView = findViewById(R.id.inputtedSignTextView)
 
-        // Get recognized sign and probability from intent
-        val recognizedSign = intent.getStringExtra("recognizedSign")
-        val signScore = intent.getStringExtra("score")
-        val matchResult = intent.getStringExtra("matchResult") ?: "Match result unavailable"
+        // Retrieve the predictions list passed from RecordVideoActivity
+        val predictionsList = intent.getStringArrayListExtra("predictionsList")
+        val inputtedSign  = intent.getStringExtra("inputtedSign")
 
-        // Display the result
-        tvRecognizedSign.text = "Recognized Sign: $recognizedSign"
-        tvScore.text = "Confidence: $signScore"
-        tvMatchResult.text = matchResult
+        inputtedSignTextView.text = "You signed: $inputtedSign"
 
-        val rootView = findViewById<ViewGroup>(android.R.id.content)
-        applyTextSizeToAllTextViews(rootView, this)
-        if (isHighContrastEnabled(this)) {
-            applyHighContrastToAllViews(rootView, this)
+
+        // Display the predictions in the TextView
+        if (predictionsList != null && predictionsList.isNotEmpty()) {
+            predictionsTextView.text = predictionsList.joinToString("\n")
+        } else {
+            predictionsTextView.text = "No predictions found, ensure video has 30+ frames."
         }
 
-        /*val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
-        toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }*/
+        if (predictionsList != null && predictionsList.size > 1) {
+            btnGoToDictionary.visibility = View.VISIBLE
+            dictionaryTextView.visibility = View.VISIBLE
+
+        }
 
         // Handle "Record Another Video" button click
         btnRecordAnother.setOnClickListener {
@@ -64,6 +65,17 @@ class SignRecognitionResultActivity : AppCompatActivity() {
             val intent = Intent(this, HomePage::class.java)
             startActivity(intent)
             finish()
+        }
+
+        // Handle "Go to Dictionary" button click
+        btnGoToDictionary.setOnClickListener {
+            // Replace the content of the fragment container with the DictionaryFragment
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, DictionaryFragment())
+                .commit()
+
+            // Hide the predictions TextView and make the fragment container visible
+            fragmentContainer.visibility = View.VISIBLE
         }
     }
 }

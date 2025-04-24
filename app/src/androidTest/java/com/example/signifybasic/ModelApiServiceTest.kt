@@ -29,9 +29,13 @@ class ModelApiServiceTest {
     @Test
     fun testPredictApi_withMockResponse() {
         // 1. Create fake JSON response
-        val responseBody = JSONObject()
-        responseBody.put("sign", "hello")
-        responseBody.put("probability", "0.95")
+        val responseBody = """
+        [
+            {"sign": "hello", "probability": 0.5},
+            {"sign": "thank you", "probability": 0.3},
+            {"sign": "bye", "probability": 0.2}
+        ]
+        """
 
         // 2. Enqueue fake response
         mockWebServer.enqueue(
@@ -53,16 +57,30 @@ class ModelApiServiceTest {
         // 4. Determine method type (alpha or holistic)
         val expectedSign = "hello" // Example sign
         val method = if (expectedSign.length == 1 && expectedSign.all { it.isLetter() }) "alpha" else "holistic"
+        val expectedSignPart = MultipartBody.Part.createFormData("expected_sign", expectedSign)
 
         ModelRetrofitClient.BASE_URL = mockWebServer.url("/").toString()
         val service = ModelRetrofitClient.getInstance()
 
-        val response = service.predict(videoPart, method).execute()
+        val response = service.predict(videoPart, expectedSignPart, method).execute()
 
         Assert.assertTrue(response.isSuccessful)
-        val body = response.body()?.string()
-        val json = JSONObject(body!!)
-        Assert.assertEquals("hello", json.getString("sign"))
-        Assert.assertEquals("0.95", json.getString("probability"))
+
+        val predictions = response.body()
+        Assert.assertNotNull(predictions)
+        Assert.assertEquals(3, predictions!!.size)
+
+        val first = predictions[0]
+        val second = predictions[1]
+        val third =  predictions[2]
+
+        Assert.assertEquals("hello", first.sign)
+        Assert.assertEquals(0.5, first.probability, 0.01)
+
+        Assert.assertEquals("thank you", second.sign)
+        Assert.assertEquals(0.3, second.probability, 0.01)
+
+        Assert.assertEquals("bye", third.sign)
+        Assert.assertEquals(0.2, third.probability, 0.01)
     }
 }

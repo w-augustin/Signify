@@ -33,8 +33,11 @@ import java.io.FileOutputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import android.content.pm.PackageManager
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.android.material.appbar.MaterialToolbar
+import android.content.Context
+import java.io.IOException
+import java.io.InputStream
+import kotlin.coroutines.resumeWithException
 
 class RecordVideoActivity : AppCompatActivity() {
 
@@ -102,7 +105,7 @@ class RecordVideoActivity : AppCompatActivity() {
             Log.w("CameraConfig", "Resolution or FPS not available!")
         }
 
-        val support = listOf("hello", "hi", "thank you", "thanks", "name", "book", "bye", "goodbye", "i love you") + ('a'..'z').map { it.toString() }
+        val support = listOf("hello", "hi", "thank you", "thanks", "book", "bye", "goodbye", "i love you") + ('a'..'z').map { it.toString() }
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, support)
         inputEditText.setAdapter(adapter)
 
@@ -110,7 +113,7 @@ class RecordVideoActivity : AppCompatActivity() {
         val inputMapping = mapOf(
             "hi" to "hello",
             "thanks" to "thank you",
-            "bye" to "goodbye"
+            "goodbye" to "bye"
         )
 
         recordVideoBtn.setOnClickListener {
@@ -218,16 +221,25 @@ class RecordVideoActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val method =  if (expectedSign.length == 1 && expectedSign.all { it.isLetter() }) "alpha" else "holistic"
-            val result = recognizeSign(videoFile, method)
+
+            // For testing purposes, fetch video from assets instead of using the camera/video capture.
+            // val videoFileFromAssets = getVideoFromAssets(applicationContext, "bye.mp4")
+
+            val result = recognizeSign(videoFile, method, expectedSign)
+
+            val predictionsList = mutableListOf<String>()
 
             var sign = "Unknown"
-            var score = "0.0"
+            var score = 0.0
 
             try {
-                if (result.startsWith("{")) {
-                    val json = JSONObject(result)
-                    sign = json.optString("sign", "Unknown")
-                    score = json.optString("probability", "0.0")
+                // Process the list of predictions
+                if (result.isNotEmpty()) {
+                    result.forEach { prediction ->
+                        sign = prediction.sign ?: "Unknown"
+                        score = prediction.probability ?: 0.0
+                        predictionsList.add("$sign: ${(score * 100).toInt()}%")
+                    }
                 } else {
                     Log.e("API Error", "Unexpected response: $result")
                 }
@@ -238,37 +250,35 @@ class RecordVideoActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 progressBar.visibility = View.GONE
 
-                val isMatch = sign.lowercase() == expectedSign.lowercase()
-                val message = if (isMatch) {
-                    "Match! You signed: $sign"
-                } else {
-                    "No match.\nYou signed: $sign\nExpected: $expectedSign"
-                }
-
                 val intent = Intent(this@RecordVideoActivity, SignRecognitionResultActivity::class.java)
-                intent.putExtra("recognizedSign", sign)
-                intent.putExtra("score", score)
-                intent.putExtra("matchResult", message)
+                intent.putStringArrayListExtra("predictionsList", ArrayList(predictionsList))
+                intent.putExtra("inputtedSign", expectedSign)
                 startActivity(intent)
             }
         }
     }
 
-    private suspend fun recognizeSign(videoFile: File, method: String): String {
+    private suspend fun recognizeSign(videoFile: File, method: String, expectedSign: String): List<Prediction> {
         val mediaType = "video/mp4".toMediaType()
         val requestBody = videoFile.asRequestBody(mediaType)
         val videoPart = MultipartBody.Part.createFormData("video", videoFile.name, requestBody)
+        val expectedSignPart = MultipartBody.Part.createFormData("expectedSign", expectedSign)
+
 
         return suspendCoroutine { continuation ->
-            ModelRetrofitClient.getInstance().predict(videoPart, method)
-                .enqueue(object : Callback<ResponseBody> {
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        val result = response.body()?.string()
-                        continuation.resume(result ?: "Failed to recognize sign")
+            ModelRetrofitClient.getInstance().predict(videoPart, expectedSignPart, method)
+                .enqueue(object : Callback<List<Prediction>>  {
+                    override fun onResponse(call: Call<List<Prediction>>, response: Response<List<Prediction>>) {
+                        if (response.isSuccessful) {
+                            val predictions = response.body() ?: emptyList()
+                            continuation.resume(predictions)  // Returning the list of predictions
+                        } else {
+                            continuation.resumeWithException(Exception("Failed to recognize sign: ${response.message()}"))
+                        }
                     }
 
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        continuation.resume("Network failure: ${t.message}")
+                    override fun onFailure(call: Call<List<Prediction>>, t: Throwable) {
+                        continuation.resumeWithException(Exception("Network failure: ${t.message}"))
                     }
                 })
         }
@@ -277,4 +287,31 @@ class RecordVideoActivity : AppCompatActivity() {
     fun setExpectedSignForTest(value: String) {
         expectedSign = value
     }
+
+    /*suspend fun getVideoFromAssets(context: Context, videoFileName: String): File? {
+        val assetManager = context.assets
+        val videoFile = File(context.cacheDir, videoFileName)
+
+        try {
+            // Open the video file from assets
+            val inputStream: InputStream = assetManager.open(videoFileName)
+            val outputStream = FileOutputStream(videoFile)
+
+            val buffer = ByteArray(1024)
+            var length: Int
+            while (inputStream.read(buffer).also { length = it } > 0) {
+                outputStream.write(buffer, 0, length)
+            }
+
+            // Close the streams
+            inputStream.close()
+            outputStream.close()
+
+            return videoFile
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        }
+    }*/
+
 }

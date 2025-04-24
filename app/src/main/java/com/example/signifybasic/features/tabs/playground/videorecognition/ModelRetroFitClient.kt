@@ -10,7 +10,7 @@ import okhttp3.Interceptor
 
 object ModelRetrofitClient {
     private var retrofit: Retrofit? = null
-    var BASE_URL: String = "http://34.70.203.161:5000"
+    var BASE_URL: String = "http://10.20.0.77:5000"
 
     fun getInstance(): ModelApiService {
         if (retrofit == null || retrofit?.baseUrl().toString() != BASE_URL) {

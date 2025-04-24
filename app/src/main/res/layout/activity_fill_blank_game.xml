@@ -111,62 +111,62 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-        <GridLayout
-            android:id="@+id/option_grid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:alignmentMode="alignMargins"
-            android:useDefaultMargins="true"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/question_card"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            <GridLayout
+                android:id="@+id/option_grid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:alignmentMode="alignMargins"
+                android:useDefaultMargins="true"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/question_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageButton
-                android:id="@+id/t_sign"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:src="@drawable/t_sign"
-                android:scaleType="centerCrop"
-                android:backgroundTint="@color/white"
-                android:background="@drawable/rounded_white"
-                android:clipToOutline="true"
-                android:contentDescription="T"/>
+                <ImageButton
+                    android:id="@+id/t_sign"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/t_sign"
+                    android:scaleType="centerCrop"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/rounded_white"
+                    android:clipToOutline="true"
+                    android:contentDescription="T"/>
 
-            <ImageButton
-                android:id="@+id/p_sign"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:src="@drawable/p_sign"
-                android:scaleType="centerCrop"
-                android:backgroundTint="@color/white"
-                android:background="@drawable/rounded_white"
-                android:clipToOutline="true"
-                android:contentDescription="P"/>
+                <ImageButton
+                    android:id="@+id/p_sign"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/p_sign"
+                    android:scaleType="centerCrop"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/rounded_white"
+                    android:clipToOutline="true"
+                    android:contentDescription="P"/>
 
-            <ImageButton
-                android:id="@+id/r_sign"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:src="@drawable/r_sign"
-                android:scaleType="centerCrop"
-                android:backgroundTint="@color/white"
-                android:background="@drawable/rounded_white"
-                android:clipToOutline="true"
-                android:contentDescription="R"/>
+                <ImageButton
+                    android:id="@+id/r_sign"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/r_sign"
+                    android:scaleType="centerCrop"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/rounded_white"
+                    android:clipToOutline="true"
+                    android:contentDescription="R"/>
 
-            <ImageButton
-                android:id="@+id/b_sign"
-                android:layout_width="150dp"
-                android:layout_height="140dp"
-                android:src="@drawable/b_sign"
-                android:scaleType="centerCrop"
-                android:backgroundTint="@color/white"
-                android:background="@drawable/rounded_white"
-                android:clipToOutline="true"
-                android:contentDescription="B"/>
-        </GridLayout>
+                <ImageButton
+                    android:id="@+id/b_sign"
+                    android:layout_width="150dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/b_sign"
+                    android:scaleType="centerCrop"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/rounded_white"
+                    android:clipToOutline="true"
+                    android:contentDescription="B"/>
+            </GridLayout>
         </LinearLayout>
 
         <!-- Submit Card Button -->

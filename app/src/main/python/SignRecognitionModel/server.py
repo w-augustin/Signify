@@ -1,7 +1,4 @@
-# References
-# https://github.com/nicknochnack/ActionDetectionforSignLanguage
-# https://github.com/Mirwe/Real-time-ASL-alphabet-recognition/tree/main
-
+#TODO: call this from where i need to use the sign rec model
 import cv2
 import os
 import numpy as np
@@ -16,7 +13,7 @@ app = Flask(__name__)
 # Initialize mediapipe holistic model
 mp_holistic = mp.solutions.holistic
 
-model = tf.keras.models.load_model("sign_language_model2.keras")
+model = tf.keras.models.load_model("sign_language_model_3.keras")
 
 def mediapipe_detection(image, model):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # COLOR CONVERSION BGR to RGB
@@ -56,11 +53,12 @@ def extract_keypoints(results):
     lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten() if results.left_hand_landmarks else np.zeros(21*3)
     rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten() if results.right_hand_landmarks else np.zeros(21*3)
     # Make sure the result is a float32 numpy array
-    keypoints = np.concatenate([pose, face, lh, rh])
-    return keypoints.astype(np.float32)  # Ensures the correct data type
+    #keypoints = np.concatenate([pose, face, lh, rh])
+    #return keypoints.astype(np.float32)  # Ensures the correct data type
+    return np.concatenate([pose, face, lh, rh])
 
-
-def prob_viz(res, actions, input_frame):
+'''
+def prob_avg(res, actions, input_frame):
     # Find the index of the highest probability
     max_prob_index = np.argmax(res)
     max_prob_value = res[max_prob_index]
@@ -71,9 +69,18 @@ def prob_viz(res, actions, input_frame):
 
     # Return the sign and its probability value
     return sign, prob_value
+'''
+def prob(res, actions):
+    max_index = np.argmax(res)
+    predicted_action = actions[max_index]
+    probability = float(res[max_index])
+    return [(predicted_action, probability)]
 
+def top_three_predictions(res, actions):
+    top_indices = np.argsort(res)[-3:][::-1]
+    return [(actions[i], float(res[i])) for i in top_indices]
 
-def get_sign_recognition (video_data):
+def get_sign_recognition (video_data, action):
     # 1. New detection variables
     sequence = []
     sentence = []
@@ -82,8 +89,7 @@ def get_sign_recognition (video_data):
     predicted_action = None
     prob_value = None
     # Actions that we try to detect
-    actions = np.array(['hello', 'thank you', 'book', 'name', 'goodbye'])
-
+    actions = np.array(['hello', 'i love you', 'book', 'bye', 'thank you'])
 
     # Check if the video file exists
     if not os.path.exists(video_data):
@@ -114,27 +120,46 @@ def get_sign_recognition (video_data):
             # Extract keypoints and append to sequence
             keypoints = extract_keypoints(results)
             sequence.append(keypoints)
-            sequence = sequence[-30:]  # Keep only the latest 30 frames
+            sequence = sequence[-30:]
 
             if len(sequence) == 30:
                 res = model.predict(np.expand_dims(sequence, axis=0))[0]
+                print(res)
 
-                # Display the predicted action
-                predicted_action, prob_value = prob_viz(res, actions, frame)
+                top2 = np.argsort(res)[-2:][::-1]
+                temp = [(actions[i], float(res[i])) for i in top2]
 
-                # Output the result to the console
-                print(f"Predicted sign: {predicted_action}, Probability: {prob_value}")
-                break
+                if temp[0] == action:
+                    cap.release()
+                    cv2.destroyAllWindows()
+                    print(f"Predicted action matches input action: {temp[0]}.")
+                    return [(temp[0], top2[0])]
+
+                if temp[1] == action:
+                    cap.release()
+                    cv2.destroyAllWindows()
+                    print(f"Predicted action matches input action: {temp[0]}.")
+                    return [(temp[0], top2[0]), (temp[1], top2[1])]
+                predictions.append(res)  # Store the prediction even if it doesn't match
 
     cap.release()
     cv2.destroyAllWindows
-    # Return predicted sign and probability (for function)
-    return predicted_action, prob_value
 
-def get_alpha_sign_prediction(video_path):
+    # Compute average probabilities across all predictions
+    if predictions:
+        avg_probs = np.mean(predictions, axis=0)
+        top2_avg = top_three_predictions(avg_probs, actions)
+        print(top2_avg)
+        return top2_avg
+
+    return [("No sign detected", 0.0)]
+
+def get_alpha_sign_prediction(video_path, action):
     import mediapipe as mp
-    from AlphabetModel import decode  # assumes decode returns the predicted sign
+    from model import decode  # assumes decode returns the predicted sign
     model = tf.keras.models.load_model('asl_model.h5')
+
+    predictions = []
 
     mp_hands = mp.solutions.hands
     cap = cv2.VideoCapture(video_path)
@@ -142,7 +167,7 @@ def get_alpha_sign_prediction(video_path):
     if not cap.isOpened():
         return jsonify({"error": f"Could not open video file {video_path}"}), 400
 
-    with mp_hands.Hands(model_complexity=0, min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
+    with mp_hands.Hands(model_complexity=0, min_detection_confidence=0.75, min_tracking_confidence=0.5) as hands:
         while cap.isOpened():
             ret, image = cap.read()
             if not ret:
@@ -174,15 +199,33 @@ def get_alpha_sign_prediction(video_path):
                     resized = cv2.resize(roi, (128, 128))
                     img_array = np.array([resized])
                     prediction = model.predict(img_array)
-                    pred = decode(np.argmax(prediction))
-                    prob = float(np.max(prediction))
+                    prob_values = prediction[0]
+                    top_index = np.argmax(prob_values)
+                    predicted_action = decode(top_index)
+                    prob_value = float(prob_values[top_index])
 
-                    return jsonify({'sign': pred, 'probability': f"{prob:.2f}"})
+                    # Early return if match
+                    if predicted_action == action:
+                        cap.release()
+                        print(f"Predicted action matches input action: {predicted_action}.")
+                        return [(predicted_action, prob_value)]
+
+                    predictions.append(prob_values)
+
                 except Exception as e:
                     print(f"ROI issue: {e}")
                     continue
 
-    return jsonify({"error": "No hand landmarks detected"}), 400
+    cap.release()
+
+    if predictions:
+        avg_probs = np.mean(predictions, axis=0)
+        top_indices = np.argsort(avg_probs)[-3:][::-1]
+        top_preds = [(decode(i), float(avg_probs[i])) for i in top_indices]
+        print(top_preds)
+        return top_preds
+
+    return [("No sign detected", 0.0)]
 
 
 
@@ -195,6 +238,8 @@ def predict():
     video_file = request.files['video']
 
     print(model.input_shape)
+
+    action = request.form['expectedSign']
 
     # Get the method query parameter (e.g., /predict?method=hands)
     method = request.args.get("method", "holistic")  # default is holistic
@@ -213,13 +258,13 @@ def predict():
     print(f"Width: {width}, Height: {height}, FPS: {fps}, Frames: {frame_count}")
     
     if method == "alpha":
-        result = get_alpha_sign_prediction(temp_video_path)  # Returns jsonify
-        print(f"Sending response: {result}")
-        return result
+        result = get_alpha_sign_prediction(temp_video_path, action)  # Returns jsonify
     else:
-        resultSign, resultProb = get_sign_recognition(temp_video_path)
-        print(f"Sending response: {resultSign} {resultProb}")
-        return jsonify({'sign': resultSign, 'probability': resultProb})
+        result = get_sign_recognition(temp_video_path, action)
+
+    result_list = [{'sign': r[0], 'probability': r[1]} for r in result]
+    print(f"Sending response: {result_list}")
+    return jsonify(result_list)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

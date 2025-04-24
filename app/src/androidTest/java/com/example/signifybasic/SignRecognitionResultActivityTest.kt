@@ -10,6 +10,7 @@ import com.example.signifybasic.features.tabs.playground.videorecognition.SignRe
 import org.junit.Before
 import org.junit.Test
 import androidx.test.espresso.intent.Intents
+import org.hamcrest.CoreMatchers.containsString
 import org.junit.After
 
 class SignRecognitionResultActivityTest {
@@ -21,29 +22,52 @@ class SignRecognitionResultActivityTest {
     }
 
     @Test
-    fun testSignRecognitionResultActivity_DisplaysResultsAndHandlesButtons() {
+    fun testSignRecognitionResultActivity_DisplaysResultsAndHandlesButtonsCorrect() {
         // Prepare the Intent with test data
         val intent = Intent(
             androidx.test.core.app.ApplicationProvider.getApplicationContext(),
             SignRecognitionResultActivity::class.java
         ).apply {
-            putExtra("recognizedSign", "hello")
-            putExtra("score", "0.95")
-            putExtra("matchResult", "Match! You signed: hello")
+            putExtra("predictionsList", arrayListOf("hello: 0.95", "thank you: 0.85"))  // or however you format
+            putExtra("inputtedSign", "hello")
         }
 
         // Launch the activity with the Intent
         ActivityScenario.launch<SignRecognitionResultActivity>(intent)
 
         // Check if the TextViews are displaying the correct data
-        onView(withId(R.id.tvRecognizedSign))
-            .check(matches(withText("Recognized Sign: hello")))
+        onView(withId(R.id.predictionsTextView))
+            .check(matches(withText(containsString("hello: 0.95"))))
 
-        onView(withId(R.id.tvScore))
-            .check(matches(withText("Confidence: 0.95")))
+        onView(withId(R.id.inputtedSignTextView))
+            .check(matches(withText(containsString("You signed: hello"))))
 
-        onView(withId(R.id.tvMatchResult))
-            .check(matches(withText("Match! You signed: hello")))
+
+        // Test the "Record Another Video" button click behavior
+        onView(withId(R.id.btnRecordAnother)).perform(click())
+    }
+
+    @Test
+    fun testSignRecognitionResultActivity_DisplaysResultsAndHandlesButtonsIncorrect() {
+        // Prepare the Intent with test data
+        val intent = Intent(
+            androidx.test.core.app.ApplicationProvider.getApplicationContext(),
+            SignRecognitionResultActivity::class.java
+        ).apply {
+            putExtra("predictionsList", arrayListOf("hello: 0.95", "bye: 0.85"))  // or however you format
+            putExtra("inputtedSign", "book")
+        }
+
+        // Launch the activity with the Intent
+        ActivityScenario.launch<SignRecognitionResultActivity>(intent)
+
+        // Check if the TextViews are displaying the correct data
+        onView(withId(R.id.predictionsTextView))
+            .check(matches(withText(containsString("bye: 0.85"))))
+
+        onView(withId(R.id.inputtedSignTextView))
+            .check(matches(withText(containsString("You signed: book"))))
+
 
         // Test the "Record Another Video" button click behavior
         onView(withId(R.id.btnRecordAnother)).perform(click())

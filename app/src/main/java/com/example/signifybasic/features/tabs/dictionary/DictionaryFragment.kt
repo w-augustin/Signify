@@ -37,7 +37,7 @@ class DictionaryFragment : Fragment() {
         "thank you" to SignVideo("https://www.youtube.com/embed/2W0BDFUjsG0"),
         "thanks" to SignVideo("https://www.youtube.com/embed/2W0BDFUjsG0"),
         "book" to SignVideo("https://www.youtube.com/embed/SUlKivg4SDg"),
-        "name" to SignVideo("https://www.youtube.com/embed/GbeC9TFuSX4"),
+        //"name" to SignVideo("https://www.youtube.com/embed/GbeC9TFuSX4"),
         "i love you" to SignVideo("https://www.youtube.com/embed/jzJjdvTF10A"),
         "a" to SignVideo("https://www.youtube.com/embed/tkMg8g8vVUo", start = 3, end = 6),
         "b" to SignVideo("https://www.youtube.com/embed/tkMg8g8vVUo", start = 7, end = 10),
@@ -118,13 +118,15 @@ class DictionaryFragment : Fragment() {
             if (signVideo != null) {
                 val urlWithParams = buildString {
                     append(signVideo.url)
-                    if (signVideo.start != null) append("?start=${signVideo.start}")
-                    if (signVideo.end != null) {
-                        if (signVideo.start == null) append("?")
-                        else append("&")
-                        append("end=${signVideo.end}")
+
+                    val params = mutableListOf<String>()
+                    signVideo.start?.let { params.add("start=$it") }
+                    signVideo.end?.let { params.add("end=$it") }
+                    params.add("autoplay=1")
+
+                    if (params.isNotEmpty()) {
+                        append("?${params.joinToString("&")}")
                     }
-                    append("&autoplay=1")
                 }
 
                 val html = """
