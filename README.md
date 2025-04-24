@@ -1,5 +1,5 @@
 # Signify
-
+Signify is an android app designed to solve the problem of finding a free and engaging way to learn American Sign Language (ASL). Whether you're a beginner or an advanced learner, Signify offers learning modules, real-time signing practice with feedback, and progress tracking to help you master the language. no matter which stage you are in learning the language. The app fosters inclusivity and connection with the Deaf and hard-of-hearing community by empowering users to communicate confidently in ASL.
 # Deployment Instructions
 
 ## What You Need
